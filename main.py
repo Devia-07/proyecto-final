@@ -23,7 +23,7 @@ def return_menu(window):
 
 def conditions_searchs(destination,origin,passenger):
     indices=[]
-    if c.conditions_search(destination,origin,passenger)==True:
+    if c.conditions_search(destination,origin,passenger):
         mb.showinfo("info","datos correctos")
         indices=c.search(destination,origin)
         search_fly(indices)
@@ -105,7 +105,7 @@ def search_fly(indices):
 
 #verifica los datos del registro
 def record_condition(gender,name,lastname,id,telephone,nationality,email,birthday,attendance):
-    if c.conditions_record(gender,name,lastname,id,telephone,nationality,email,birthday,attendance)==True:
+    if c.conditions_record(gender,name,lastname,id,telephone,nationality,email,birthday,attendance):
         s.record_base(gender,name,lastname,id,telephone,nationality,email,birthday,attendance)
 #_______________________________________________________________________________________________________________________
 # funcion para el registro
@@ -119,8 +119,8 @@ def record(window):
     window_record.geometry()
     gender=tk.StringVar()  # variable para almacenar el genero
     label_gender=tk.Label(window_record,text="genero", bg="red",fg="white",font=("Times New Roman",14))
-    checkbox=tk.Radiobutton(window_record,text="masculino",bg=f"red",fg="white",variable=gender,value="masculino",font=("Times New Roman",14))
-    checkbox1=tk.Radiobutton(window_record,text="femenino",bg=f"red",fg="white",variable=gender,value="femenino", font =("Times New Roman",14))
+    checkbox=tk.Radiobutton(window_record,text="masculino",bg="red",fg="white",variable=gender,value="masculino",font=("Times New Roman",14))
+    checkbox1=tk.Radiobutton(window_record,text="femenino",bg="red",fg="white",variable=gender,value="femenino", font =("Times New Roman",14))
     label_name=tk.Label(window_record,text="nombre",bg="red",fg="white", font= ("Times New Roman",14))
     entry_name=tk.Entry(window_record,font=("Times New Roman",14))
     label_lastname=tk.Label(window_record,text="apellido",bg="red",fg="white",font=("Times New Roman",14))
@@ -175,7 +175,7 @@ def record(window):
 
 #_______________________________________________________________________________________________________________________
 def login_condition(id,email):
-    if c.condition_login(id,email)==True:
+    if c.condition_login(id,email):
         s.login_base(id,email)
 #_______________________________________________________________________________________________________________________
 # funcion  para iniciar sesion

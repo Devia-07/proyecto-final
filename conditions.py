@@ -38,14 +38,14 @@ def conditions_record(gender,name,lastname,id,telephone,nationality,email,birthd
     elif name=="" or lastname=="" or id=="" or telephone=="" or nationality=="" or email=="":#si alguna casilla esta vacia
         mb.showerror("registro","registro fallido rellene todas las casillas")
 #_______________________________________________________________________________________________________________________
-    elif id.isdigit()==False:#si la identificacion es digito o no
+    elif not id.isdigit():#si la identificacion es digito o no
         mb.showerror("registro","registro fallido la identificacion debe ser un numero")
 #_______________________________________________________________________________________________________________________
     elif len(id)<7 or len(id)>=11:#si la identificacion es menor a 7 digitos o mayor a 10
         mb.showerror("registro","registro fallido la identificacion debe tener 10 digitos") 
 #____________________________________________________________________________________________________________________
 
-    elif telephone.isdigit()==False: # si el telefono es digito o no
+    elif not telephone.isdigit(): # si el telefono es digito o no
         mb.showerror("registro","registro fallido  telefono debe ser un numero")
 #____________________________________________________________________________________________________________________
 
@@ -95,7 +95,7 @@ def lista_vuelos(origen,destino,fecha):#funcion que retorna las listas de origen
 def conditions_search(origin,destination,passenger):
     if origin=="" or destination=="" or passenger=="":
         mb.showerror("error","rellene todas las casillas") 
-    elif int(passenger.isdigit())==False:
+    elif not int(passenger.isdigit()):
         mb.showerror("error","el numero de pasajeros debe ser un numero")
     else:
         return True
