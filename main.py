@@ -32,10 +32,7 @@ def conditions_searchs(destination,origin,passenger):
 
 
 def fly():
-    origen = []
-    destino = []
-    fecha = []
-    origen, destino, fecha = c.lista_vuelos(origen, destino, fecha)
+    origen, destino, fecha = c.lista_vuelos()
     window_fly = ctk.CTk()
     window_fly.title("menu fly")
     window_fly.geometry("500x 500")
@@ -57,9 +54,9 @@ def fly():
     label_passenger = ctk.CTkLabel(frame_busqueda, text="numero de pasajeros")
     entry_passenger = ctk.CTkEntry(frame_busqueda)
     only_going = ctk.CTkCheckBox(frame_busqueda, text="solo ida", variable=going, onvalue="solo ida", offvalue = 2)
-    cities_origin = ctk.CTkComboBox(frame_busqueda, values=origen, state="readonly")  # steate readonly para que no se pueda escribir
+    cities_origin = ctk.CTkComboBox(frame_busqueda, values=list(origen), state="readonly")  # steate readonly para que no se pueda escribir
     cities_origin.set("Ciudad de origen")  # coloca un texto por defecto
-    cities_destination = ctk.CTkComboBox(frame_busqueda, values=destino, state="readonly")  # steate readonly para que no se pueda escribir
+    cities_destination = ctk.CTkComboBox(frame_busqueda, values=list(destino), state="readonly")  # steate readonly para que no se pueda escribir
     cities_destination.set("Ciudad de destino")  # coloca un texto por defecto
     list_going = ctk.CTkComboBox(frame_busqueda, values=dates_june, state="readonly")  # steate readonly para que no se pueda escribir
     list_going.set("ida")  # coloca un texto por defecto

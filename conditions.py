@@ -84,12 +84,12 @@ def condition_login(id,email):#funcion que valida el login
         else:
             mb.showerror("login","login fallido no hay usuarios registrados")#si no hay usuarios registrados
 
-def lista_vuelos(origen,destino,fecha):#funcion que retorna las listas de origen,destino y fecha
-    df=pd.read_csv("dato_vuelo.csv",sep=",")#se lee el archivo csv
-    origen = df['CiudadOrigen'].tolist()
-    destino = df["CiudadDestino"].tolist()
-    fecha = df['Fecha'].tolist()
-    return origen,destino,fecha
+def lista_vuelos():#funcion que retorna la lista de vuelos
+    df = pd.read_csv("dato_vuelo.csv", sep=",")#se lee el archivo csv
+    origen = set(df['CiudadOrigen']) #se obtiene la columna "CiudadOrigen"
+    destino = set(df["CiudadDestino"]) #se obtiene la columna "CiudadDestino"
+    fecha = set(df['Fecha']) #se obtiene la columna "Fecha"
+    return origen, destino, fecha
 
         
 def conditions_search(origin,destination,passenger):
