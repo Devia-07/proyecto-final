@@ -18,6 +18,21 @@ import customtkinter as ctk
 
 
 
+def buy(indice,window=None,indices=None):
+    if window==None:
+        pass
+    else:
+        window.destroy()
+    df=pd.read_csv("dato_vuelo.csv")
+    window_buy=ctk.CTk()
+    label=ctk.CTkLabel(window_buy,text="compra de vuelo")
+    label.grid(row=0,column=0)
+    
+    
+
+
+
+#informacion de vuelos disponibles en tales horas
 def info_buy(indice,window=None,indices=None):
     if window==None:
         pass
@@ -28,17 +43,17 @@ def info_buy(indice,window=None,indices=None):
     print(indice)
     df=pd.read_csv("dato_vuelo.csv")
     window_info=ctk.CTk()
-    frame_hours_f=ctk.CTkFrame(window_info)
-    frame_hours_f.configure(fg_color = "grey26")
-    frame_hours_f.grid(row=0,column=0)
-    label_hours=ctk.CTkLabel(frame_hours_f,text="vuelos disponibles")
-    label_hours.grid(row=0,column=0)
-    button=[]
-    for i in hours:
-        mensaje=f"""vuelo:{df['Vuelo'].values[i]}
+    frame_hours_f=ctk.CTkFrame(window_info) #frame para los botones
+    frame_hours_f.configure(fg_color = "grey26") #color del frame
+    frame_hours_f.grid(row=0,column=0) #posicion del frame
+    label_hours=ctk.CTkLabel(frame_hours_f,text="vuelos disponibles") #label para los vuelos disponibles
+    label_hours.grid(row=0,column=0) #posicion del label
+    button=[] #lista de botones
+    for i in hours: #recorre las horas
+        mensaje=f"""vuelo:{df['Vuelo'].values[i]} 
         hora salida= {df['HoraSalida'].values[i]}
         hora llegada= {df['HoraLlegada'].values[i]}"""
-        button_hours=ctk.CTkButton(frame_hours_f,text=f"{mensaje}",width=20,height=2)
+        button_hours=ctk.CTkButton(frame_hours_f,text=f"{mensaje}",command=lambda: buy(indice,window_info,indices),width=20,height=2)
         button_hours.grid(row=1,column=i,padx=10,pady=10)
         button.append(button_hours)
     window_info.mainloop()
@@ -167,137 +182,149 @@ def search_fly(indices, window_fly):
 
 
 
-#verifica los datos del registro
-# def record_condition(gender,name,lastname,id,telephone,nationality,email,birthday,attendance):
-#     if c.conditions_record(gender,name,lastname,id,telephone,nationality,email,birthday,attendance):
-#         s.record_base(gender,name,lastname,id,telephone,nationality,email,birthday,attendance)
-# #_______________________________________________________________________________________________________________________
-# # funcion para el registro
-
-# def record(window):
-#     global checkbox,checkbox1,radiuobutton,radiuobutton1
-#     window.destroy()
-#     window_record=tk.Tk()
-#     window_record.title("registro")
-#     window_record.config(bg="black")
-#     window_record.geometry()
-#     gender=tk.StringVar()  # variable para almacenar el genero
-#     label_gender=tk.Label(window_record,text="genero", bg="red",fg="white",font=("Times New Roman",14))
-#     checkbox=tk.Radiobutton(window_record,text="masculino",bg="red",fg="white",variable=gender,value="masculino",font=("Times New Roman",14))
-#     checkbox1=tk.Radiobutton(window_record,text="femenino",bg="red",fg="white",variable=gender,value="femenino", font =("Times New Roman",14))
-#     label_name=tk.Label(window_record,text="nombre",bg="red",fg="white", font= ("Times New Roman",14))
-#     entry_name=tk.Entry(window_record,font=("Times New Roman",14))
-#     label_lastname=tk.Label(window_record,text="apellido",bg="red",fg="white",font=("Times New Roman",14))
-#     entry_lastname=tk.Entry(window_record,font=("Times New Roman",14))
-#     label_id=tk.Label(window_record,text="identificacion",bg="red",fg="white",font=("Times New Roman",14))
-#     entry_id=tk.Entry(window_record,font=("Times New Roman",14))
-#     label_telephone=tk.Label(window_record,text="telefono",bg="red",fg="white",font=("Times New Roman",14))
-#     entry_telephone=tk.Entry(window_record,font=("Times New Roman",14))
-#     label_nationality=tk.Label(window_record,text="nacionalidad",bg="red",fg="white",font=("Times New Roman",14))
-#     entry_nationality=tk.Entry(window_record,font=("Times New Roman",14))
-#     label_email=tk.Label(window_record,text="correo",bg="red",fg="white",font=("Times New Roman",14))
-#     entry_email=tk.Entry(window_record,font=("Times New Roman",14))
-#     label_birthday=tk.Label(window_record,text="fecha de nacimiento",bg="red",fg="white",font=("Times New Roman",14))
-#     entry_birthday=tk.Entry(window_record,font=("Times New Roman",14))#fuente de letra
-#     attendance=tk.StringVar()
-#     label_attendance=tk.Label(window_record,text="requiere asistencia",bg="red",fg="white",font=("Times New Roman",14))
-#     radiuobutton=tk.Radiobutton(window_record,text="asistencia",bg="red",fg="white",variable=attendance,value="requiere",activebackground="green",font=("Times New Roman",14))
-#     radiuobutton1=tk.Radiobutton(window_record,text="no asistencia",bg="red",fg="white",variable=attendance,value="no requiere",font = ("Times New Roman",14))
-#     #boton de enviar
-#     button_send=tk.Button(window_record,text="enviar",bg="red",fg="white",command=lambda:record_condition(gender.get(),entry_name.get(),entry_lastname.get(),entry_id.get(),entry_telephone.get(),entry_nationality.get(),entry_email.get(),entry_birthday.get(),attendance.get()),activebackground="green",font=("Times New Roman",14))
-#     button_back = tk.Button(window_record,text="volver",bg="red",fg="white",command=lambda:return_menu(window_record),width=9,height=2,activebackground="green",font=("Times New Roman",14))
-#     #eventos para teclas
-#     #____________________________________________________________________________
-#     window_record.bind("<Return>",lambda e:record_condition(gender.get(),entry_name.get(),entry_lastname.get(),entry_id.get(),entry_telephone.get(),entry_nationality.get(),entry_email.get(),entry_birthday.get(),attendance.get()))
-#     window_record.bind("<Escape>",lambda e:return_menu(window_record))
-# #_______________________________________________________________________________-
-#     # darle posicion a los elementos de la pantalla de registro
-#     label_gender.grid(row=0,column=0,padx=10,pady=10)
-#     checkbox.grid(row=0,column=1,padx=10,pady=10)
-#     checkbox1.grid(row=0,column=2,padx=10,pady=10)
-#     label_name.grid(row=1,column=0,padx=10,pady=10)
-#     entry_name.grid(row=1,column=1,padx=10,pady=10)
-#     label_lastname.grid(row=1,column=2,padx=10,pady=10)
-#     entry_lastname.grid(row=1,column=3,padx=10,pady=10)
-#     label_id.grid(row=2,column=0,padx=10,pady=10)
-#     entry_id.grid(row=2,column=1,padx=10,pady=10)
-#     label_telephone.grid(row=2,column=2,padx=10,pady=10)
-#     entry_telephone.grid(row=2,column=3,padx=10,pady=10)
-#     label_nationality.grid(row=3,column=0,padx=10,pady=10)
-#     entry_nationality.grid(row=3,column=1,padx=10,pady=10)
-#     label_email.grid(row=3,column=2,padx=10,pady=10)
-#     entry_email.grid(row=3,column=3,padx=10,pady=10)
-#     button_send.grid(row=7,column=0,padx=10,pady=10)
-#     label_birthday.grid(row=4,column=0,padx=10,pady=10)
-#     entry_birthday.grid(row=4,column=1,padx=10,pady=10)
-#     label_attendance.grid(row=5,column=0,padx=10,pady=10)
-#     radiuobutton.grid(row=6,column=0,padx=10,pady=10)
-#     radiuobutton1.grid(row=6,column=1,padx=10,pady=10)
-#     button_back.grid(row=7,column=1,padx=10,pady=10)
-#     window_record.mainloop()
 
 
-# #_______________________________________________________________________________________________________________________
-# def login_condition(id,email):
-#     if c.condition_login(id,email):
-#         s.login_base(id,email)
-#_______________________________________________________________________________________________________________________
-# funcion  para iniciar sesion
+# Función para verificar y registrar datos
+def record_condition(gender, name, lastname, id, telephone, nationality, email, birthday, attendance):
+    if c.conditions_record(gender, name, lastname, id, telephone, nationality, email, birthday, attendance):
+        s.record_base(gender, name, lastname, id, telephone, nationality, email, birthday, attendance)
 
-# def login(window):
-#     window.destroy()
-#     window_login=ctk.CTk()
-#     window_login.title("iniciar sesion")
-#     window_login.geometry()
-#     label_id=ctk.CTkLabel(window_login,text="identificacion")
-#     entry_id=ctk.CTkEntry(window_login)
-#     label_email=ctk.CTkLabel(window_login,text="correo")
-#     entry_email=ctk.CTkEntry (window_login)
-#     button_back = ctk.CTkButton(window_login,text="volver",command=lambda:return_menu(window_login),width=9,height=2)
-#     button_send=ctk.CTkButton(window_login,text="enviar",command=lambda:login_condition(entry_id.get(),entry_email.get()),width=9,height=2)
-#     # darle posicion a los elementos de la pantalla de inicio de sesion
-#     #atajos de teclas
-#     window_login.bind("<Return>",lambda e:login_condition(entry_id.get(),entry_email.get()))
-#     window_login.bind("<Escape>",lambda e:return_menu(window_login))
-#     #____________________________________________________________________________
+# Función para el registro
+def record(window):
+    window.destroy()
+    window_record = ctk.CTk()
+    window_record.title("Registro")
+    window_record.geometry("600x600")
+    ctk.set_appearance_mode("dark")
+    ctk.set_default_color_theme("blue")
+
+    gender = ctk.StringVar()
+    label_gender = ctk.CTkLabel(window_record, text="Género", font=("Times New Roman", 14))
+    checkbox = ctk.CTkRadioButton(window_record, text="Masculino", variable=gender, value="masculino", font=("Times New Roman", 14))
+    checkbox1 = ctk.CTkRadioButton(window_record, text="Femenino", variable=gender, value="femenino", font=("Times New Roman", 14))
     
-#     label_id.grid(row=0,column=0,padx=10,pady=10)
-#     entry_id.grid(row=0,column=1,padx=10,pady=10)
-#     label_email.grid(row=1,column=0,padx=10,pady=10)
-#     entry_email.grid(row=1,column=1,padx=10,pady=10)
-#     button_send.grid(row=2,column=0,padx=10,pady=10)
-#     button_back.grid(row=2,column=1,padx=10,pady=10)
-#     window_login.mainloop()
+    label_name = ctk.CTkLabel(window_record, text="Nombre", font=("Times New Roman", 14))
+    entry_name = ctk.CTkEntry(window_record, font=("Times New Roman", 14))
+    
+    label_lastname = ctk.CTkLabel(window_record, text="Apellido", font=("Times New Roman", 14))
+    entry_lastname = ctk.CTkEntry(window_record, font=("Times New Roman", 14))
+    
+    label_id = ctk.CTkLabel(window_record, text="Identificación", font=("Times New Roman", 14))
+    entry_id = ctk.CTkEntry(window_record, font=("Times New Roman", 14))
+    
+    label_telephone = ctk.CTkLabel(window_record, text="Teléfono", font=("Times New Roman", 14))
+    entry_telephone = ctk.CTkEntry(window_record, font=("Times New Roman", 14))
+    
+    label_nationality = ctk.CTkLabel(window_record, text="Nacionalidad", font=("Times New Roman", 14))
+    entry_nationality = ctk.CTkEntry(window_record, font=("Times New Roman", 14))
+    
+    label_email = ctk.CTkLabel(window_record, text="Correo", font=("Times New Roman", 14))
+    entry_email = ctk.CTkEntry(window_record, font=("Times New Roman", 14))
+    
+    label_birthday = ctk.CTkLabel(window_record, text="Fecha de nacimiento", font=("Times New Roman", 14))
+    entry_birthday = ctk.CTkEntry(window_record, font=("Times New Roman", 14))
+    
+    attendance = ctk.StringVar()
+    label_attendance = ctk.CTkLabel(window_record, text="Requiere asistencia", font=("Times New Roman", 14))
+    radiuobutton = ctk.CTkRadioButton(window_record, text="Asistencia", variable=attendance, value="requiere", font=("Times New Roman", 14))
+    radiuobutton1 = ctk.CTkRadioButton(window_record, text="No asistencia", variable=attendance, value="no requiere", font=("Times New Roman", 14))
+    
+    button_send = ctk.CTkButton(window_record, text="Enviar", command=lambda: record_condition(gender.get(), entry_name.get(), entry_lastname.get(), entry_id.get(), entry_telephone.get(), entry_nationality.get(), entry_email.get(), entry_birthday.get(), attendance.get()), font=("Times New Roman", 14))
+    button_back = ctk.CTkButton(window_record, text="Volver", command=lambda: return_menu(window_record), width=9, height=2, font=("Times New Roman", 14))
+    
+    window_record.bind("<Return>", lambda e: record_condition(gender.get(), entry_name.get(), entry_lastname.get(), entry_id.get(), entry_telephone.get(), entry_nationality.get(), entry_email.get(), entry_birthday.get(), attendance.get()))
+    window_record.bind("<Escape>", lambda e: return_menu(window_record))
 
-# # Funcion del menu
-# def menu():
-#     window_menu=ctk.CTk()
-#     window_menu.title("menu")
-#     window_menu.config(bg="white")
-#     window_menu.geometry()
-#     label=ctk.CTkLabel(window_menu,text="Menu")
-#     #____________________________________________________________________________________
-#     #creacion de botones
-#     button_record=ctk.CTkButton(window_menu,text="registrarse",command=lambda:record(window_menu),width=9,height=2)
-#     button_login=ctk.CTkButton(window_menu,text="iniciar sesion",command=lambda:login(window_menu),width=9,height=2)
-#     button_out=ctk.CTkButton(window_menu,text="salir",command=lambda:window_menu.destroy(),width=9,height=2)
-#     #___________________________________________________________________________________
-#     #darle posicion a los botones y elementos de la pantalla de menu
-#     #eventos de teclas
-#     window_menu.bind("<Control_L>",lambda e:record(window_menu)) 
-#     window_menu.bind("<Return>",lambda e:login(window_menu))
-#     window_menu.bind("<Escape>",lambda e:window_menu.destroy())
-#     #____________________________________________________________________________
-#     label.grid(row=0,column=0)
-#     button_record.grid(row=2,column=0,padx=30,pady=15)
-#     button_login.grid(row=3,column=0,padx=30,pady=15)
-#     button_out.grid(row=4,column=0,padx=30,pady=15)
-#     window_menu.mainloop()
+    label_gender.grid(row=0, column=0, padx=10, pady=10)
+    checkbox.grid(row=0, column=1, padx=10, pady=10)
+    checkbox1.grid(row=0, column=2, padx=10, pady=10)
+    label_name.grid(row=1, column=0, padx=10, pady=10)
+    entry_name.grid(row=1, column=1, padx=10, pady=10)
+    label_lastname.grid(row=1, column=2, padx=10, pady=10)
+    entry_lastname.grid(row=1, column=3, padx=10, pady=10)
+    label_id.grid(row=2, column=0, padx=10, pady=10)
+    entry_id.grid(row=2, column=1, padx=10, pady=10)
+    label_telephone.grid(row=2, column=2, padx=10, pady=10)
+    entry_telephone.grid(row=2, column=3, padx=10, pady=10)
+    label_nationality.grid(row=3, column=0, padx=10, pady=10)
+    entry_nationality.grid(row=3, column=1, padx=10, pady=10)
+    label_email.grid(row=3, column=2, padx=10, pady=10)
+    entry_email.grid(row=3, column=3, padx=10, pady=10)
+    button_send.grid(row=7, column=0, padx=10, pady=10)
+    label_birthday.grid(row=4, column=0, padx=10, pady=10)
+    entry_birthday.grid(row=4, column=1, padx=10, pady=10)
+    label_attendance.grid(row=5, column=0, padx=10, pady=10)
+    radiuobutton.grid(row=6, column=0, padx=10, pady=10)
+    radiuobutton1.grid(row=6, column=1, padx=10, pady=10)
+    button_back.grid(row=7, column=1, padx=10, pady=10)
+    
+    window_record.mainloop()
+
+# Función para verificar e iniciar sesión
+def login_condition(id, email):
+    if c.condition_login(id, email):
+        s.login_base(id, email)
+
+# Función para iniciar sesión
+def login(window):
+    window.destroy()
+    window_login = ctk.CTk()
+    window_login.title("Iniciar sesión")
+    window_login.geometry("400x400")
+    ctk.set_appearance_mode("dark")
+    ctk.set_default_color_theme("blue")
+
+    label_id = ctk.CTkLabel(window_login, text="Identificación")
+    entry_id = ctk.CTkEntry(window_login)
+    label_email = ctk.CTkLabel(window_login, text="Correo")
+    entry_email = ctk.CTkEntry(window_login)
+    button_back = ctk.CTkButton(window_login, text="Volver", command=lambda: return_menu(window_login), width=9, height=2)
+    button_send = ctk.CTkButton(window_login, text="Enviar", command=lambda: login_condition(entry_id.get(), entry_email.get()), width=9, height=2)
+    
+    window_login.bind("<Return>", lambda e: login_condition(entry_id.get(), entry_email.get()))
+    window_login.bind("<Escape>", lambda e: return_menu(window_login))
+
+    label_id.grid(row=0, column=0, padx=10, pady=10)
+    entry_id.grid(row=0, column=1, padx=10, pady=10)
+    label_email.grid(row=1, column=0, padx=10, pady=10)
+    entry_email.grid(row=1, column=1, padx=10, pady=10)
+    button_send.grid(row=2, column=0, padx=10, pady=10)
+    button_back.grid(row=2, column=1, padx=10, pady=10)
+    
+    window_login.mainloop()
+
+# Función del menú
+def menu():
+    window_menu = ctk.CTk()
+    window_menu.title("Menú")
+    window_menu.geometry("400x400")
+    ctk.set_appearance_mode("dark")
+    ctk.set_default_color_theme("blue")
+
+    label = ctk.CTkLabel(window_menu, text="Menú")
+
+    button_record = ctk.CTkButton(window_menu, text="Registrarse", command=lambda: record(window_menu), width=9, height=2)
+    button_login = ctk.CTkButton(window_menu, text="Iniciar sesión", command=lambda: login(window_menu), width=9, height=2)
+    button_out = ctk.CTkButton(window_menu, text="Salir", command=lambda: window_menu.destroy(), width=9, height=2)
+
+    window_menu.bind("<Control_L>", lambda e: record(window_menu))
+    window_menu.bind("<Return>", lambda e: login(window_menu))
+    window_menu.bind("<Escape>", lambda e: window_menu.destroy())
+
+    label.grid(row=0, column=0)
+    button_record.grid(row=2, column=0, padx=30, pady=15)
+    button_login.grid(row=3, column=0, padx=30, pady=15)
+    button_out.grid(row=4, column=0, padx=30, pady=15)
+    
+    window_menu.mainloop()
+
+def return_menu(window):
+    window.destroy()
+    menu()
+
+
 
 
 
 if __name__=='__main__':
-    fly()
-
-    
-    # menu()
+    menu()
