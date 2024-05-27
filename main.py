@@ -61,9 +61,62 @@ def choose_sit(indice,window=None,indices=None):
     label_aluminio=ctk.CTkLabel(frame_aluminio,text="asientos aluminio")
     frame_aluminio.grid(row=3,column=1)
     label_aluminio.grid(row=0,column=0)
-    
+    button_back=ctk.CTkButton(window_buy,text="volver",command=lambda: info_buy(indice,window_buy,indices))
+    button_back.grid(row=4,column=0) 
     window_buy.mainloop()
-            
+
+
+#compra de paquetes
+def buy(indice,window=None,indices=None):
+    if window==None:
+        pass
+    else:
+        window.destroy()#se destruye la ventana
+    df=pd.read_csv("dato_vuelo.csv")
+    window_buy=ctk.CTk()
+    label=ctk.CTkLabel(window_buy,text="compra de paquetes")
+    label.grid(row=0,column=0)
+    label1=ctk.CTkLabel(window_buy,text="selecciona alguno de los paquetes")
+    label1.grid(row=1,column=0)
+    frame_1 = ctk.CTkFrame(window_buy)  # frame para el paquete aluminio
+    frame_1.grid(row=1, column=0)  # posicion del frame
+    label_1 = ctk.CTkLabel(frame_1, text="""Aluminio:
+    1 artículo personal (bolso) (Debe caber debajo del asiento)
+    1 equipaje de mano (10 kg) (Debe caber en el compartimiento superior)
+    Asiento Estándar (Sujeto a disponibilidad)
+    Cambios de vuelo (No es permitido)
+    Reembolso (No es permitido)""")
+    label_1.grid(row=0, column=0)# posicion del texto
+    button_aluminio=ctk.CTkButton(frame_1,text="comprar",width=20,height=2)
+    button_aluminio.grid(row=1,column=0)
+
+    # Diamante:
+    frame_2 = ctk.CTkFrame(window_buy)
+    frame_2.grid(row=1, column=1)
+    label_2 = ctk.CTkLabel(frame_2, text="""Diamante:
+    1 artículo personal (bolso) (Debe caber debajo del asiento)
+    1 equipaje de mano (10 kg) (Debe caber en el compartimiento superior)
+    Asiento Estándar (Sujeto a disponibilidad)
+    Cambios de vuelo (Permitido con costo adicional)
+    Reembolso (Permitido con costo adicional)""")
+    label_2.grid(row=0, column=0)
+    button_diamond=ctk.CTkButton(frame_2,text="comprar",width=20,height=2)
+    button_diamond.grid(row=1,column=0)
+
+    # Premium:
+    frame_3 = ctk.CTkFrame(window_buy)
+    frame_3.grid(row=1, column=2)
+    label_3 = ctk.CTkLabel(frame_3, text="""Premium:
+    1 artículo personal (bolso) (Debe caber debajo del asiento)
+    1 equipaje de mano (10 kg) (Debe caber en el compartimiento superior)
+    Asiento Preferencial (Incluido)
+    Cambios de vuelo (Permitido sin costo adicional)
+    Reembolso (Permitido)""")
+    label_3.grid(row=0, column=0)
+    button_premium=ctk.CTkButton(frame_3,text="comprar",width=20,height=2)
+    window_buy.mainloop()
+
+
 
 
 
@@ -88,7 +141,7 @@ def info_buy(indice,window=None,indices=None):
         mensaje=f"""vuelo:{df['Vuelo'].values[i]} 
         hora salida= {df['HoraSalida'].values[i]}
         hora llegada= {df['HoraLlegada'].values[i]}"""
-        button_hours=ctk.CTkButton(frame_hours_f,text=f"{mensaje}",command=lambda: choose_sit(indice,window_info,indices),width=20,height=2)
+        button_hours=ctk.CTkButton(frame_hours_f,text=f"{mensaje}",command=lambda: buy(indice,window_info,indices),width=20,height=2)
         button_hours.grid(row=1,column=i,padx=10,pady=10)
         button.append(button_hours)
     window_info.mainloop()
