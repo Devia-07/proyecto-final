@@ -17,6 +17,7 @@ import customtkinter as ctk
 
 
 
+
 def info_buy(indice,window=None,indices=None):
     if window==None:
         pass
@@ -43,7 +44,7 @@ def info_buy(indice,window=None,indices=None):
 
 
 
-def conditions_searchs(destination,origin,passenger,window):
+def conditions_searchs(destination,origin,passenger,window,fecha):
     indices=[]
     if c.conditions_search(destination,origin,passenger):
         mb.showinfo("info","datos correctos")
@@ -92,7 +93,7 @@ def fly(window_search=None):
     frame_button_search = ctk.CTkFrame(window_fly)
     frame_button_search.configure(width = 20 , height = 25  ,fg_color = "grey26")
     
-    button_search = ctk.CTkButton(frame_button_search, text="BUSCAR", command=lambda: conditions_searchs(cities_destination.get(), cities_origin.get(), entry_passenger.get(),window_fly), width=30, height=10)
+    button_search = ctk.CTkButton(frame_button_search, text="BUSCAR", command=lambda: conditions_searchs(cities_destination.get(), cities_origin.get(), entry_passenger.get(),window_fly,list_going.get()), width=30, height=10)
     # dar posicion a los elementos de la pantalla de menu fly
     
     
@@ -131,12 +132,15 @@ def search_fly(indices, window_fly):
     frame_buttons = ctk.CTkFrame(window_search)
     frame_buttons.configure(fg_color = "grey26")
     frame_buttons.grid(row=1, column=0, padx=10, pady=10)
-    # creacion de botones
-    botones = []
-    for i in range(len(indices) - 1):
-        button_see = ctk.CTkButton(frame_buttons, text=f"{df['Fecha'].values[indices[i]]} {df['ValorMedio'].values[indices[i]]}", command=lambda: info_buy(indices[i],window_search,indices), width=30, height=10)
-        button_see.grid(row=0, column=i, padx=10, pady=10)
-        botones.append(button_see)
+    # creacion de  botones = []
+    for i in indices:
+        mensaje= f"""vuelo:{df['Vuelo'].values[i]}
+        fecha:{df['Fecha'].values[i]}
+        valor:{df["ValorMin"].values[i]}"""
+        button = ctk.CTkButton(frame_buttons, text=f"{mensaje}", command=lambda i=i: info_buy(i, window_search, indices), width=20, height=2)
+        button.grid(row=1, column=i, padx=10, pady=10)
+
+
     
     window_search.mainloop()
 
