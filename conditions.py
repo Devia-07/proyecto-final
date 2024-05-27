@@ -92,11 +92,15 @@ def lista_vuelos():#funcion que retorna la lista de vuelos
     return origen, destino, fecha
 
         
-def conditions_search(origin,destination,passenger):
+def conditions_search(origin,destination,passenger,going):
     if origin=="" or destination=="" or passenger=="":
         mb.showerror("error","rellene todas las casillas") 
     elif not int(passenger.isdigit()):
         mb.showerror("error","el numero de pasajeros debe ser un numero")
+    elif origin==destination or destination==origin:
+        mb.showerror("error","la ciudad de origen y destino no pueden ser iguales")
+    elif going  == "":
+        mb.showerror("error","rellene la casilla de ida")
     else:
         return True
 

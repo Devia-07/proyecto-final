@@ -153,9 +153,9 @@ def info_buy(indice,window=None,indices=None):
 
 
 
-def conditions_searchs(destination,origin,passenger,window,fecha):
+def conditions_searchs(destination,origin,passenger,window,fecha,going):
     indices=[]
-    if c.conditions_search(destination,origin,passenger):
+    if c.conditions_search(destination,origin,passenger,going):
         mb.showinfo("info","datos correctos")
         indices=c.search(destination,origin)
         search_fly(indices,window)
@@ -174,11 +174,12 @@ def fly(window_search=None):
     origen, destino, fecha = c.lista_vuelos()
     window_fly = ctk.CTk()
     window_fly.title("Fly_Heaven")
-    window_fly.geometry("500x 500")
+    window_fly.geometry("1250x750")
     window_fly.resizable(0, 0)  # no se puede cambiar el tamaño de la ventana
     window_fly.iconbitmap("fly_heaven.ico")
     label = ctk.CTkLabel(window_fly, text="Menu")
     label.grid(row=0, column=0)
+
     # crear una lista de dias de junio
     dates_june = [f"2024-06-{day:02d}" for day in range(1, 31)]
     going = ctk.StringVar()
@@ -187,12 +188,13 @@ def fly(window_search=None):
     
     frame_busqueda = ctk.CTkFrame(window_fly)
     frame_busqueda.configure(fg_color = "grey26")
+    frame_busqueda.place(relx = 0.5, rely = 0.1, anchor = "center")
     
     # creacion de elementos de la pantalla de menu fly dentro del frame: frame_busqueda
     
     label_passenger = ctk.CTkLabel(frame_busqueda, text="numero de pasajeros")
     entry_passenger = ctk.CTkEntry(frame_busqueda)
-    only_going = ctk.CTkRadioButton(frame_busqueda, text="solo ida", variable=going, value = 2)
+    only_going = ctk.CTkRadioButton(frame_busqueda, text="solo ida", variable=going, value = 2, height=5, width=10)
     cities_origin = ctk.CTkComboBox(frame_busqueda, values=list(origen), state="readonly")  # steate readonly para que no se pueda escribir
     cities_origin.set("Ciudad de origen")  # coloca un texto por defecto
     cities_destination = ctk.CTkComboBox(frame_busqueda, values=list(destino), state="readonly")  # steate readonly para que no se pueda escribir
@@ -202,14 +204,13 @@ def fly(window_search=None):
     
     # creacion de frame para el boton de busqueda
     frame_button_search = ctk.CTkFrame(window_fly)
-    frame_button_search.configure(width = 20 , height = 25  ,fg_color = "grey26")
+    frame_button_search.configure(width = 100, height = 50  ,fg_color = "grey26")
+    frame_button_search.place(relx = 0.5, rely = 0.5, anchor = "s")
     
-    button_search = ctk.CTkButton(frame_button_search, text="BUSCAR", command=lambda: conditions_searchs(cities_destination.get(), cities_origin.get(), entry_passenger.get(),window_fly,list_going.get()), width=30, height=10)
+    button_search = ctk.CTkButton(frame_button_search, text="BUSCAR", command=lambda: conditions_searchs(cities_destination.get(), cities_origin.get(), entry_passenger.get(),window_fly,list_going.get(), going.get()), width=90, height=40)
     # dar posicion a los elementos de la pantalla de menu fly
     
     
-    frame_busqueda.grid(row=8, column=0)
-    frame_button_search.grid(row=20, column=0, sticky="nsew", padx=150, pady=50)
     cities_origin.grid(row=8, column=0)
     cities_destination.grid(row=8, column=1)
     list_going.grid(row=8, column=2, padx=10, pady=10)
@@ -219,7 +220,7 @@ def fly(window_search=None):
     entry_passenger.grid(row=8, column=6, padx=10, pady=10)
     
     window_fly.mainloop()
-    
+
     return window_fly
     
     
@@ -229,8 +230,9 @@ def search_fly(indices, window_fly):
     window_fly.destroy()
     df = pd.read_csv("dato_vuelo.csv")
     window_search = ctk.CTk()
-    window_search.geometry("500x500")
-    window_search.resizable(1, 1)
+    window_search.attributes("-fullscreen", True) # pantalla completa
+    window_search.state("zoomed")
+    window_search.resizable(0, 0)
     window_search.title("busqueda de vuelos")
     
     #crear frame para el label
