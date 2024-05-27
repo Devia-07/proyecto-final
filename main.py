@@ -136,7 +136,7 @@ def search_fly(indices, window_fly):
     frame_buttons = ctk.CTkFrame(window_search)
     frame_buttons.configure(fg_color = "grey26")
     frame_buttons.grid(row=1, column=0, padx=10, pady=10)
-<<<<<<< HEAD
+
     # creacion de  botones = []
     for i in indices:
         mensaje= f"""vuelo:{df['Vuelo'].values[i]}
@@ -144,17 +144,6 @@ def search_fly(indices, window_fly):
         valor:{df["ValorMin"].values[i]}"""
         button = ctk.CTkButton(frame_buttons, text=f"{mensaje}", command=lambda i=i: info_buy(i, window_search, indices), width=20, height=2)
         button.grid(row=1, column=i, padx=10, pady=10)
-
-
-=======
-    # creacion de botones
-    botones = []
-    for i in range(len(indices) - 1):
-        button_see = ctk.CTkButton(frame_buttons, text=f"{df['Fecha'].values[indices[i]]} {df['ValorMedio'].values[indices[i]]}")
-        button_see.grid(row=0, column=i, padx=10, pady=10)
-        botones.append(button_see)
->>>>>>> 0bbfd066fb7df7bde272658a2a56c13ea4a1391f
-    
     window_search.mainloop()
 
 
