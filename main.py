@@ -10,7 +10,6 @@ import datetime
 from tkcalendar import Calendar
 import customtkinter as ctk
 
-
 # def return_menu(window):
 #     window.destroy()
 #     menu()
@@ -21,12 +20,12 @@ import customtkinter as ctk
 
 
 
-def conditions_searchs(destination,origin,passenger):
+def conditions_searchs(destination,origin,passenger,window):
     indices=[]
     if c.conditions_search(destination,origin,passenger):
         mb.showinfo("info","datos correctos")
         indices=c.search(destination,origin)
-        search_fly(indices)
+        search_fly(indices,window)
     else:
         mb.showerror("error", "datos incorrectos")
 
