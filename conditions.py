@@ -112,3 +112,8 @@ def search(origin,destination):
         mb.showerror("error","no hay vuelos disponibles")
     else:
         return indices
+
+def select_fly():
+    indices = []
+    df=pd.read_csv("dato_vuelo.csv",sep=",")
+    
