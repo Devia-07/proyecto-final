@@ -17,54 +17,55 @@ import customtkinter as ctk
 
 
 
-#usuario escoge asiento solo si es premium
-def choose_sit(indice,window=None,indices=None):
+def buy(indice,window=None,indices=None):
     if window==None:
         pass
     else:
-        window.destroy()
+        window.destroy()#se destruye la ventana
     df=pd.read_csv("dato_vuelo.csv")
     window_buy=ctk.CTk()
-    label=ctk.CTkLabel(window_buy,text="eleccion de asiento")
+    label=ctk.CTkLabel(window_buy,text="compra de paquetes")
     label.grid(row=0,column=0)
-    frame_label=ctk.CTkFrame(window_buy)
-    label_sit=ctk.CTkLabel(frame_label,text="A    B      C      D      E      F")
-    label_sit.grid(row=0,column=0)
-    frame_label.grid(row=1,column=0)
-    frame_sits=ctk.CTkFrame(window_buy)
-    frame_sits.grid(row=2,column=0)
-    buttons=[]
-    matriz=[]
-    for i in range(12):
-        buttons=[]
-        for j in range(6):
-            button_sit=ctk.CTkButton(frame_sits,text=f"{chr(65+j)}{i+1}",width=5,height=2)
-            button_sit.grid(row=i,column=j,padx=10,pady=10)
-            texto=c.getnums(button_sit.cget("text"))
-            if texto >=9:
-                button_sit.configure(fg_color="green")
-            elif texto >=5:
-                button_sit.configure(fg_color="red")
-            else:
-                button_sit.configure(fg_color="blue")
-            buttons.append(button_sit)
-        matriz.append(buttons)
-    frame_premium=ctk.CTkFrame(window_buy)
-    label_premium=ctk.CTkLabel(frame_premium,text="asientos premium")
-    frame_premium.grid(row=1,column=1)
-    label_premium.grid(row=0,column=0)
-    frame_diamond=ctk.CTkFrame(window_buy)
-    label_diamond=ctk.CTkLabel(frame_diamond,text="asientos diamond")
-    frame_diamond.grid(row=2,column=1)
-    label_diamond.grid(row=0,column=0)
-    frame_aluminio=ctk.CTkFrame(window_buy)
-    label_aluminio=ctk.CTkLabel(frame_aluminio,text="asientos aluminio")
-    frame_aluminio.grid(row=3,column=1)
-    label_aluminio.grid(row=0,column=0)
-    
-    window_buy.mainloop()
-            
+    label1=ctk.CTkLabel(window_buy,text="selecciona alguno de los paquetes")
+    label1.grid(row=1,column=0)
+    frame_1 = ctk.CTkFrame(window_buy)  # frame para el paquete aluminio
+    frame_1.grid(row=1, column=0)  # posicion del frame
+    label_1 = ctk.CTkLabel(frame_1, text="""Aluminio:
+    1 artículo personal (bolso) (Debe caber debajo del asiento)
+    1 equipaje de mano (10 kg) (Debe caber en el compartimiento superior)
+    Asiento Estándar (Sujeto a disponibilidad)
+    Cambios de vuelo (No es permitido)
+    Reembolso (No es permitido)""")
+    label_1.grid(row=0, column=0)# posicion del texto
+    button_aluminio=ctk.CTkButton(frame_1,text="comprar",width=20,height=2)
+    button_aluminio.grid(row=1,column=0)
 
+    # Diamante:
+    frame_2 = ctk.CTkFrame(window_buy)
+    frame_2.grid(row=1, column=1)
+    label_2 = ctk.CTkLabel(frame_2, text="""Diamante:
+    1 artículo personal (bolso) (Debe caber debajo del asiento)
+    1 equipaje de mano (10 kg) (Debe caber en el compartimiento superior)
+    Asiento Estándar (Sujeto a disponibilidad)
+    Cambios de vuelo (Permitido con costo adicional)
+    Reembolso (Permitido con costo adicional)""")
+    label_2.grid(row=0, column=0)
+    button_diamond=ctk.CTkButton(frame_2,text="comprar",width=20,height=2)
+    button_diamond.grid(row=1,column=0)
+
+    # Premium:
+    frame_3 = ctk.CTkFrame(window_buy)
+    frame_3.grid(row=1, column=2)
+    label_3 = ctk.CTkLabel(frame_3, text="""Premium:
+    1 artículo personal (bolso) (Debe caber debajo del asiento)
+    1 equipaje de mano (10 kg) (Debe caber en el compartimiento superior)
+    Asiento Preferencial (Incluido)
+    Cambios de vuelo (Permitido sin costo adicional)
+    Reembolso (Permitido)""")
+    label_3.grid(row=0, column=0)
+    button_premium=ctk.CTkButton(frame_3,text="comprar",width=20,height=2)
+    button_premium.grid(row=1,column=0)
+    window_buy.mainloop()
 
 
 #informacion de vuelos disponibles en tales horas
@@ -88,7 +89,7 @@ def info_buy(indice,window=None,indices=None):
         mensaje=f"""vuelo:{df['Vuelo'].values[i]} 
         hora salida= {df['HoraSalida'].values[i]}
         hora llegada= {df['HoraLlegada'].values[i]}"""
-        button_hours=ctk.CTkButton(frame_hours_f,text=f"{mensaje}",command=lambda: choose_sit(indice,window_info,indices),width=20,height=2)
+        button_hours=ctk.CTkButton(frame_hours_f,text=f"{mensaje}",command=lambda: buy(i,window_info,indices),width=20,height=2)
         button_hours.grid(row=1,column=i,padx=10,pady=10)
         button.append(button_hours)
     window_info.mainloop()
@@ -216,54 +217,8 @@ def search_fly(indices, window_fly):
     
     window_search.mainloop()
 
-#informacion de vuelos disponibles en tales horas
-def info_buy(indice,window=None,indices=None):
-    if window==None:
-        pass
-    else:
-        window.destroy()
-    hours=c.search_hours(indice)
-    
-    df=pd.read_csv("dato_vuelo.csv")
-    
-    # creacion de ventana para la informacion de los vuelos
-    
-    window_info=ctk.CTk()
-    window_info.geometry("1250x750")
-    window_info.resizable(0,0)
-    window_info.iconbitmap("fly_heaven.ico")
-    window_info.title("informacion de vuelos")
-    
-    
-    # crear frame 
-    
-    frame_hours_f=ctk.CTkFrame(window_info) #frame para los botones
-    frame_hours_f.configure(fg_color = "grey26") #color del frame
-    frame_hours_f.place(relx = 0.5, rely = 0.1, anchor = "n") #posicion del frame
-    
-    # label para los vuelos disponibles
-    
-    label_hours=ctk.CTkLabel(frame_hours_f,text="vuelos disponibles") 
-    label_hours.grid(row=0,column=0) #posicion del label
-    
-    #creacion de botones
-    button=[] #lista de botones
-    for i in hours: #recorre las horas
-        mensaje=f"""vuelo:{df['Vuelo'].values[i]} 
-        hora salida= {df['HoraSalida'].values[i]}
-        hora llegada= {df['HoraLlegada'].values[i]}"""
-        button_hours=ctk.CTkButton(frame_hours_f,text=f"{mensaje}",command=lambda: choose_sit(indice,window_info,indices),width=20,height=2)
-        button_hours.grid(row=1,column=i,padx=10,pady=10)
-        button.append(button_hours)
-        
-    #creacion de frame para el boton de regreso
-    frame_button_back=ctk.CTkFrame(window_info)
-    frame_button_back.configure(fg_color = "grey26")
-    frame_button_back.place(relx = 0.5, rely = 0.7, anchor = "s")
-    button_back=ctk.CTkButton(frame_button_back,text="VOLVER",command=lambda: search_fly(indices,window_info),width=120,height=60)
-    button_back.grid(row=2,column=0,padx=10,pady=10)
-    
-    window_info.mainloop()
+
+
 
 #usuario escoge asiento solo si es premium
 def choose_sit(indice,window=None,indices=None):
@@ -335,6 +290,8 @@ def choose_sit(indice,window=None,indices=None):
 
 
 
+
+#compra de paquetes
 
 
 
