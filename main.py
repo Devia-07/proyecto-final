@@ -144,6 +144,13 @@ def search_fly(indices, window_fly):
         valor:{df["ValorMin"].values[i]}"""
         button = ctk.CTkButton(frame_buttons, text=f"{mensaje}", command=lambda i=i: info_buy(i, window_search, indices), width=20, height=2)
         button.grid(row=1, column=i, padx=10, pady=10)
+    #cracion frame para el boton de regreso
+    frame_button_back = ctk.CTkFrame(window_search)
+    frame_button_back.configure(fg_color = "grey26")
+    frame_button_back.grid(row=2, column=0, padx=10, pady=10)
+    button_back = ctk.CTkButton(frame_button_back, text="VOLVER", command=lambda: fly(window_search), width=120, height= 60)
+    button_back.grid(row=2, column=0, padx=10, pady=10)
+    
     window_search.mainloop()
 
 
