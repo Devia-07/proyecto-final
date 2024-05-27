@@ -17,6 +17,29 @@ import customtkinter as ctk
 
 
 
+def info_buy(indice,window=None,indices=None):
+    if window==None:
+        pass
+    else:
+        window.destroy()
+    print(indice)
+    df=pd.read_csv("dato_vuelo.csv")
+    vuelo=df["Vuelo"].values[indice]
+    print(vuelo)
+    window_info=ctk.CTk()
+    window_info.title("informacion de compra")
+    window_info.geometry("500x500")
+    window_info.resizable(0,0)
+    label=ctk.CTkLabel(window_info,text="informacion de compra")
+    label.grid(row=0,column=0)
+    button_back=ctk.CTkButton(window_info,text="volver",command=lambda:search_fly(indices,window_info),width=9,height=2)
+    button_back.grid(row=1,column=0)
+    window_info.mainloop()
+
+
+
+
+
 
 
 
@@ -65,7 +88,6 @@ def fly():
     frame_button_search.configure(width = 20 , height = 25  ,fg_color = "grey26")
     
     button_search = ctk.CTkButton(frame_button_search, text="BUSCAR", command=lambda: conditions_searchs(cities_destination.get(), cities_origin.get(), entry_passenger.get(),window_fly), width=30, height=10)
-
     # dar posicion a los elementos de la pantalla de menu fly
     
     
@@ -104,10 +126,9 @@ def search_fly(indices, window_fly):
     # creacion de botones
     botones = []
     for i in range(len(indices) - 1):
-        button_see = ctk.CTkButton(frame_buttons, text=f"{df['Fecha'].values[indices[i]]} {df['ValorMedio'].values[indices[i]]}")
+        button_see = ctk.CTkButton(frame_buttons, text=f"{df['Fecha'].values[indices[i]]} {df['ValorMedio'].values[indices[i]]}", command=lambda: info_buy(indices[i],window_search,indices), width=30, height=10)
         button_see.grid(row=0, column=i, padx=10, pady=10)
         botones.append(button_see)
-    
     window_search.mainloop()
 
 #______________________________________________________
