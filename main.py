@@ -23,18 +23,24 @@ def info_buy(indice,window=None,indices=None):
         pass
     else:
         window.destroy()
+    hours=c.search_hours(indice)
+    
     print(indice)
     df=pd.read_csv("dato_vuelo.csv")
-    vuelo=df["Vuelo"].values[indice]
-    print(vuelo)
     window_info=ctk.CTk()
-    window_info.title("informacion de compra")
-    window_info.geometry("500x500")
-    window_info.resizable(0,0)
-    label=ctk.CTkLabel(window_info,text="informacion de compra")
-    label.grid(row=0,column=0)
-    button_back=ctk.CTkButton(window_info,text="volver",command=lambda:search_fly(indices,window_info),width=9,height=2)
-    button_back.grid(row=1,column=0)
+    frame_hours_f=ctk.CTkFrame(window_info)
+    frame_hours_f.configure(fg_color = "grey26")
+    frame_hours_f.grid(row=0,column=0)
+    label_hours=ctk.CTkLabel(frame_hours_f,text="vuelos disponibles")
+    label_hours.grid(row=0,column=0)
+    button=[]
+    for i in hours:
+        mensaje=f"""vuelo:{df['Vuelo'].values[i]}
+        hora salida= {df['HoraSalida'].values[i]}
+        hora llegada= {df['HoraLlegada'].values[i]}"""
+        button_hours=ctk.CTkButton(frame_hours_f,text=f"{mensaje}",width=20,height=2)
+        button_hours.grid(row=1,column=i,padx=10,pady=10)
+        button.append(button_hours)
     window_info.mainloop()
 
 
@@ -70,7 +76,6 @@ def fly(window_search=None):
     window_fly.iconbitmap("fly_heaven.ico")
     label = ctk.CTkLabel(window_fly, text="Menu")
     label.grid(row=0, column=0)
-
     # crear una lista de dias de junio
     dates_june = [f"2024-06-{day:02d}" for day in range(1, 31)]
     going = ctk.StringVar()

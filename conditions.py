@@ -113,6 +113,10 @@ def search(origin,destination):
     else:
         return indices
 
-# def select_fly():
-#     indices = []
-#     df=pd.read_csv("dato_vuelo.csv",sep=",")
+def search_hours(indice):
+    df=pd.read_csv("dato_vuelo.csv",sep=",")
+    horas=[]
+    for i in range(len(df)):
+        if  df['Fecha'].values[i]==df['Fecha'].values[indice] and df['CiudadOrigen'].values[i]==df['CiudadOrigen'].values[indice] and df['CiudadDestino'].values[i]==df['CiudadDestino'].values[indice]:
+            horas.append(i)
+    return horas
