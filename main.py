@@ -31,11 +31,14 @@ def conditions_searchs(destination,origin,passenger,window):
 
 
 def fly(window_search=None):
+    
+    # cerrar la ventana de busqueda de vuelos
     if window_search == None:
         pass
     else:
         window_search.destroy()
-        
+    
+    # crear la ventana de menu fly
     origen, destino, fecha = c.lista_vuelos()
     window_fly = ctk.CTk()
     window_fly.title("menu fly")
@@ -111,7 +114,8 @@ def search_fly(indices, window_fly):
     frame_buttons.grid(row=1, column=0, padx=10, pady=10)
     # creacion de botones
     botones = []
-    for i in range(len(indices) - 1):
+    for i in range(len(indices)):
+        
         button_see = ctk.CTkButton(frame_buttons, text=f"{df['Fecha'].values[indices[i]]} {df['ValorMedio'].values[indices[i]]}")
         button_see.grid(row=0, column=i, padx=10, pady=10)
         botones.append(button_see)
