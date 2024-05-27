@@ -21,12 +21,12 @@ import customtkinter as ctk
 
 
 
-def conditions_searchs(destination, origin, passenger,window_fly):
-    indices = []
-    if c.conditions_search(destination, origin, passenger) == True:
-        mb.showinfo("info", "datos correctos")
-        indices = c.search(destination, origin)
-        search_fly(indices,window_fly)
+def conditions_searchs(destination,origin,passenger):
+    indices=[]
+    if c.conditions_search(destination,origin,passenger):
+        mb.showinfo("info","datos correctos")
+        indices=c.search(destination,origin)
+        search_fly(indices)
     else:
         mb.showerror("error", "datos incorrectos")
 
@@ -124,7 +124,7 @@ def search_fly(indices, window_fly):
 
 #verifica los datos del registro
 # def record_condition(gender,name,lastname,id,telephone,nationality,email,birthday,attendance):
-#     if c.conditions_record(gender,name,lastname,id,telephone,nationality,email,birthday,attendance)==True:
+#     if c.conditions_record(gender,name,lastname,id,telephone,nationality,email,birthday,attendance):
 #         s.record_base(gender,name,lastname,id,telephone,nationality,email,birthday,attendance)
 # #_______________________________________________________________________________________________________________________
 # # funcion para el registro
@@ -132,35 +132,35 @@ def search_fly(indices, window_fly):
 # def record(window):
 #     global checkbox,checkbox1,radiuobutton,radiuobutton1
 #     window.destroy()
-#     window_record=ctk.CTk()
+#     window_record=tk.Tk()
 #     window_record.title("registro")
 #     window_record.config(bg="black")
 #     window_record.geometry()
-#     gender=ctk.StringVar()  # variable para almacenar el genero
-#     label_gender=ctk.CTkLabel(window_record,text="genero")
-#     checkbox=ctk.CTkRadioButton(window_record,text="masculino")
-#     checkbox1=ctk.CTkRadioButton(window_record,text="femenino")
-#     label_name=ctk.CTkLabel(window_record,text="nombre")
-#     entry_name=ctk.CTkEntry(window_record)
-#     label_lastname=ctk.CTkLabel(window_record,text="apellido")
-#     entry_lastname=ctk.CTkEntry(window_record)
-#     label_id=ctk.CTkLabel(window_record,text="identificacion")
-#     entry_id=ctk.CTkEntry(window_record)
-#     label_telephone=ctk.CTkLabel(window_record,text="telefono",)
-#     entry_telephone=ctk.CTkEntry(window_record)
-#     label_nationality=ctk.CTkLabel(window_record,text="nacionalidad")
-#     entry_nationality=ctk.CTkEntry(window_record)
-#     label_email=ctk.CTkLabel(window_record,text="correo")
-#     entry_email=ctk.CTkEntry(window_record)
-#     label_birthday=ctk.CTkLabel(window_record,text="fecha de nacimiento")
-#     entry_birthday=ctk.CTkEntry(window_record,)#fuente de letra
-#     attendance=ctk.StringVar()
-#     label_attendance=ctk.CTkLabel(window_record,text="requiere asistencia")
-#     radiuobutton=ctk.CTkRadioButton(window_record,text="asistencia")
-#     radiuobutton1=ctk.CTkRadioButton(window_record,text="no asistencia")
+#     gender=tk.StringVar()  # variable para almacenar el genero
+#     label_gender=tk.Label(window_record,text="genero", bg="red",fg="white",font=("Times New Roman",14))
+#     checkbox=tk.Radiobutton(window_record,text="masculino",bg="red",fg="white",variable=gender,value="masculino",font=("Times New Roman",14))
+#     checkbox1=tk.Radiobutton(window_record,text="femenino",bg="red",fg="white",variable=gender,value="femenino", font =("Times New Roman",14))
+#     label_name=tk.Label(window_record,text="nombre",bg="red",fg="white", font= ("Times New Roman",14))
+#     entry_name=tk.Entry(window_record,font=("Times New Roman",14))
+#     label_lastname=tk.Label(window_record,text="apellido",bg="red",fg="white",font=("Times New Roman",14))
+#     entry_lastname=tk.Entry(window_record,font=("Times New Roman",14))
+#     label_id=tk.Label(window_record,text="identificacion",bg="red",fg="white",font=("Times New Roman",14))
+#     entry_id=tk.Entry(window_record,font=("Times New Roman",14))
+#     label_telephone=tk.Label(window_record,text="telefono",bg="red",fg="white",font=("Times New Roman",14))
+#     entry_telephone=tk.Entry(window_record,font=("Times New Roman",14))
+#     label_nationality=tk.Label(window_record,text="nacionalidad",bg="red",fg="white",font=("Times New Roman",14))
+#     entry_nationality=tk.Entry(window_record,font=("Times New Roman",14))
+#     label_email=tk.Label(window_record,text="correo",bg="red",fg="white",font=("Times New Roman",14))
+#     entry_email=tk.Entry(window_record,font=("Times New Roman",14))
+#     label_birthday=tk.Label(window_record,text="fecha de nacimiento",bg="red",fg="white",font=("Times New Roman",14))
+#     entry_birthday=tk.Entry(window_record,font=("Times New Roman",14))#fuente de letra
+#     attendance=tk.StringVar()
+#     label_attendance=tk.Label(window_record,text="requiere asistencia",bg="red",fg="white",font=("Times New Roman",14))
+#     radiuobutton=tk.Radiobutton(window_record,text="asistencia",bg="red",fg="white",variable=attendance,value="requiere",activebackground="green",font=("Times New Roman",14))
+#     radiuobutton1=tk.Radiobutton(window_record,text="no asistencia",bg="red",fg="white",variable=attendance,value="no requiere",font = ("Times New Roman",14))
 #     #boton de enviar
-#     button_send=ctk.CTkButton(window_record,text="enviar",command=lambda:record_condition(gender.get(),entry_name.get(),entry_lastname.get(),entry_id.get(),entry_telephone.get(),entry_nationality.get(),entry_email.get(),entry_birthday.get(),attendance.get()))
-#     button_back = ctk.CTkButton(window_record,text="volver",command=lambda:return_menu(window_record),width=9,height=2)
+#     button_send=tk.Button(window_record,text="enviar",bg="red",fg="white",command=lambda:record_condition(gender.get(),entry_name.get(),entry_lastname.get(),entry_id.get(),entry_telephone.get(),entry_nationality.get(),entry_email.get(),entry_birthday.get(),attendance.get()),activebackground="green",font=("Times New Roman",14))
+#     button_back = tk.Button(window_record,text="volver",bg="red",fg="white",command=lambda:return_menu(window_record),width=9,height=2,activebackground="green",font=("Times New Roman",14))
 #     #eventos para teclas
 #     #____________________________________________________________________________
 #     window_record.bind("<Return>",lambda e:record_condition(gender.get(),entry_name.get(),entry_lastname.get(),entry_id.get(),entry_telephone.get(),entry_nationality.get(),entry_email.get(),entry_birthday.get(),attendance.get()))
@@ -194,10 +194,10 @@ def search_fly(indices, window_fly):
 
 # #_______________________________________________________________________________________________________________________
 # def login_condition(id,email):
-#     if c.condition_login(id,email)==True:
+#     if c.condition_login(id,email):
 #         s.login_base(id,email)
-# #_______________________________________________________________________________________________________________________
-# # funcion  para iniciar sesion
+#_______________________________________________________________________________________________________________________
+# funcion  para iniciar sesion
 
 # def login(window):
 #     window.destroy()
