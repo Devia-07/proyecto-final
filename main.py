@@ -63,9 +63,10 @@ def fly(window_search=None):
         
     origen, destino, fecha = c.lista_vuelos()
     window_fly = ctk.CTk()
-    window_fly.title("menu fly")
+    window_fly.title("Fly_Heaven")
     window_fly.geometry("500x 500")
     window_fly.resizable(0, 0)  # no se puede cambiar el tamaño de la ventana
+    window_fly.iconbitmap("fly_heaven.ico")
     label = ctk.CTkLabel(window_fly, text="Menu")
     label.grid(row=0, column=0)
 
@@ -122,6 +123,7 @@ def search_fly(indices, window_fly):
     window_search.geometry("500x500")
     window_search.resizable(1, 1)
     window_search.title("busqueda de vuelos")
+    
     #crear frame para el label
     frame_label = ctk.CTkFrame(window_search)
     frame_label.configure(fg_color = "grey26")
