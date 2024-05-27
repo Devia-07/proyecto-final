@@ -108,7 +108,7 @@ def search(origin,destination):
     indices=[]
     df=pd.read_csv("dato_vuelo.csv",sep=",")
     for i in range(len(df)):
-        if origin in df["CiudadOrigen"].values[i] and destination in df["CiudadDestino"].values[i]:
+        if destination in df["CiudadDestino"].values[i] and origin in df["CiudadOrigen"].values[i]  :
             indices.append(i)
         else:
             continue
@@ -125,9 +125,9 @@ def search_hours(indice):
             horas.append(i)
     return horas
 
-def getnums(text):
+def getnums(text): #funcion que retorna los numeros de un string
     nums=[]
-    for i in range(len(text)):
-        if text[i].isdigit():
-            nums.append(text[i])
-    return int("".join(nums))
+    for i in range(len(text)): #    se recorre el string
+        if text[i].isdigit():   #si el caracter es un digito
+            nums.append(text[i]) #se agrega a la lista
+    return int("".join(nums)) #se retorna la lista de numeros

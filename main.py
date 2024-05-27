@@ -30,12 +30,13 @@ def buy(indice,window=None,indices=None):
     label1.grid(row=1,column=0)
     frame_1 = ctk.CTkFrame(window_buy)  # frame para el paquete aluminio
     frame_1.grid(row=1, column=0)  # posicion del frame
-    label_1 = ctk.CTkLabel(frame_1, text="""Aluminio:
+    label_1 = ctk.CTkLabel(frame_1, text=f"""Aluminio:
     1 artículo personal (bolso) (Debe caber debajo del asiento)
     1 equipaje de mano (10 kg) (Debe caber en el compartimiento superior)
     Asiento Estándar (Sujeto a disponibilidad)
     Cambios de vuelo (No es permitido)
-    Reembolso (No es permitido)""")
+    Reembolso (No es permitido)
+    PRECIO: {df['ValorMin'].values[indice]}""")
     label_1.grid(row=0, column=0)# posicion del texto
     button_aluminio=ctk.CTkButton(frame_1,text="comprar",width=20,height=2)
     button_aluminio.grid(row=1,column=0)
@@ -43,12 +44,13 @@ def buy(indice,window=None,indices=None):
     # Diamante:
     frame_2 = ctk.CTkFrame(window_buy)
     frame_2.grid(row=1, column=1)
-    label_2 = ctk.CTkLabel(frame_2, text="""Diamante:
+    label_2 = ctk.CTkLabel(frame_2, text=f"""Diamante:
     1 artículo personal (bolso) (Debe caber debajo del asiento)
     1 equipaje de mano (10 kg) (Debe caber en el compartimiento superior)
     Asiento Estándar (Sujeto a disponibilidad)
     Cambios de vuelo (Permitido con costo adicional)
-    Reembolso (Permitido con costo adicional)""")
+    Reembolso (Permitido con costo adicional)
+    PRECIO: {df['ValorMedio'].values[indice]}""")
     label_2.grid(row=0, column=0)
     button_diamond=ctk.CTkButton(frame_2,text="comprar",width=20,height=2)
     button_diamond.grid(row=1,column=0)
@@ -56,12 +58,13 @@ def buy(indice,window=None,indices=None):
     # Premium:
     frame_3 = ctk.CTkFrame(window_buy)
     frame_3.grid(row=1, column=2)
-    label_3 = ctk.CTkLabel(frame_3, text="""Premium:
+    label_3 = ctk.CTkLabel(frame_3, text=f"""Premium:
     1 artículo personal (bolso) (Debe caber debajo del asiento)
     1 equipaje de mano (10 kg) (Debe caber en el compartimiento superior)
     Asiento Preferencial (Incluido)
     Cambios de vuelo (Permitido sin costo adicional)
-    Reembolso (Permitido)""")
+    Reembolso (Permitido)
+    PRECIO : {df['ValorMax'].values[indice]}""")
     label_3.grid(row=0, column=0)
     button_premium=ctk.CTkButton(frame_3,text="comprar",width=20,height=2)
     button_premium.grid(row=1,column=0)
@@ -89,7 +92,7 @@ def info_buy(indice,window=None,indices=None):
         mensaje=f"""vuelo:{df['Vuelo'].values[i]} 
         hora salida= {df['HoraSalida'].values[i]}
         hora llegada= {df['HoraLlegada'].values[i]}"""
-        button_hours=ctk.CTkButton(frame_hours_f,text=f"{mensaje}",command=lambda: buy(i,window_info,indices),width=20,height=2)
+        button_hours=ctk.CTkButton(frame_hours_f,text=f"{mensaje}",command=lambda i=i:  buy(i,window_info,hours),width=20,height=2)
         button_hours.grid(row=1,column=i,padx=10,pady=10)
         button.append(button_hours)
     window_info.mainloop()
@@ -101,9 +104,9 @@ def info_buy(indice,window=None,indices=None):
 
 
 
-def conditions_searchs(destination,origin,passenger,window,fecha,going):
+def conditions_searchs(origin,destination,passenger,window,going):
     indices=[]
-    if c.conditions_search(destination,origin,passenger,going):
+    if c.conditions_search(origin,destination,passenger,going):
         mb.showinfo("info","datos correctos")
         indices=c.search(destination,origin)
         search_fly(indices,window)
@@ -159,7 +162,7 @@ def fly(window_search=None):
     frame_button_search.configure(width = 100, height = 50  ,fg_color = "grey26")
     frame_button_search.place(relx = 0.5, rely = 0.5, anchor = "s")
     
-    button_search = ctk.CTkButton(frame_button_search, text="BUSCAR", command=lambda: conditions_searchs(cities_destination.get(), cities_origin.get(), entry_passenger.get(),window_fly,list_going.get(), going.get()), width=90, height=40)
+    button_search = ctk.CTkButton(frame_button_search, text="BUSCAR", command=lambda: conditions_searchs(cities_destination.get(), cities_origin.get(), entry_passenger.get(),window_fly, going.get()), width=90, height=40)
     # dar posicion a los elementos de la pantalla de menu fly
     
     
@@ -192,7 +195,7 @@ def search_fly(indices, window_fly):
     frame_label = ctk.CTkFrame(window_search)
     frame_label.configure(fg_color = "grey26")
     frame_label.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
-    label = ctk.CTkLabel(frame_label, text=f"IDA: {df['CiudadDestino'].values[indices[0]]} desde {df['CiudadOrigen'].values[indices[0]]}")
+    label = ctk.CTkLabel(frame_label, text=f"IDA:  de {df['CiudadOrigen'].values[indices[0]]} a {df['CiudadDestino'].values[indices[0]]}")
     label.grid(row=0, column=0)
     
     # creacion de frame para los botones
@@ -204,7 +207,7 @@ def search_fly(indices, window_fly):
     for i in indices:
         mensaje= f"""vuelo:{df['Vuelo'].values[i]}
         fecha:{df['Fecha'].values[i]}
-        valor:{df["ValorMin"].values[i]}"""
+        desde COP:{df["ValorMin"].values[i]}"""
         button = ctk.CTkButton(frame_buttons, text=f"{mensaje}", command=lambda i=i: info_buy(i, window_search, indices), width=20, height=2)
         button.grid(row=1, column=i, padx=10, pady=10)
     #cracion frame para el boton de regreso
