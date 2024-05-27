@@ -113,7 +113,6 @@ def search(origin,destination):
     else:
         return indices
 
-def select_fly():
-    indices = []
-    df=pd.read_csv("dato_vuelo.csv",sep=",")
-    
+# def select_fly():
+#     indices = []
+#     df=pd.read_csv("dato_vuelo.csv",sep=",")
