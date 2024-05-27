@@ -17,18 +17,53 @@ import customtkinter as ctk
 
 
 
-
-def buy(indice,window=None,indices=None):
+#usuario escoge asiento solo si es premium
+def choose_sit(indice,window=None,indices=None):
     if window==None:
         pass
     else:
         window.destroy()
     df=pd.read_csv("dato_vuelo.csv")
     window_buy=ctk.CTk()
-    label=ctk.CTkLabel(window_buy,text="compra de vuelo")
+    label=ctk.CTkLabel(window_buy,text="eleccion de asiento")
     label.grid(row=0,column=0)
+    frame_label=ctk.CTkFrame(window_buy)
+    label_sit=ctk.CTkLabel(frame_label,text="A    B      C      D      E      F")
+    label_sit.grid(row=0,column=0)
+    frame_label.grid(row=1,column=0)
+    frame_sits=ctk.CTkFrame(window_buy)
+    frame_sits.grid(row=2,column=0)
+    buttons=[]
+    matriz=[]
+    for i in range(12):
+        buttons=[]
+        for j in range(6):
+            button_sit=ctk.CTkButton(frame_sits,text=f"{chr(65+j)}{i+1}",width=5,height=2)
+            button_sit.grid(row=i,column=j,padx=10,pady=10)
+            texto=c.getnums(button_sit.cget("text"))
+            if texto >=9:
+                button_sit.configure(fg_color="green")
+            elif texto >=5:
+                button_sit.configure(fg_color="red")
+            else:
+                button_sit.configure(fg_color="blue")
+            buttons.append(button_sit)
+        matriz.append(buttons)
+    frame_premium=ctk.CTkFrame(window_buy)
+    label_premium=ctk.CTkLabel(frame_premium,text="asientos premium")
+    frame_premium.grid(row=1,column=1)
+    label_premium.grid(row=0,column=0)
+    frame_diamond=ctk.CTkFrame(window_buy)
+    label_diamond=ctk.CTkLabel(frame_diamond,text="asientos diamond")
+    frame_diamond.grid(row=2,column=1)
+    label_diamond.grid(row=0,column=0)
+    frame_aluminio=ctk.CTkFrame(window_buy)
+    label_aluminio=ctk.CTkLabel(frame_aluminio,text="asientos aluminio")
+    frame_aluminio.grid(row=3,column=1)
+    label_aluminio.grid(row=0,column=0)
     
-    
+    window_buy.mainloop()
+            
 
 
 
@@ -53,7 +88,7 @@ def info_buy(indice,window=None,indices=None):
         mensaje=f"""vuelo:{df['Vuelo'].values[i]} 
         hora salida= {df['HoraSalida'].values[i]}
         hora llegada= {df['HoraLlegada'].values[i]}"""
-        button_hours=ctk.CTkButton(frame_hours_f,text=f"{mensaje}",command=lambda: buy(indice,window_info,indices),width=20,height=2)
+        button_hours=ctk.CTkButton(frame_hours_f,text=f"{mensaje}",command=lambda: choose_sit(indice,window_info,indices),width=20,height=2)
         button_hours.grid(row=1,column=i,padx=10,pady=10)
         button.append(button_hours)
     window_info.mainloop()
@@ -234,7 +269,7 @@ def record(window):
     
     window_record.bind("<Return>", lambda e: record_condition(gender.get(), entry_name.get(), entry_lastname.get(), entry_id.get(), entry_telephone.get(), entry_nationality.get(), entry_email.get(), entry_birthday.get(), attendance.get()))
     window_record.bind("<Escape>", lambda e: return_menu(window_record))
-
+    # Posicionamiento de los elementos
     label_gender.grid(row=0, column=0, padx=10, pady=10)
     checkbox.grid(row=0, column=1, padx=10, pady=10)
     checkbox1.grid(row=0, column=2, padx=10, pady=10)
@@ -274,15 +309,14 @@ def login(window):
     ctk.set_appearance_mode("dark")
     ctk.set_default_color_theme("blue")
 
-    label_id = ctk.CTkLabel(window_login, text="Identificación")
-    entry_id = ctk.CTkEntry(window_login)
-    label_email = ctk.CTkLabel(window_login, text="Correo")
-    entry_email = ctk.CTkEntry(window_login)
-    button_back = ctk.CTkButton(window_login, text="Volver", command=lambda: return_menu(window_login), width=9, height=2)
-    button_send = ctk.CTkButton(window_login, text="Enviar", command=lambda: login_condition(entry_id.get(), entry_email.get()), width=9, height=2)
-    
-    window_login.bind("<Return>", lambda e: login_condition(entry_id.get(), entry_email.get()))
-    window_login.bind("<Escape>", lambda e: return_menu(window_login))
+    label_id = ctk.CTkLabel(window_login, text="Identificación") #label para la identificacion
+    entry_id = ctk.CTkEntry(window_login) #entry para la identificacion
+    label_email = ctk.CTkLabel(window_login, text="Correo") #label para el correo
+    entry_email = ctk.CTkEntry(window_login) #entry para el correo 
+    button_back = ctk.CTkButton(window_login, text="Volver", command=lambda: return_menu(window_login), width=9, height=2 ) #boton para volver
+    button_send = ctk.CTkButton(window_login, text="Enviar", command=lambda: login_condition(entry_id.get(), entry_email.get()), width=9, height=2) #boton para enviar
+    window_login.bind("<Return>", lambda e: login_condition(entry_id.get(), entry_email.get())) #evento para enviar
+    window_login.bind("<Escape>", lambda e: return_menu(window_login)) #evento para volver
 
     label_id.grid(row=0, column=0, padx=10, pady=10)
     entry_id.grid(row=0, column=1, padx=10, pady=10)
@@ -327,4 +361,4 @@ def return_menu(window):
 
 
 if __name__=='__main__':
-    menu()
+    fly()

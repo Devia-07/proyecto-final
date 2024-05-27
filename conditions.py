@@ -120,3 +120,10 @@ def search_hours(indice):
         if  df['Fecha'].values[i]==df['Fecha'].values[indice] and df['CiudadOrigen'].values[i]==df['CiudadOrigen'].values[indice] and df['CiudadDestino'].values[i]==df['CiudadDestino'].values[indice]:
             horas.append(i)
     return horas
+
+def getnums(text):
+    nums=[]
+    for i in range(len(text)):
+        if text[i].isdigit():
+            nums.append(text[i])
+    return int("".join(nums))
