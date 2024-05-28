@@ -5,19 +5,11 @@ import datetime
 import re
 import pycountry
 import os
+import save as sv
+import main as mn
 
-def conditions_record(gender,name,lastname,id,telephone,nationality,email,birthday,attendance):
-    if  os.path.isfile("registro_usuarios.csv"):
-        df=pd.read_csv("registro_usuarios.csv",sep=";")
-        if  int(id) in  df["documento"].values:
-            mb.showerror("registro","registro fallido la identificacion ya existe") #si la identificacion ya existe
+def conditions_record(gender,name,lastname,id,telephone,nationality,email,birthday,attendance,window):
 
-        elif email in df["correo"].values:
-            mb.showerror("registro","registro fallido el correo esta registrado en otro usuario")
-        
-        elif int(telephone) in df["telefono"].values:
-            mb.showerror("registro","registro fallido el telefono ya existe")
-        
     countries = [country.name for country in pycountry.countries] #lista de paises
 #_______________________________________________________________________________________________________________________
     # registro fecha
@@ -31,6 +23,7 @@ def conditions_record(gender,name,lastname,id,telephone,nationality,email,birthd
 #_______________________________________________________________________________________________________________________
     if gender=="":#si la casilla de genero esta vacia
         mb.showerror("registro","registro fallido rellene las casillas de masculino o femenino")
+        
 #_______________________________________________________________________________________________________________________
     elif attendance=="":#si la casilla de asistencia esta vacia
         mb.showerror("registro","registro fallido rellene las casillas de si requiere asistencia o no")
@@ -64,13 +57,32 @@ def conditions_record(gender,name,lastname,id,telephone,nationality,email,birthd
 
     # comprobacion de que los datos no esten repetidos
     else:
+        if  os.path.isfile("registro_usuarios.csv"):
+            df=pd.read_csv("registro_usuarios.csv",sep=";")
+            
+            if  int(id) in  df["documento"].values:
+                mb.showerror("registro","registro fallido la identificacion ya existe") #si la identificacion ya existe
+                return
+
+            elif email in df["correo"].values:
+                mb.showerror("registro","registro fallido el correo esta registrado en otro usuario")
+                return
+
+            elif int(telephone) in df["telefono"].values:
+                mb.showerror("registro","registro fallido el telefono ya existe")
+                return
         
-        mb.showinfo("registro","registro exitoso") #si todo esta correcto
-        return True
+        sv.record_base(gender,name,lastname,id,telephone,nationality,email,birthday,attendance,window)
 
 
 
 def condition_login(id,email):#funcion que valida el login
+    if os.path.isfile("registro_usuarios.csv"):#si el archivo csv existe
+        df=pd.read_csv("registro_usuarios.csv")#se lee el archivo csv
+        if int(id) in df["documento"].values and email in df["correo"].values:#si los datos coinciden
+            mb.showinfo("login","login exitoso")
+        else:
+            mb.showerror("login","login fallido los datos no coinciden")
     
     if id == "" or email == "":
         mb.showerror("login","rellene todas las casillas")#si alguna casilla esta vacia
@@ -92,18 +104,26 @@ def lista_vuelos():#funcion que retorna la lista de vuelos
     return origen, destino, fecha
 
         
-def conditions_search(origin,destination,passenger,going):
+def conditions_search(origin,destination,passenger,going,window):
     if origin=="" or destination=="" or passenger=="":
         mb.showerror("error","rellene todas las casillas") 
+        return
     elif not int(passenger.isdigit()):
         mb.showerror("error","el numero de pasajeros debe ser un numero")
+        return
     elif origin==destination or destination==origin:
         mb.showerror("error","la ciudad de origen y destino no pueden ser iguales")
+        return
     elif going  == "":
         mb.showerror("error","rellene la casilla de ida")
+        return
     else:
-        return True
-
+        indices=search(origin,destination)
+        if indices==None:
+            mb.showerror("error","no hay vuelos disponibles")
+            return
+        else:
+            mn.search_fly(indices,window)
 def search(origin,destination):
     indices=[]
     df=pd.read_csv("dato_vuelo.csv",sep=",")

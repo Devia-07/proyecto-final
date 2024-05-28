@@ -1,7 +1,9 @@
 import pandas as pd 
 import os
+from tkinter import messagebox as mb
+import main as mn
 
-def record_base(gender,name,lastname,id,telephone,nationality,email,birthday,attendance):
+def record_base(gender,name,lastname,id,telephone,nationality,email,birthday,attendance,window):
 
     # utiliza .strip() para eliminar espacios en blanco al inicio y al final de cada cadena y guardar los daots sin espacio
     
@@ -11,4 +13,6 @@ def record_base(gender,name,lastname,id,telephone,nationality,email,birthday,att
         df.to_csv("registro_usuarios.csv",index=False,header=True,mode="a",sep=";")
     else:
         df.to_csv("registro_usuarios.csv",index=False,header=False,mode="a",sep=";")
+        mb.showinfo("registro","registro exitoso")
+        mn.return_menu(window)
 
