@@ -21,24 +21,29 @@ def fly(window_search=None):
     # Creación de la ventana de menú fly
     window_fly = ctk.CTk()
     window_fly.title("Fly_Heaven")
-    window_fly.geometry("1250x750")
+    window_fly.geometry("850x150")
     window_fly.resizable(0, 0)  # No se puede cambiar el tamaño de la ventana
     window_fly.iconbitmap("fly_heaven.ico")
-    label = ctk.CTkLabel(window_fly, text="Menu")
+    label = ctk.CTkLabel(window_fly, text="")
     label.grid(row=0, column=0)
 
     # Crear una lista de días de junio
-    dates_june = [f"2024-06-{day:02d}" for day in range(1, 31)]
+    dates_june = []
+    for day in range(1, 31):
+        date = datetime.datetime(2024, 6, day)
+        if date.weekday() in [2, 3]:  # 2 es miércoles, 3 es jueves
+            dates_june.append(date.strftime("%Y-%m-%d"))
     
     going = ctk.StringVar()
 
     # Creación de frame para los widgets de la búsqueda
     frame_busqueda = ctk.CTkFrame(window_fly, fg_color="grey26")
-    frame_busqueda.place(relx=0.5, rely=0.1, anchor="center")
+    frame_busqueda.place(relx=0.5, rely=0.2, anchor="center")
     
     # Creación de elementos de la pantalla de menú fly dentro del frame: frame_busqueda
     label_passenger = ctk.CTkLabel(frame_busqueda, text="Número de pasajeros")
     entry_passenger = ctk.CTkEntry(frame_busqueda)
+    space = ctk.CTkLabel(frame_busqueda, text="")
     only_going = ctk.CTkRadioButton(frame_busqueda, text="Solo ida", variable=going, value=2, height=5, width=10)
     cities_origin = ctk.CTkComboBox(frame_busqueda, values=list(origen), state="readonly")
     cities_origin.set("Ciudad de origen")
@@ -49,7 +54,7 @@ def fly(window_search=None):
     
     # Creación de frame para el botón de búsqueda
     frame_button_search = ctk.CTkFrame(window_fly, width=100, height=50, fg_color="grey26")
-    frame_button_search.place(relx=0.5, rely=0.5, anchor="s")
+    frame_button_search.place(relx=0.5, rely=1.0, anchor="s")
     
     button_search = ctk.CTkButton(
         frame_button_search, text="BUSCAR",
@@ -64,18 +69,17 @@ def fly(window_search=None):
     cities_origin.grid(row=8, column=0)
     cities_destination.grid(row=8, column=1)
     list_going.grid(row=8, column=2, padx=10, pady=10)
-    only_going.grid(row=0, column=0)
+    space.grid(row=0, column=0)
+    only_going.grid(row=1, column=0)
     button_search.place(relx=0.5, rely=0.5, anchor="center")
     label_passenger.grid(row=8, column=5, padx=10, pady=10)
     entry_passenger.grid(row=8, column=6, padx=10, pady=10)
-    
     window_fly.mainloop()
 
 # Función para buscar vuelos disponibles
 def search_fly(indices, window_fly):
     window_fly.destroy()
     df = pd.read_csv("dato_vuelo.csv")
-    
     window_search = ctk.CTk()
     window_search.geometry("1250x750")
     window_search.state("zoomed")
@@ -90,11 +94,12 @@ def search_fly(indices, window_fly):
     )
     label.grid(row=0, column=0)
     
-    # Creación de frame para los botones
-    frame_buttons = ctk.CTkFrame(window_search, fg_color="grey26")
-    frame_buttons.grid(row=1, column=5, padx=10, pady=10)
+    # Crear frame con scrollbar para los botones
+    frame_buttons = ctk.CTkScrollableFrame(window_search, width=500, height=200)
+    frame_buttons.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
+    frame_buttons.place(relx= 0.5, rely=0.2, anchor="center")
 
-    # Creación de botones
+    # Crear botones dentro del frame con scrollbar
     for i in indices:
         mensaje = f"""Vuelo: {df['Vuelo'].values[i]}
         Fecha: {df['Fecha'].values[i]}
@@ -102,11 +107,11 @@ def search_fly(indices, window_fly):
         button = ctk.CTkButton(
             frame_buttons, text=mensaje,
             command=lambda i=i: functions(info_buy(i, window_search, indices)),
-            width=20, height=2
+            width=200, height=50
         )
-        button.grid(row=1, column=i, padx=10, pady=10)
+        button.pack(padx=10, pady=10)
     
-    # Creación de frame para el botón de regreso
+    # Crear frame para el botón de regreso
     frame_button_back = ctk.CTkFrame(window_search, fg_color="grey26")
     frame_button_back.place(relx=0.5, rely=1, anchor="s")
     
@@ -118,7 +123,7 @@ def search_fly(indices, window_fly):
     button_back.grid(row=2, column=0, padx=10, pady=10)
     
     window_search.mainloop()
-
+    
 # Información de vuelos disponibles en tales horas
 def info_buy(indice, window=None, indices=None):
     if window is not None:
@@ -262,12 +267,12 @@ def choose_sit(indice=None, window=None, indices=None):
 
 
 
-#______________________________________________________
-    #darle posicion a los botones y elementos de la pantalla de busqueda de vuelos
+# #______________________________________________________
+#     #darle posicion a los botones y elementos de la pantalla de busqueda de vuelos
 
 
 
-# Función para el registro
+# # Función para el registro
 # def record_check_in(window):
 #     window.destroy()
 #     window_record = ctk.CTk()
@@ -401,4 +406,4 @@ def choose_sit(indice=None, window=None, indices=None):
 
 
 if __name__=='__main__':
-    functions(choose_sit())
+    functions(fly())

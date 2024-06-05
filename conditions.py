@@ -124,11 +124,18 @@ def conditions_search(origin,destination,passenger,going,window):
             return
         else:
             mn.search_fly(indices,window)
+
 def search(origin,destination):
     indices=[]
+    dates_june = []
+    for day in range(1, 31):
+        date = datetime.datetime(2024, 6, day)
+        if date.weekday() in [2, 3]:  # 2 es miércoles, 3 es jueves
+            dates_june.append(date.strftime("%Y-%m-%d"))
+    print(dates_june)
     df=pd.read_csv("dato_vuelo.csv",sep=",")
     for i in range(len(df)):
-        if destination in df["CiudadDestino"].values[i] and origin in df["CiudadOrigen"].values[i]  :
+        if destination in df["CiudadDestino"].values[i] and origin in df["CiudadOrigen"].values[i] and df["Fecha"].values[i] in dates_june  :
             indices.append(i)
         else:
             continue
