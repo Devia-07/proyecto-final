@@ -104,7 +104,7 @@ def lista_vuelos():#funcion que retorna la lista de vuelos
     return origen, destino, fecha
 
         
-def conditions_search(origin,destination,passenger,going,window):
+def conditions_search(origin,destination,passenger,going,window,peoples):
     if origin=="" or destination=="" or passenger=="":
         mb.showerror("error","rellene todas las casillas") 
         return
@@ -123,7 +123,7 @@ def conditions_search(origin,destination,passenger,going,window):
             mb.showerror("error","no hay vuelos disponibles")
             return
         else:
-            mn.search_fly(indices,window)
+            mn.search_fly(indices,window,peoples)
 def search(origin,destination):
     indices=[]
     df=pd.read_csv("dato_vuelo.csv",sep=",")
