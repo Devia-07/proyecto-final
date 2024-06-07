@@ -3,10 +3,14 @@ from tkinter import ttk
 import pandas as pd
 import os
 import PIL as pil
+from PIL import ImageTk, Image, ImageOps
+
 import conditions as c
 import save as s
 import datetime
 from tkcalendar import Calendar
+
+import funciones_categorias as fc
 
 import customtkinter as ctk
 
@@ -22,9 +26,7 @@ def fly(window_search=None):
     # Creación de la ventana de menú fly
     window_fly = ctk.CTk()
     window_fly.title("Fly_Heaven")
-    window_fly.geometry("850x150")
-    window_fly.geometry("850x150")
-    window_fly.resizable(0, 0)  # No se puede cambiar el tamaño de la ventana
+    window_fly.geometry("850x500")
     window_fly.iconbitmap("fly_heaven.ico")
     label = ctk.CTkLabel(window_fly, text="")
     label = ctk.CTkLabel(window_fly, text="")
@@ -46,8 +48,7 @@ def fly(window_search=None):
 
     # Creación de frame para los widgets de la búsqueda
     frame_busqueda = ctk.CTkFrame(window_fly, fg_color="grey26")
-    frame_busqueda.place(relx=0.5, rely=0.2, anchor="center")
-    frame_busqueda.place(relx=0.5, rely=0.2, anchor="center")
+    frame_busqueda.grid(row=0, column=0)
     
     # Creación de elementos de la pantalla de menú fly dentro del frame: frame_busqueda
     label_passenger = ctk.CTkLabel(frame_busqueda, text="Número de pasajeros")
@@ -64,8 +65,7 @@ def fly(window_search=None):
     
     # Creación de frame para el botón de búsqueda
     frame_button_search = ctk.CTkFrame(window_fly, width=100, height=50, fg_color="grey26")
-    frame_button_search.place(relx=0.5, rely=1.0, anchor="s")
-    frame_button_search.place(relx=0.5, rely=1.0, anchor="s")
+    frame_button_search.grid(row=1, column=0)
     
     button_search = ctk.CTkButton(
         frame_button_search, text="BUSCAR",
@@ -84,9 +84,44 @@ def fly(window_search=None):
     only_going.grid(row=1, column=0)
     space.grid(row=0, column=0)
     only_going.grid(row=1, column=0)
-    button_search.place(relx=0.5, rely=0.5, anchor="center")
+    button_search.grid(row=2, column=0, padx=10, pady=10)
     label_passenger.grid(row=8, column=5, padx=10, pady=10)
     entry_passenger.grid(row=8, column=6, padx=10, pady=10)
+    
+    frame_vuelos = ctk.CTkScrollableFrame(window_fly, fg_color="grey26",width=500,height=200)
+    frame_vuelos.grid(row=2, column=0)
+    label_vuelos = ctk.CTkLabel(frame_vuelos, text="Lugares")
+    label_vuelos.grid(row=0, column=0,columnspan=2 , padx=10, pady=10)
+    
+    
+    # Crear el frame para Cali
+    frame_cali = ctk.CTkFrame(frame_vuelos, fg_color="grey26",border_color="blue",border_width=2)
+    frame_cali.grid(row=2, column=0, padx=10, pady=10)
+
+    # Label para Cali
+    label_cali = ctk.CTkLabel(frame_cali, text="Cali",fg_color="skyblue")
+    label_cali.grid(row=0, column=0, padx=10, pady=10)
+
+    # Cargar la imagen con CTkImage
+    imagen_path = "imagenes/cali.png"
+    imagen_cali = ctk.CTkImage(dark_image=Image.open(imagen_path), size=(200, 200))
+
+    # Crear un Label para mostrar la imagen
+    label_imagen_cali = ctk.CTkLabel(frame_cali, image=imagen_cali)
+    label_imagen_cali.grid(row=1, column=0, padx=10, pady=10)
+
+    # Label para información de Cali
+    label_info_cali = ctk.CTkLabel(frame_cali, text="""Es conocida como la capital mundial de la salsa y es uno de los principales centros deportivos de Colombia.
+    En el año 2019 ha sido galardonado
+    por los World Travel Awards como ciudad destino cultural de Suramérica, gracias a su oferta cultural, deportiva y turística.""")
+    label_info_cali.grid(row=2, column=0, padx=10, pady=10)
+
+
+    
+    
+    
+    
+    
     window_fly.mainloop()
 
 # Función para buscar vuelos disponibles
@@ -125,7 +160,7 @@ def search_fly(indices, window_fly,peoples):
         Desde COP: {df['ValorMin'].values[i]}"""
         button = ctk.CTkButton(
             frame_buttons, text=mensaje,
-            command=lambda i=i: functions(info_buy(i, window_search, indices)),
+            command=lambda i=i: functions(info_buy(i, window_search, indices,peoples)),
             width=200, height=50
         )
         button.pack(padx=10, pady=10)
@@ -147,7 +182,7 @@ def search_fly(indices, window_fly,peoples):
     
     
 # Información de vuelos disponibles en tales horas
-def info_buy(indice, window , peoples):
+def info_buy(indice, window ,indices, peoples):
     if window is not None:
         window.destroy()
     
@@ -165,14 +200,14 @@ def info_buy(indice, window , peoples):
         Hora llegada: {df['HoraLlegada'].values[i]}"""
         button_hours = ctk.CTkButton(
             frame_hours_f, text=mensaje,
-            command=lambda i=i: functions(buy(i, window_info, hours)),
+            command=lambda i=i: functions(buy(i, window_info, hours,peoples)),
             width=20, height=2
         )
         button_hours.grid(row=1, column=i, padx=10, pady=10)
     
     window_info.mainloop()
 
-def buy(indice, window=None, indices=None):
+def buy(indice, window, indices , peoples):
     if window is not None:
         window.destroy()
     
@@ -195,7 +230,7 @@ def buy(indice, window=None, indices=None):
     PRECIO: {df['ValorMin'].values[indice]}"""
     )
     label_1.grid(row=0, column=0)
-    button_aluminio = ctk.CTkButton(frame_1, text="Comprar", width=20, height=2)
+    button_aluminio = ctk.CTkButton(frame_1, text="Comprar", width=20, height=2,command=lambda: fc.aluminum(indice,window_buy,peoples))
     button_aluminio.grid(row=1, column=0)
 
     frame_2 = ctk.CTkFrame(window_buy)
@@ -294,32 +329,44 @@ def choose_sit(indice=None, window=None, indices=None):
 
 
 
-def record_check_in(window = None,peoples=5):
+def record_check_in(window,peoples,indice):
+    window.destroy()
     window_record = ctk.CTk()
     window_record.title("Registro")
-    window_record.geometry("600x600")
+    window_record.geometry("1920x1080")
+    window_record.attributes("-fullscreen", True)
     ctk.set_appearance_mode("dark")
     ctk.set_default_color_theme("blue")
     
     #frame del responsable de pago
-    frame_responsable = ctk.CTkFrame(window_record, fg_color="grey26",border_color="green",border_width=3)
-    frame_responsable.grid(row=0, column=0)
     
-    #label y entry del responsable de pago
-    label_responsable = ctk.CTkLabel(frame_responsable, text="Responsable de pago")
-    entry_responsable = ctk.CTkEntry(frame_responsable)
-    #posicion de los elementos
-    label_responsable.grid(row=0, column=0, padx=100, pady=100)
-    entry_responsable.grid(row=0, column=1, padx=100, pady=100)
     
     #frame de acompañantes
-    frame_acompanantes = ctk.CTkScrollableFrame(window_record, fg_color="grey26",border_color="green",border_width=3,width=1000,height=700)
+    frame_acompanantes = ctk.CTkScrollableFrame(window_record, fg_color="grey26",border_color="green",border_width=3,width=1000,height=300)
     frame_acompanantes.grid(row=1, column=0)
     
-    data = []
+    
+    #frame de información de vuelo
+    frame_info_fly = ctk.CTkFrame(window_record, fg_color="grey26",border_color="green",border_width=2,width=500,height=300)
+    frame_info_fly.grid(row=0, column=0,padx=10, pady=30)
+    label_fly = ctk.CTkLabel(frame_info_fly, text="Información de vuelo")
+    
+    
+    label_fly.grid(row=0, column=0)
+    
+    #hora de salida
+    frame_hours_f = ctk.CTkFrame(window_record, fg_color="grey26",border_color="green",border_width=2)
+    frame_hours_f.grid(row=0, column=0)
+    label_hours = ctk.CTkLabel(frame_hours_f, text="Información de vuelo")
+    label_hours.grid(row=0, column=0)
+    
+    
+    
+    datas = []
     for i in range(peoples):
+        ayuda = []
         #label y entry de acompañantes
-        frame_persona = ctk.CTkFrame(frame_acompanantes, fg_color="grey26",border_color="green",border_width=3)
+        frame_persona = ctk.CTkFrame(frame_acompanantes, fg_color="grey26",border_color="green",border_width=2)
         frame_persona.grid(row=i, column=0,padx=10, pady=30)
         label_acompanantes = ctk.CTkLabel(frame_persona, text=f"Acompañante {i+1}")
         #posicion de los elementos
@@ -369,12 +416,34 @@ def record_check_in(window = None,peoples=5):
         label_telephone.grid(row=3, column=0, padx=10, pady=10)
         entry_telephone.grid(row=3, column=1, padx=10, pady=10)
         
-        ayuda = [
-            genero, entry_name, entry_last_name, entry_id, entry_nationality, entry_email, entry_telephone
-        ]
-        data.append(ayuda)
+        asistencia = ctk.StringVar()
+        label_asistencia = ctk.CTkLabel(frame_persona, text="Requiere Asistencia")
+        radio_si = ctk.CTkRadioButton(frame_persona, text="Si", variable=asistencia, value="Si")
+        radio_no = ctk.CTkRadioButton(frame_persona, text="No", variable=asistencia, value="No")
         
-        
+        label_asistencia.grid(row=3, column=2, padx=10, pady=10)
+        radio_si.grid(row=3, column=3, padx=10, pady=10)
+        radio_no.grid(row=3, column=4, padx=10, pady=10)
+        if i == 0 :
+            responsable = []
+            label_acargo = ctk.CTkLabel(frame_persona, text="Responsable de pago")
+            label_acargo.grid(row=0, column=1)
+            label_tarjeta = ctk.CTkLabel(frame_persona, text="Tarjeta de crédito")
+            entry_tarjeta = ctk.CTkEntry(frame_persona)
+            label_cvv = ctk.CTkLabel(frame_persona, text="CVV")
+            entry_cvv = ctk.CTkEntry(frame_persona)
+            #posicion de los elementos
+            
+            label_tarjeta.grid(row=4, column=0, padx=10, pady=10)
+            entry_tarjeta.grid(row=4, column=1, padx=10, pady=10)
+            label_cvv.grid(row=4, column=2, padx=10, pady=10)
+            entry_cvv.grid(row=4, column=3, padx=10, pady=10)
+            responsable = [genero,entry_name,entry_last_name,entry_id,entry_nationality,entry_email,entry_telephone,asistencia,entry_tarjeta,entry_cvv]
+        else:
+            ayuda = [genero,entry_name,entry_last_name,entry_id,entry_nationality,entry_email,entry_telephone,asistencia]
+            datas.append(ayuda)
+            
+                    
     window_record.mainloop()
 
 # ARREGLAR ESTA FUNCION PARA HACER LA CONFIRMACION DE VUELO (CHECK IN)
@@ -438,4 +507,4 @@ def record_check_in(window = None,peoples=5):
 
 
 if __name__=='__main__':
-    functions(choose_sit())
+    functions(fly())
