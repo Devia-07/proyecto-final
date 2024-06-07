@@ -23,12 +23,19 @@ def fly(window_search=None):
     window_fly = ctk.CTk()
     window_fly.title("Fly_Heaven")
     window_fly.geometry("850x150")
+    window_fly.geometry("850x150")
     window_fly.resizable(0, 0)  # No se puede cambiar el tamaño de la ventana
     window_fly.iconbitmap("fly_heaven.ico")
+    label = ctk.CTkLabel(window_fly, text="")
     label = ctk.CTkLabel(window_fly, text="")
     label.grid(row=0, column=0)
 
     # Crear una lista de días de junio
+    dates_june = []
+    for day in range(1, 31):
+        date = datetime.datetime(2024, 6, day)
+        if date.weekday() in [2, 3]:  # 2 es miércoles, 3 es jueves
+            dates_june.append(date.strftime("%Y-%m-%d"))
     dates_june = []
     for day in range(1, 31):
         date = datetime.datetime(2024, 6, day)
@@ -40,10 +47,12 @@ def fly(window_search=None):
     # Creación de frame para los widgets de la búsqueda
     frame_busqueda = ctk.CTkFrame(window_fly, fg_color="grey26")
     frame_busqueda.place(relx=0.5, rely=0.2, anchor="center")
+    frame_busqueda.place(relx=0.5, rely=0.2, anchor="center")
     
     # Creación de elementos de la pantalla de menú fly dentro del frame: frame_busqueda
     label_passenger = ctk.CTkLabel(frame_busqueda, text="Número de pasajeros")
     entry_passenger = ctk.CTkEntry(frame_busqueda)
+    space = ctk.CTkLabel(frame_busqueda, text="")
     space = ctk.CTkLabel(frame_busqueda, text="")
     only_going = ctk.CTkRadioButton(frame_busqueda, text="Solo ida", variable=going, value=2, height=5, width=10)
     cities_origin = ctk.CTkComboBox(frame_busqueda, values=list(origen), state="readonly")
@@ -55,6 +64,7 @@ def fly(window_search=None):
     
     # Creación de frame para el botón de búsqueda
     frame_button_search = ctk.CTkFrame(window_fly, width=100, height=50, fg_color="grey26")
+    frame_button_search.place(relx=0.5, rely=1.0, anchor="s")
     frame_button_search.place(relx=0.5, rely=1.0, anchor="s")
     
     button_search = ctk.CTkButton(
@@ -70,6 +80,8 @@ def fly(window_search=None):
     cities_origin.grid(row=8, column=0)
     cities_destination.grid(row=8, column=1)
     list_going.grid(row=8, column=2, padx=10, pady=10)
+    space.grid(row=0, column=0)
+    only_going.grid(row=1, column=0)
     space.grid(row=0, column=0)
     only_going.grid(row=1, column=0)
     button_search.place(relx=0.5, rely=0.5, anchor="center")
@@ -101,6 +113,12 @@ def search_fly(indices, window_fly,peoples):
     frame_buttons.place(relx= 0.5, rely=0.2, anchor="center")
 
     # Crear botones dentro del frame con scrollbar
+    # Crear frame con scrollbar para los botones
+    frame_buttons = ctk.CTkScrollableFrame(window_search, width=500, height=200)
+    frame_buttons.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
+    frame_buttons.place(relx= 0.5, rely=0.2, anchor="center")
+
+    # Crear botones dentro del frame con scrollbar
     for i in indices:
         mensaje = f"""Vuelo: {df['Vuelo'].values[i]}
         Fecha: {df['Fecha'].values[i]}
@@ -111,7 +129,9 @@ def search_fly(indices, window_fly,peoples):
             width=200, height=50
         )
         button.pack(padx=10, pady=10)
+        button.pack(padx=10, pady=10)
     
+    # Crear frame para el botón de regreso
     # Crear frame para el botón de regreso
     frame_button_back = ctk.CTkFrame(window_search, fg_color="grey26")
     frame_button_back.place(relx=0.   , rely=1, anchor="s")
@@ -124,6 +144,7 @@ def search_fly(indices, window_fly,peoples):
     button_back.grid(row=2, column=0, padx=10, pady=10)
     
     window_search.mainloop()
+    
     
 # Información de vuelos disponibles en tales horas
 def info_buy(indice, window , peoples):
@@ -273,78 +294,88 @@ def choose_sit(indice=None, window=None, indices=None):
 
 
 
-# Función para el registro
-# def record_check_in(window):
-#     window.destroy()
-#     window_record = ctk.CTk()
-#     window_record.title("Registro")
-#     window_record.geometry("600x600")
-#     ctk.set_appearance_mode("dark")
-#     ctk.set_default_color_theme("blue")
-
-#     gender = ctk.StringVar()
-#     label_gender = ctk.CTkLabel(window_record, text="Género", font=("Times New Roman", 14))
-#     checkbox = ctk.CTkRadioButton(window_record, text="Masculino", variable=gender, value="masculino", font=("Times New Roman", 14))
-#     checkbox1 = ctk.CTkRadioButton(window_record, text="Femenino", variable=gender, value="femenino", font=("Times New Roman", 14))
+def record_check_in(window = None,peoples=5):
+    window_record = ctk.CTk()
+    window_record.title("Registro")
+    window_record.geometry("600x600")
+    ctk.set_appearance_mode("dark")
+    ctk.set_default_color_theme("blue")
     
-#     label_name = ctk.CTkLabel(window_record, text="Nombre", font=("Times New Roman", 14))
-#     entry_name = ctk.CTkEntry(window_record, font=("Times New Roman", 14))
+    #frame del responsable de pago
+    frame_responsable = ctk.CTkFrame(window_record, fg_color="grey26",border_color="green",border_width=3)
+    frame_responsable.grid(row=0, column=0)
     
-#     label_lastname = ctk.CTkLabel(window_record, text="Apellido", font=("Times New Roman", 14))
-#     entry_lastname = ctk.CTkEntry(window_record, font=("Times New Roman", 14))
+    #label y entry del responsable de pago
+    label_responsable = ctk.CTkLabel(frame_responsable, text="Responsable de pago")
+    entry_responsable = ctk.CTkEntry(frame_responsable)
+    #posicion de los elementos
+    label_responsable.grid(row=0, column=0, padx=100, pady=100)
+    entry_responsable.grid(row=0, column=1, padx=100, pady=100)
     
-#     label_id = ctk.CTkLabel(window_record, text="Identificación", font=("Times New Roman", 14))
-#     entry_id = ctk.CTkEntry(window_record, font=("Times New Roman", 14))
+    #frame de acompañantes
+    frame_acompanantes = ctk.CTkScrollableFrame(window_record, fg_color="grey26",border_color="green",border_width=3,width=1000,height=700)
+    frame_acompanantes.grid(row=1, column=0)
     
-#     label_telephone = ctk.CTkLabel(window_record, text="Teléfono", font=("Times New Roman", 14))
-#     entry_telephone = ctk.CTkEntry(window_record, font=("Times New Roman", 14))
-    
-#     label_nationality = ctk.CTkLabel(window_record, text="Nacionalidad", font=("Times New Roman", 14))
-#     entry_nationality = ctk.CTkEntry(window_record, font=("Times New Roman", 14))
-    
-#     label_email = ctk.CTkLabel(window_record, text="Correo", font=("Times New Roman", 14))
-#     entry_email = ctk.CTkEntry(window_record, font=("Times New Roman", 14))
-    
-#     label_birthday = ctk.CTkLabel(window_record, text="Fecha de nacimiento", font=("Times New Roman", 14))
-#     entry_birthday = ctk.CTkEntry(window_record, font=("Times New Roman", 14))
-    
-#     attendance = ctk.StringVar()
-#     label_attendance = ctk.CTkLabel(window_record, text="Requiere asistencia", font=("Times New Roman", 14))
-#     radiuobutton = ctk.CTkRadioButton(window_record, text="Asistencia", variable=attendance, value="requiere", font=("Times New Roman", 14))
-#     radiuobutton1 = ctk.CTkRadioButton(window_record, text="No asistencia", variable=attendance, value="no requiere", font=("Times New Roman", 14))
-    
-#     button_send = ctk.CTkButton(window_record, text="Enviar", command=lambda: c.conditions_record(gender.get(), entry_name.get(), entry_lastname.get(), entry_id.get(), entry_telephone.get(), entry_nationality.get(), entry_email.get(), entry_birthday.get(), attendance.get(),window_record),font=("Times New Roman", 14))
-#     button_back = ctk.CTkButton(window_record, text="Volver", command=lambda: return_menu(window_record), width=9, height=2, font=("Times New Roman", 14))
-    
-#     window_record.bind("<Return>", lambda e: c.conditions_record(gender.get(), entry_name.get(), entry_lastname.get(), entry_id.get(), entry_telephone.get(), entry_nationality.get(), entry_email.get(), entry_birthday.get(), attendance.get()))
-#     window_record.bind("<Escape>", lambda e: return_menu(window_record))
-#     # Posicionamiento de los elementos
-#     label_gender.grid(row=0, column=0, padx=10, pady=10)
-#     checkbox.grid(row=0, column=1, padx=10, pady=10)
-#     checkbox1.grid(row=0, column=2, padx=10, pady=10)
-#     label_name.grid(row=1, column=0, padx=10, pady=10)
-#     entry_name.grid(row=1, column=1, padx=10, pady=10)
-#     label_lastname.grid(row=1, column=2, padx=10, pady=10)
-#     entry_lastname.grid(row=1, column=3, padx=10, pady=10)
-#     label_id.grid(row=2, column=0, padx=10, pady=10)
-#     entry_id.grid(row=2, column=1, padx=10, pady=10)
-#     label_telephone.grid(row=2, column=2, padx=10, pady=10)
-#     entry_telephone.grid(row=2, column=3, padx=10, pady=10)
-#     label_nationality.grid(row=3, column=0, padx=10, pady=10)
-#     entry_nationality.grid(row=3, column=1, padx=10, pady=10)
-#     label_email.grid(row=3, column=2, padx=10, pady=10)
-#     entry_email.grid(row=3, column=3, padx=10, pady=10)
-#     button_send.grid(row=7, column=0, padx=10, pady=10)
-#     label_birthday.grid(row=4, column=0, padx=10, pady=10)
-#     entry_birthday.grid(row=4, column=1, padx=10, pady=10)
-#     label_attendance.grid(row=5, column=0, padx=10, pady=10)
-#     radiuobutton.grid(row=6, column=0, padx=10, pady=10)
-#     radiuobutton1.grid(row=6, column=1, padx=10, pady=10)
-#     button_back.grid(row=7, column=1, padx=10, pady=10)
-    
-#     window_record.mainloop()
-
-# Función para verificar e iniciar sesión
+    data = []
+    for i in range(peoples):
+        #label y entry de acompañantes
+        frame_persona = ctk.CTkFrame(frame_acompanantes, fg_color="grey26",border_color="green",border_width=3)
+        frame_persona.grid(row=i, column=0,padx=10, pady=30)
+        label_acompanantes = ctk.CTkLabel(frame_persona, text=f"Acompañante {i+1}")
+        #posicion de los elementos
+        label_acompanantes.grid(row=0, column=0, padx=10, pady=10)
+        
+        genero=ctk.StringVar()
+        #radiobutton de genero
+        radio_m = ctk.CTkRadioButton(frame_persona, text="Masculino", variable=genero, value="Masculino")
+        radio_f = ctk.CTkRadioButton(frame_persona, text="Femenino", variable=genero, value="Femenino")
+        #posicion de los elementos
+        radio_m.grid(row=1, column=0, padx=10, pady=10)
+        radio_f.grid(row=1, column=1, padx=10, pady=10)
+        
+        label_name = ctk.CTkLabel(frame_persona, text="Primer nombre")
+        entry_name = ctk.CTkEntry(frame_persona)
+        #posicion de los elementos
+        label_name.grid(row=1, column=2, padx=10, pady=10)
+        entry_name.grid(row=1, column=3, padx=10, pady=10)
+        
+        label_last_name = ctk.CTkLabel(frame_persona, text="Primer apellido")
+        entry_last_name = ctk.CTkEntry(frame_persona)
+        #posicion de los elementos
+        label_last_name.grid(row=1, column=4, padx=10, pady=10)
+        entry_last_name.grid(row=1, column=5, padx=10, pady=10)
+        
+        label_id = ctk.CTkLabel(frame_persona, text="Identificación")
+        entry_id = ctk.CTkEntry(frame_persona)
+        #posicion de los elementos
+        label_id.grid(row=2, column=0, padx=10, pady=10)
+        entry_id.grid(row=2, column=1, padx=10, pady=10)
+        
+        label_nationality = ctk.CTkLabel(frame_persona, text="Nacionalidad")
+        entry_nationality = ctk.CTkEntry(frame_persona)
+        #posicion de los elementos
+        label_nationality.grid(row=2, column=2, padx=10, pady=10)
+        entry_nationality.grid(row=2, column=3, padx=10, pady=10)
+        
+        label_email = ctk.CTkLabel(frame_persona, text="Correo")
+        entry_email = ctk.CTkEntry(frame_persona)
+        #posicion de los elementos
+        label_email.grid(row=2, column=4, padx=10, pady=10)
+        entry_email.grid(row=2, column=5, padx=10, pady=10)
+        
+        label_telephone = ctk.CTkLabel(frame_persona, text="Teléfono")
+        entry_telephone = ctk.CTkEntry(frame_persona)
+        #posicion de los elementos
+        label_telephone.grid(row=3, column=0, padx=10, pady=10)
+        entry_telephone.grid(row=3, column=1, padx=10, pady=10)
+        
+        ayuda = [
+            genero, entry_name, entry_last_name, entry_id, entry_nationality, entry_email, entry_telephone
+        ]
+        data.append(ayuda)
+        
+        
+    window_record.mainloop()
 
 # ARREGLAR ESTA FUNCION PARA HACER LA CONFIRMACION DE VUELO (CHECK IN)
 # def login(window):
