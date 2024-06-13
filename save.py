@@ -2,6 +2,7 @@ import pandas as pd
 import os
 from tkinter import messagebox as mb
 import main as mn
+import customtkinter as ctk
 
 # def profits(client,indice):
 #     w
@@ -40,8 +41,13 @@ def search_low (filter,day,indices,window,peoples,buttons,frame):
         mensaje += f"Hora salida: {df_filtered['HoraSalida'][i]} \n"
         mensaje += f"Hora llegada: {df_filtered['HoraLlegada'][i]} \n"
         mensaje += f"Valor: {df_filtered['ValorMin'][i]} \n"
+<<<<<<< HEAD
         button = ctk.CTkButton(frame, text=mensaje, command=lambda i=i: mn.info_buy(i,window,indices,peoples),font = ("times new roman",20),width=1000, height=150)
         button.pack(padx =0.1,pady =5)
+=======
+        button = ctk.CTkButton(frame, text=mensaje, command=lambda i=i: mn.info_buy(i,window,indices,peoples))
+        button.grid(row=rows, column=0)
+>>>>>>> d372145c775a73668decc155585e5074cf1dd041
         buttons.append(button)
         rows += 1
     return buttons
@@ -65,7 +71,11 @@ def search_medium (filter,days,indices,window,peoples,buttons,frame):
         mensaje += f"Hora salida: {df_filtered['HoraSalida'][i]} \n"
         mensaje += f"Hora llegada: {df_filtered['HoraLlegada'][i]} \n"
         mensaje += f"Valor: {df_filtered['ValorMedio'][i]} \n"
+<<<<<<< HEAD
         button = ctk.CTkButton(frame, text=mensaje, command=lambda i=i: mn.info_buy(i,window,indices,peoples),font = ("times new roman",20),width=1000, height=150)
+=======
+        button = ctk.CTkButton(frame, text=mensaje, command=lambda i=i: mn.info_buy(i,window,indices,peoples))
+>>>>>>> d372145c775a73668decc155585e5074cf1dd041
         button.grid(row=rows, column=0)
         buttons.append(button)
         rows += 1
@@ -92,6 +102,7 @@ def search_high (filter,days,indices,window,peoples,buttons,frame):
         mensaje += f"Hora salida: {df_filtered['HoraSalida'][i]} \n"
         mensaje += f"Hora llegada: {df_filtered['HoraLlegada'][i]} \n"
         mensaje += f"Valor: {df_filtered['ValorMax'][i]} \n"
+<<<<<<< HEAD
         button = ctk.CTkButton(frame, text=mensaje, command=lambda i=i: mn.info_buy(i,window,indices,peoples),font = ("times new roman",20),width=1000, height=150)
         button.grid(row=rows, column=0)
         buttons.append(button)
@@ -101,3 +112,10 @@ def search_high (filter,days,indices,window,peoples,buttons,frame):
         
         
         
+=======
+        button = ctk.CTkButton(frame, text=mensaje, command=lambda i=i: mn.info_buy(i,window,indices,peoples))
+        button.grid(row=rows, column=0)
+        buttons.append(button)
+        rows += 1
+    return buttons
+>>>>>>> d372145c775a73668decc155585e5074cf1dd041

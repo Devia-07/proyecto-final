@@ -23,7 +23,7 @@ def fly(window_search=None):
     if window_search is not None:
         window_search.destroy()
 
-    origen, destino, fecha = c.lista_vuelos()
+    origen, destino = c.lista_vuelos()
 
     # Creación de la ventana de menú fly
     window_fly = ctk.CTk()
@@ -35,11 +35,6 @@ def fly(window_search=None):
     label.grid(row=0, column=0)
 
     # Crear una lista de días de junio
-    dates_june = []
-    for day in range(1, 31):
-        date = datetime.datetime(2024, 6, day)
-        if date.weekday() in [2, 3]:  # 2 es miércoles, 3 es jueves
-            dates_june.append(date.strftime("%Y-%m-%d"))
     dates_june = []
     for day in range(1, 31):
         date = datetime.datetime(2024, 6, day)
@@ -78,11 +73,10 @@ def fly(window_search=None):
         frame_button_search, text="BUSCAR",
         command=lambda: c.conditions_search(
             cities_destination.get(), cities_origin.get(),
-            entry_passenger.get(), going.get(), window_fly,
+            going.get(), window_fly,
             entry_passenger.get()),
         width=90, height=40
     )
-
     # Posicionar los elementos de la pantalla de menú fly
     cities_origin.grid(row=8, column=0)
     cities_destination.grid(row=8, column=1)
@@ -236,6 +230,28 @@ def search_fly(indices, window_fly, peoples):
         window_search, width=500, height=200)
     frame_buttons.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
     frame_buttons.place(relx=0.5, rely=0.2, anchor="center")
+    
+    #hacer un frame para filtrar la busqueda    
+    frame_filter = ctk.CTkFrame(window_search, fg_color="grey26")
+    frame_filter.grid(row=0, column=1, padx=10, pady=10, sticky="nw")
+    label_filter = ctk.CTkLabel(frame_filter, text="Filtrar precios :")
+    label_filter.grid(row=0, column=0)
+    filter = ctk.CTkComboBox(frame_filter, values=["barato","medio","caro"], state="readonly")
+    filter.set("precio")
+    filter.grid(row=0, column=1)
+    
+    dates_june = []
+    for day in range(1, 31):
+        date = datetime.datetime(2024, 6, day)
+        if date.weekday() in [2, 3]:  # 2 es miércoles, 3 es jueves
+            dates_june.append(date.strftime("%Y-%m-%d"))
+    filter_days = ctk.CTkComboBox(frame_filter, values=dates_june, state="readonly")
+    filter_days.set("dias")
+    # filtrar los dias de junio 
+    filter_days.grid(row=0, column=2)
+    buttons = []
+    button_filter = ctk.CTkButton(frame_filter, text="Filtrar", command=lambda: c.filter_search(filter.get(),filter_days.get(), indices, window_search, peoples,buttons,frame_buttons))
+    button_filter.grid(row=0, column=3,padx=10, pady=10)
 
     # Crear botones dentro del frame con scrollbar
     for i in indices:
@@ -248,9 +264,10 @@ def search_fly(indices, window_fly, peoples):
                 info_buy(i, window_search, indices, peoples)),
             width=200, height=50
         )
-        button.pack(padx=10, pady=10)
-        button.pack(padx=10, pady=10)
+        button.grid(row=i, column=0, padx=10, pady=10)
+        buttons.append(button)
 
+        
     # Crear frame para el botón de regreso
     # Crear frame para el botón de regreso
     frame_button_back = ctk.CTkFrame(window_search, fg_color="grey26")
@@ -332,7 +349,8 @@ def buy(indice, window, indices, peoples):
     PRECIO: {df['ValorMedio'].values[indice]}"""
     )
     label_2.grid(row=0, column=0)
-    button_diamond = ctk.CTkButton(frame_2, text="Comprar", width=20, height=2)
+    button_diamond = ctk.CTkButton(frame_2, text="Comprar", width=20, 
+                                   height=2, command=lambda: fc.diamond(indice, window_buy, peoples, df["ValorMedio"].values[indice]))
     button_diamond.grid(row=1, column=0)
 
     frame_3 = ctk.CTkFrame(window_buy)
@@ -347,7 +365,9 @@ def buy(indice, window, indices, peoples):
     PRECIO : {df['ValorMax'].values[indice]}"""
     )
     label_3.grid(row=0, column=0)
-    button_premium = ctk.CTkButton(frame_3, text="Comprar", width=20, height=2)
+    button_premium = ctk.CTkButton(frame_3, text="Comprar", width=20, height=2,
+        command=lambda: functions(choose_sit(indice, window_buy, indices, peoples)))
+    
     button_premium.grid(row=1, column=0)
 
     window_buy.mainloop()
@@ -355,7 +375,7 @@ def buy(indice, window, indices, peoples):
 # Usuario escoge asiento solo si es premium
 
 
-def choose_sit(indice=None, window=None, indices=None):
+def choose_sit(indice, window, indices, peoples):
     if window is not None:
         window.destroy()
 
@@ -379,22 +399,27 @@ def choose_sit(indice=None, window=None, indices=None):
     frame_sits = ctk.CTkFrame(window_buy)
     frame_sits.place(relx=0.5, rely=0.1, anchor="n")
     matriz = []
+    sits = []
+    contador = 0
+    fc.reiniciar()
+    peoples = int(peoples)
     for i in range(12):
         buttons = []
         for j in range(6):
             button_sit = ctk.CTkButton(
-                frame_sits, text=f"{chr(65+j)}{i+1}", width=5, height=2)
+                frame_sits, text=f"{chr(65+j)}{i+1}", width=5, height=2,
+                command=lambda i=i,j=j: fc.premium(i,j,matriz, indice, peoples, window_buy,df["ValorMax"].values[indice]))
             button_sit.grid(row=i, column=j, padx=10, pady=10)
             text = c.getnums(button_sit.cget("text"))
             if text >= 9:
                 button_sit.configure(fg_color="green", state="disabled")
-            elif text >= 5:
+            elif text >=  5:
                 button_sit.configure(fg_color="red", state="disabled")
             else:
                 button_sit.configure(fg_color="blue")
             buttons.append(button_sit)
         matriz.append(buttons)
-
+    fc.actualizar(matriz, indice)
     # Frame label categorías
     frame_premium = ctk.CTkFrame(window_buy)
     label_premium = ctk.CTkLabel(frame_premium, text="Asientos premium")
@@ -456,9 +481,16 @@ def record_check_in(window, peoples, indice, sits, price):
     # hora de salida
     frame_hours_f = ctk.CTkFrame(
         window_record, fg_color="grey26", border_color="green", border_width=2)
-    frame_hours_f.grid(row=0, column=0)
+    frame_hours_f.grid(row=0, column=0, padx=10, pady=10)
     label_hours = ctk.CTkLabel(frame_hours_f, text="Información de vuelo")
-    label_hours.grid(row=0, column=0)
+    label_hours.grid(row=0, column=0, padx=10, pady=10)
+    label_people = ctk.CTkLabel(frame_hours_f, text=f"Numero de personas: {peoples}")
+    label_people.grid(row=1, column=0, padx=10, pady=10)
+    label_price_total = ctk.CTkLabel(frame_hours_f, text=f"Precio total: {price}")
+    label_price_total.grid(row=2, column=0, padx=10, pady=10)
+    label_unit_price = ctk.CTkLabel(frame_hours_f, text=f"Precio unitario: {price/peoples}")
+    label_unit_price.grid(row=3, column=0, padx=10, pady=10)
+    
 
     datas = []
     for i in range(peoples):
@@ -601,11 +633,11 @@ def tickets(window, peoples, datas, sits, indice):
     
     frame_scroll = ctk.CTkScrollableFrame(window_tickets, width=600, height=300)
     frame_scroll.grid(row=0, column=0)
+    combinacion = fc.randomiser(peoples, indice)
     for i in range(peoples):
             frame_ticket = ctk.CTkFrame(frame_scroll, fg_color="grey26", border_color="green", border_width=2)
             frame_ticket.grid(row=i, column=0, padx=10, pady=30)
-            combinacion = fc.randomiser()
-            label = ctk.CTkLabel(frame_ticket, text=f"Pase de abordaje")
+            label = ctk.CTkLabel(frame_ticket, text="Pase de abordaje")
             label.grid(row=0, column=0, padx=10, pady=10)
             label_name = ctk.CTkLabel(frame_ticket, text=f"Nombre: {datas[i][1]} {datas[i][2]}")
             label_name.grid(row=1, column=0, padx=10, pady=10)
@@ -619,7 +651,7 @@ def tickets(window, peoples, datas, sits, indice):
             label_hour1.grid(row=3, column=2 , padx=10, pady=10)
             label_fly = ctk.CTkLabel(frame_ticket, text=f"Vuelo: {df['Vuelo'].values[indice]}")
             label_fly.grid(row=1, column=1, padx=10, pady=10)
-            label_code = ctk.CTkLabel(frame_ticket, text=f"Código de abordaje: {combinacion}")
+            label_code = ctk.CTkLabel(frame_ticket, text=f"Código de abordaje: {combinacion[i]}")
             label_code.grid(row=4, column=0, padx=10, pady=10)
     window_tickets.mainloop()
             
@@ -630,3 +662,4 @@ def tickets(window, peoples, datas, sits, indice):
 
 if __name__ == '__main__':
     functions(fly())
+    # choose_sit()
