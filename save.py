@@ -98,3 +98,26 @@ def search_high (filter,days,indices,window,peoples,buttons,frame):
         buttons.append(button)
         rows += 1
     return buttons
+
+def get_last():
+    df = pd.read_csv("base.csv")
+    num = df.tail(1)
+    return num["numero_vuelo"]+1
+
+
+def fly(vuelo):
+    if os.path.isfile(f'{vuelo}.csv'):
+        if os.path.isfile("base.csv"):
+            df = pd.read_csv("base.csv")
+            if vuelo in df["vuelo"].values:
+                return 
+        df = pd.read_csv(f'{vuelo}.csv')
+        num = get_last()
+        data = {"numero_vuelo":[num],"archivo":[f'{vuelo}.csv'], "vuelo":[vuelo]}
+        df1 = pd.DataFrame(data)
+        if not os.path.isfile("base.csv"):
+            df1.to_csv("base.csv", index=False, sep=",", header=True, mode='a')
+        else:
+            df1.to_csv("base.csv", mode='a', header=False, index=False, sep=",")
+    else:
+        pass

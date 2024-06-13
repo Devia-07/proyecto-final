@@ -7,7 +7,7 @@ import pycountry
 import os
 import save as sv
 import main as mn
-
+import funciones_categorias as fc
 
 def conditions_record(peoples, quantity, datas, sits, index, window):
     df = pd.read_csv('dato_vuelo.csv')
@@ -89,6 +89,8 @@ def conditions_pay(window_pay, pay_client, peoples, datas, sits, indice):
             mb.showerror("pago", "el numero de tarjeta debe ser un numero")
             return
     sv.record_base(peoples, datas, sits, indice, window_pay, pay_client)
+    df = pd.read_csv("dato_vuelo.csv")
+    sv.fly(df["Vuelo"][indice])
     mn.tickets(window_pay, peoples, datas, sits, indice)
 
 
