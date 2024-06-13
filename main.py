@@ -10,6 +10,9 @@ import datetime
 from tkcalendar import Calendar
 import customtkinter as ctk
 
+def functions(func):
+    func
+
 # def return_menu(window):
 #     window.destroy()
 #     menu()

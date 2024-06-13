@@ -5,6 +5,7 @@ import datetime
 import re
 import pycountry
 import os
+import save as sv
 
 def conditions_record(gender,name,lastname,id,telephone,nationality,email,birthday,attendance):
     if  os.path.isfile("registro_usuarios.csv"):
@@ -91,18 +92,10 @@ def lista_vuelos():#funcion que retorna la lista de vuelos
     fecha = set(df['Fecha']) #se obtiene la columna "Fecha"
     return origen, destino, fecha
 
-<<<<<<< Updated upstream
         
 def conditions_search(origin,destination,passenger,going):
     if origin=="" or destination=="" or passenger=="":
         mb.showerror("error","rellene todas las casillas") 
-=======
-
-def conditions_search(destination, origin, passenger, going, window, peoples):
-    if origin == "" or destination == "" or passenger == "":
-        mb.showerror("error", "rellene todas las casillas")
-        return
->>>>>>> Stashed changes
     elif not int(passenger.isdigit()):
         mb.showerror("error","el numero de pasajeros debe ser un numero")
     elif origin==destination or destination==origin:
@@ -125,8 +118,6 @@ def search(origin,destination):
     else:
         return indices
 
-<<<<<<< Updated upstream
-=======
 
 def filter_search(filtrar,days,indices,window,peoples,buttons,frame):
     if filtrar == "":
@@ -142,7 +133,6 @@ def filter_search(filtrar,days,indices,window,peoples,buttons,frame):
     
 
 #busqueda de horas
->>>>>>> Stashed changes
 def search_hours(indice):
     df=pd.read_csv("dato_vuelo.csv",sep=",")
     horas=[]

@@ -1,25 +1,12 @@
 import pandas as pd 
 import os
-<<<<<<< Updated upstream
-=======
 from tkinter import messagebox as mb
 import main as mn
 import customtkinter as ctk
->>>>>>> Stashed changes
 
-def record_base(gender,name,lastname,id,telephone,nationality,email,birthday,attendance):
+# def profits(client,indice):
+#     w
 
-    # utiliza .strip() para eliminar espacios en blanco al inicio y al final de cada cadena y guardar los daots sin espacio
-    
-    data={"documento":[id.strip()],"nombre":[name.strip()],"apellido":[lastname.strip()],"telefono":[telephone.strip()],"nacionalidad":[nationality.strip()], "correo":[email.strip()],"fecha de nacimiento":[birthday.strip()],"genero":[gender.strip()],"asistencia":[attendance.strip()]}
-    df=pd.DataFrame(data)
-    if not os.path.isfile("registro_usuarios.csv"):
-        df.to_csv("registro_usuarios.csv",index=False,header=True,mode="a",sep=";")
-    else:
-        df.to_csv("registro_usuarios.csv",index=False,header=False,mode="a",sep=";")
-
-<<<<<<< Updated upstream
-=======
 def record_base(peoples, datas, sits, indice, window, pay_client):
     df = pd.read_csv('dato_vuelo.csv')
     vuelo = df["Vuelo"][indice]
@@ -115,4 +102,15 @@ def search_high (filter,days,indices,window,peoples,buttons,frame):
         
         
         
->>>>>>> Stashed changes
+
+def record_base(gender,name,lastname,id,telephone,nationality,email,birthday,attendance):
+
+    # utiliza .strip() para eliminar espacios en blanco al inicio y al final de cada cadena y guardar los daots sin espacio
+    
+    data={"documento":[id.strip()],"nombre":[name.strip()],"apellido":[lastname.strip()],"telefono":[telephone.strip()],"nacionalidad":[nationality.strip()], "correo":[email.strip()],"fecha de nacimiento":[birthday.strip()],"genero":[gender.strip()],"asistencia":[attendance.strip()]}
+    df=pd.DataFrame(data)
+    if not os.path.isfile("registro_usuarios.csv"):
+        df.to_csv("registro_usuarios.csv",index=False,header=True,mode="a",sep=";")
+    else:
+        df.to_csv("registro_usuarios.csv",index=False,header=False,mode="a",sep=";")
+
