@@ -106,15 +106,14 @@ def flight_list():  # funcion que retorna la lista de vuelos
     df = pd.read_csv("dato_vuelo.csv", sep=",")  # se lee el archivo csv
     origen = set(df['CiudadOrigen'])  # se obtiene la columna "CiudadOrigen"
     destino = set(df["CiudadDestino"])  # se obtiene la columna "CiudadDestino"
-    fecha = set(df['Fecha'])  # se obtiene la columna "Fecha"
-    return origen, destino, fecha
+    return origen, destino
 
 
-def conditions_search(destination, origin, passenger, going, window, peoples):
-    if origin == "" or destination == "" or passenger == "":
+def conditions_search(destination, origin, going, window, peoples):
+    if origin == "" or destination == "" or peoples == "":
         mb.showerror("error", "rellene todas las casillas")
         return
-    elif not int(passenger.isdigit()):
+    elif not int(peoples.isdigit()):
         mb.showerror("error", "el numero de pasajeros debe ser un numero")
         return
     elif origin == destination or destination == origin:
@@ -125,8 +124,13 @@ def conditions_search(destination, origin, passenger, going, window, peoples):
         mb.showerror("error", "rellene la casilla de ida")
         return
     else:
+<<<<<<< HEAD
         index = search(origin, destination)
         if index == None:
+=======
+        indices = search(origin, destination)
+        if indices == []:
+>>>>>>> d372145c775a73668decc155585e5074cf1dd041
             mb.showerror("error", "no hay vuelos disponibles")
             return
         else:
@@ -142,6 +146,7 @@ def search(origin, destination):
             dates_june.append(date.strftime("%Y-%m-%d"))
     print(dates_june)
     df = pd.read_csv("dato_vuelo.csv", sep=",")
+<<<<<<< HEAD
     for i in range(len(df)):
         if destination in df["CiudadDestino"].values[i] and origin in df["CiudadOrigen"].values[i] and df["Fecha"].values[i] in dates_june:
             index.append(i)
@@ -160,6 +165,37 @@ def search_hours(index):
         if df['Fecha'].values[i] == df['Fecha'].values[index] and df['CiudadOrigen'].values[i] == df['CiudadOrigen'].values[index] and df['CiudadDestino'].values[i] == df['CiudadDestino'].values[index]:
             hours.append(i)
     return hours
+=======
+    df_filtered = df.loc[(df["CiudadOrigen"] == origin) & (df["CiudadDestino"] == destination) & (df["Fecha"].isin(dates_june))]
+    for i in df_filtered.index:
+        indices.append(i)
+    return indices
+
+
+def filter_search(filtrar,days,indices,window,peoples,buttons,frame):
+    if filtrar == "":
+        mb.showerror("error", "rellene la casilla de filtro")
+        return
+    elif filtrar == "barato":
+        buttons = sv.search_low(filtrar,days,indices,window,peoples,buttons,frame)
+    elif filtrar == "caro":
+        buttons = sv.search_high(filtrar,days,indices,window,peoples,buttons,frame)
+    elif filtrar == "medio":
+        buttons =sv.search_medium(filtrar,days,indices,window,peoples,buttons,frame)
+        
+    
+
+#busqueda de horas
+def search_hours(indice):
+    df = pd.read_csv("dato_vuelo.csv", sep=",")
+    horas = []
+    filtered = df.loc[(df["Fecha"] == df["Fecha"].values[indice]) & 
+                    (df["CiudadOrigen"] == df["CiudadOrigen"].values[indice]) & 
+                    (df["CiudadDestino"] == df["CiudadDestino"].values[indice])]
+    for i in filtered.index:
+        horas.append(i)
+    return horas
+>>>>>>> d372145c775a73668decc155585e5074cf1dd041
 
 
 def getnums(text):  # funcion que retorna los numeros de un string
@@ -168,3 +204,4 @@ def getnums(text):  # funcion que retorna los numeros de un string
         if text[i].isdigit():  # si el caracter es un digito
             nums.append(text[i])  # se agrega a la lista
     return int("".join(nums))  # se retorna la lista de numeros
+ 
