@@ -94,7 +94,7 @@ def fly(window_search=None):
         frame_button_search, text="BUSCAR",
         command=lambda: c.conditions_search(
             cities_destination.get(), cities_origin.get(),
-            entry_passenger.get(), going.get(), window_fly,
+            going.get(), window_fly,
             entry_passenger.get()),
         width=90, height=40
     )

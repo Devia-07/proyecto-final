@@ -164,6 +164,20 @@ def search(origin, destination):
         return indices
 
 
+def filter_search(filtrar,days,indices,window,peoples,buttons,frame):
+    if filtrar == "":
+        mb.showerror("error", "rellene la casilla de filtro")
+        return
+    elif filtrar == "barato":
+        buttons = sv.search_low(filtrar,days,indices,window,peoples,buttons,frame)
+    elif filtrar == "caro":
+        buttons = sv.search_high(filtrar,days,indices,window,peoples,buttons,frame)
+    elif filtrar == "medio":
+        buttons =sv.search_medium(filtrar,days,indices,window,peoples,buttons,frame)
+        
+    
+
+#busqueda de horas
 def search_hours(indice):
     df = pd.read_csv("dato_vuelo.csv", sep=",")
     horas = []
