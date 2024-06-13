@@ -237,13 +237,16 @@ def search_fly(indices, window_fly, peoples):
     label_filter = ctk.CTkLabel(frame_filter, text="Filtrar precios :")
     label_filter.grid(row=0, column=0)
     filter = ctk.CTkComboBox(frame_filter, values=["barato","medio","caro"], state="readonly")
+    filter.set("precio")
     filter.grid(row=0, column=1)
+    
     dates_june = []
     for day in range(1, 31):
         date = datetime.datetime(2024, 6, day)
         if date.weekday() in [2, 3]:  # 2 es miércoles, 3 es jueves
             dates_june.append(date.strftime("%Y-%m-%d"))
     filter_days = ctk.CTkComboBox(frame_filter, values=dates_june, state="readonly")
+    filter_days.set("dias")
     # filtrar los dias de junio 
     filter_days.grid(row=0, column=2)
     buttons = []
@@ -616,10 +619,10 @@ def tickets(window, peoples, datas, sits, indice):
     
     frame_scroll = ctk.CTkScrollableFrame(window_tickets, width=600, height=300)
     frame_scroll.grid(row=0, column=0)
+    combinacion = fc.randomiser(peoples, indice)
     for i in range(peoples):
             frame_ticket = ctk.CTkFrame(frame_scroll, fg_color="grey26", border_color="green", border_width=2)
             frame_ticket.grid(row=i, column=0, padx=10, pady=30)
-            combinacion = fc.randomiser(peoples, indice)
             label = ctk.CTkLabel(frame_ticket, text="Pase de abordaje")
             label.grid(row=0, column=0, padx=10, pady=10)
             label_name = ctk.CTkLabel(frame_ticket, text=f"Nombre: {datas[i][1]} {datas[i][2]}")
@@ -634,7 +637,7 @@ def tickets(window, peoples, datas, sits, indice):
             label_hour1.grid(row=3, column=2 , padx=10, pady=10)
             label_fly = ctk.CTkLabel(frame_ticket, text=f"Vuelo: {df['Vuelo'].values[indice]}")
             label_fly.grid(row=1, column=1, padx=10, pady=10)
-            label_code = ctk.CTkLabel(frame_ticket, text=f"Código de abordaje: {combinacion}")
+            label_code = ctk.CTkLabel(frame_ticket, text=f"Código de abordaje: {combinacion[i]}")
             label_code.grid(row=4, column=0, padx=10, pady=10)
     window_tickets.mainloop()
             

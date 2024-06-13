@@ -86,16 +86,20 @@ def premium(indice):
     pass
 
 def randomiser(peoples, indice):
-    # df = pd.read_csv('dato_vuelo.csv')
-    # vuelo = df["Vuelo"][indice]
-    # df1 = pd.read_csv(f"{vuelo}.csv")
-    # filter = df1.loc(df1.tail(peoples))
-    letras = [chr(x) for x in range(65, 91)]
+    df = pd.read_csv('dato_vuelo.csv')
+    vuelo = df["Vuelo"][indice]
+    lista_nombres = []
+    if os.path.isfile(f'{vuelo}.csv'):
+        df1 = pd.read_csv(f"{vuelo}.csv")
+        lista_nombres = df1["nombre"].tail(peoples).tolist()
+    letters = [chr(x) for x in range(65, 91)]
     nums = [str(x) for x in range(0, 10)]
-    a = rd.choice(letras)
-    combination = a + "-"
-    for i in range(5):
-        a = rd.choice(letras + nums)
-        combination += a
-    return combination
-
+    all_codes = letters + nums 
+    codigos = []
+    for i in range(peoples):
+        letter = lista_nombres[i]
+        if letter not in codigos:
+            first_letter = letter[0].upper()
+            codigo = first_letter + "-" + rd.choice(all_codes ) + rd.choice(all_codes) + rd.choice(all_codes) + rd.choice(all_codes) + rd.choice(all_codes)
+            codigos.append(codigo)
+    return codigos

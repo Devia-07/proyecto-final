@@ -152,11 +152,9 @@ def search(origin, destination):
             dates_june.append(date.strftime("%Y-%m-%d"))
     print(dates_june)
     df = pd.read_csv("dato_vuelo.csv", sep=",")
-    for i in range(len(df)):
-        if destination == df["CiudadDestino"].values[i] and origin == df["CiudadOrigen"].values[i] and df["Fecha"].values[i] in dates_june:
-            indices.append(i)
-        else:
-            continue
+    df_filtered = df.loc[(df["CiudadOrigen"] == origin) & (df["CiudadDestino"] == destination) & (df["Fecha"].isin(dates_june))]
+    for i in df_filtered.index:
+        indices.append(i)
     return indices
 
 
@@ -189,3 +187,4 @@ def getnums(text):  # funcion que retorna los numeros de un string
         if text[i].isdigit():  # si el caracter es un digito
             nums.append(text[i])  # se agrega a la lista
     return int("".join(nums))  # se retorna la lista de numeros
+ 
