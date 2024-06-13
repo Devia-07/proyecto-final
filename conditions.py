@@ -87,30 +87,17 @@ def conditions_pay(window_pay, pay_client, peoples, datas, sits, indice):
     mn.tickets(window_pay, peoples, datas, sits, indice)
 
 
-# def condition_login(id, email):  # funcion que valida el login
-#     if os.path.isfile("registro_usuarios.csv"):  # si el archivo csv existe
-#         df = pd.read_csv("registro_usuarios.csv")  # se lee el archivo csv
-#         # si los datos coinciden
-#         if int(id) in df["documento"].values and email in df["correo"].values:
-#             mb.showinfo("login", "login exitoso")
-#         else:
-#             mb.showerror("login", "login fallido los datos no coinciden")
-
-#     if id == "" or email == "":
-#         # si alguna casilla esta vacia
-#         mb.showerror("login", "rellene todas las casillas")
-#     else:
-#         if os.path.isfile("registro_usuarios.csv"):  # si el archivo csv existe
-#             df = pd.read_csv("registro_usuarios.csv")  # se lee el archivo csv
-#             # si los datos coinciden
-#             if int(id) in df["documento"].values and email in df["correo"].values:
-#                 mb.showinfo("login", "login exitoso")
-#             else:
-#                 # si los datos no coinciden
-#                 mb.showerror("login", "login fallido los datos no coinciden")
-#         else:
-#             # si no hay usuarios registrados
-#             mb.showerror("login", "login fallido no hay usuarios registrados")
+def condition_check_in(code, dni, window_check_in, index):  # funcion que valida el login
+    if os.path.isfile("dato_vuelo.csv"):  # si el archivo csv existe
+        df = pd.read_csv("dato_vuelo.csv")  # se lee el archivo csv
+        vuelo = df["Vuelo"][index]
+        df1 = pd.read_csv(f"{vuelo}.csv")
+    if code == "" or dni == "":
+        mb.showerror("login", "rellene todas las casillas")
+    elif code not in df1["codigo"].astype(str).values or dni not in df1["dni"].astype(str).values:
+        mb.showerror("login", "login fallido los datos no coinciden")
+    else:
+        mb.showinfo("login", "login exitoso")
 
 
 def lista_vuelos():  # funcion que retorna la lista de vuelos

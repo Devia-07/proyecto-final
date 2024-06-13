@@ -753,7 +753,32 @@ def tickets(window, peoples, datas, sits, indice):
             label_date.place(x = 330, y = 175)
     window_tickets.mainloop()
             
-            
+def check_in(index):
+    window_check_in = ctk.CTk()
+    window_check_in.geometry("400x500")
+    window_check_in.title("Check in")
+    window_check_in.configure(bg="#EBEBEB")  # Set background color
+    ctk.set_appearance_mode("light")
+    ctk.set_default_color_theme("blue")
+    frame_check_in = ctk.CTkFrame(window_check_in, fg_color="#EBEBEB")
+    frame_check_in.place(relx=0.5, rely=0.5, anchor="center")
+    image_path = "imagenes\\a airplane with the.jpg"
+    plane_image = Image.open(image_path).resize((150, 150))
+    photo = ImageTk.PhotoImage(plane_image)
+    label = ctk.CTkLabel(frame_check_in, text="", image=photo)
+    label.plane_image = photo
+    label.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
+    label_code = ctk.CTkLabel(frame_check_in, text="Codigo")
+    label_code.grid(row=1, column=0, padx=10, pady=10)
+    entry_code = ctk.CTkEntry(frame_check_in)
+    entry_code.grid(row=1, column=1, padx=10, pady=10)
+    label_dni = ctk.CTkLabel(frame_check_in, text="DNI")
+    label_dni.grid(row=2, column=0, padx=10, pady=10)
+    entry_dni = ctk.CTkEntry(frame_check_in)
+    entry_dni.grid(row=2, column=1, padx=10, pady=10)
+    button = ctk.CTkButton(frame_check_in, text="Realizar Check-in", command=lambda: c.condition_check_in(entry_code.get(), entry_dni.get(), window_check_in, index))
+    button.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
+    window_check_in.mainloop()            
                     
         
 
