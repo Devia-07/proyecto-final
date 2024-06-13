@@ -473,7 +473,8 @@ def buy(indice, window, indices, peoples):
     
     """)
     label_3.grid(row=0, column=0, padx=10, pady=10)
-    button_premium = ctk.CTkButton(frame_3, text="Comprar", width=100, height=60)
+    button_premium = ctk.CTkButton(frame_3, text="Comprar", width=100, height=60,
+        command=lambda: functions(choose_sit(indice, window_buy, indices, peoples)))
     button_premium.grid(row=1, column=0, padx=10, pady=10)
 
     window_buy.mainloop()
@@ -568,47 +569,21 @@ def record_check_in(window, peoples, indice, sits, price):
     label_fly1 = ctk.CTkLabel(frame_info_fly, text=f"Vuelo: {df['Vuelo'].values[indice]}", font=("Arial", 16))
     label_hour = ctk.CTkLabel(frame_info_fly, text=f"Hora de salida: {df['HoraSalida'].values[indice]}", font=("Arial", 16))
     label_hour1 = ctk.CTkLabel(frame_info_fly, text=f"Hora de llegada: {df['HoraLlegada'].values[indice]}", font=("Arial", 16))
-    label_price = ctk.CTkLabel(frame_info_fly, text=f"Precio: {price}", font=("Arial", 16))
+    label_price = ctk.CTkLabel(frame_info_fly, text=f"Precio Total: {price}", font=("Arial", 16))
+    label_price_total = ctk.CTkLabel(frame_info_fly, text=f"Precio Unitario: {price/peoples}", font=("Arial", 16))
+    
+    label_price_total.place(x =500,y = 100)
     label_fly1.place(x =50,y = 100)
     label_hour.place(x =50,y = 150)
-    label_hour1.place(x =450,y = 100)
+    label_hour1.place(x =300,y = 150)
     label_price.place(x =500,y = 150)
+    
+    
 
     # Frame de acompañantes con tamaño aumentado
     frame_acompanantes = ctk.CTkScrollableFrame(
-        window_record, fg_color="grey26", border_color="green", border_width=3, width=1000, height=300)
-    frame_acompanantes.grid(row=1, column=0)
-
-    # frame de información de vuelo
-    frame_info_fly = ctk.CTkFrame(window_record, fg_color="grey26",
-                                  border_color="green", border_width=2, width=500, height=300)
-    frame_info_fly.grid(row=0, column=0, padx=10, pady=30)
-    label_fly = ctk.CTkLabel(frame_info_fly, text="Información de vuelo")
-    label_fly.grid(row=0, column=0)
-    label_fly1 = ctk.CTkLabel(frame_info_fly, text=f"Vuelo: {
-                              df['Vuelo'].values[indice]}")
-    label_hour = ctk.CTkLabel(frame_info_fly, text=f"Hora de salida: {
-                              df['HoraSalida'].values[indice]}")
-    label_hour1 = ctk.CTkLabel(frame_info_fly, text=f"Hora de llegada: {
-                               df['HoraLlegada'].values[indice]}")
-    label_price = ctk.CTkLabel(frame_info_fly, text=f"Precio: {price}")
-    label_fly1.grid(row=1, column=0)
-    label_hour.grid(row=2, column=0)
-    label_hour1.grid(row=3, column=0)
-    label_price.grid(row=4, column=0)
-
-    # hora de salida
-    frame_hours_f = ctk.CTkFrame(
-        window_record, fg_color="grey26", border_color="green", border_width=2)
-    frame_hours_f.grid(row=0, column=0, padx=10, pady=10)
-    label_hours = ctk.CTkLabel(frame_hours_f, text="Información de vuelo")
-    label_hours.grid(row=0, column=0, padx=10, pady=10)
-    label_people = ctk.CTkLabel(frame_hours_f, text=f"Numero de personas: {peoples}")
-    label_people.grid(row=1, column=0, padx=10, pady=10)
-    label_price_total = ctk.CTkLabel(frame_hours_f, text=f"Precio total: {price}")
-    label_price_total.grid(row=2, column=0, padx=10, pady=10)
-    label_unit_price = ctk.CTkLabel(frame_hours_f, text=f"Precio unitario: {price/peoples}")
-    label_unit_price.grid(row=3, column=0, padx=10, pady=10)
+        window_record, fg_color="white", border_color="green", border_width=0, width=1000, height=300)
+    frame_acompanantes.place(x=250, y=400)
     
 
     datas = []
@@ -695,8 +670,7 @@ def record_check_in(window, peoples, indice, sits, price):
 # ARREGLAR ESTA FUNCION PARA HACER LA CONFIRMACION DE VUELO (CHECK IN)
 
 
-import pandas as pd
-import customtkinter as ctk
+
 
 def pay_sits(window, peoples, datas, sits, indice):
     window.destroy()
@@ -751,31 +725,32 @@ def tickets(window, peoples, datas, sits, indice):
     window_tickets = ctk.CTk()
     window_tickets.geometry("1000x1000")
     window_tickets.title("Tickets")
-    ctk.set_appearance_mode("dark")
-    ctk.set_default_color_theme("blue")
-    
     frame_scroll = ctk.CTkScrollableFrame(window_tickets, width=600, height=300)
-    frame_scroll.grid(row=0, column=0)
-    combinacion = fc.randomiser(peoples, indice)
+    frame_scroll.place(relx=0.5, rely=0.5, anchor="center")
+    combinacion = fc.randomiser(peoples,indice)
     for i in range(peoples):
-            frame_ticket = ctk.CTkFrame(frame_scroll, fg_color="grey26", border_color="green", border_width=2)
-            frame_ticket.grid(row=i, column=0, padx=10, pady=30)
-            label = ctk.CTkLabel(frame_ticket, text="Pase de abordaje")
-            label.grid(row=0, column=0, padx=10, pady=10)
-            label_name = ctk.CTkLabel(frame_ticket, text=f"Nombre: {datas[i][1]} {datas[i][2]}")
-            label_name.grid(row=1, column=0, padx=10, pady=10)
-            label_origin = ctk.CTkLabel(frame_ticket, text=f"Origen: {df['CiudadOrigen'].values[indice]}")
-            label_origin.grid(row=2, column=0, padx=10, pady=10)
-            label_destiny = ctk.CTkLabel(frame_ticket, text=f"Destino: {df['CiudadDestino'].values[indice]}")
-            label_destiny.grid(row=3, column=0, padx=10, pady=10)
-            label_hour = ctk.CTkLabel(frame_ticket, text=f"Hora de salida: {df['HoraSalida'].values[indice]}")
-            label_hour.grid(row=3, column=1 , padx=10, pady=10)
-            label_hour1 = ctk.CTkLabel(frame_ticket, text=f"Hora de llegada: {df['HoraLlegada'].values[indice]}")
-            label_hour1.grid(row=3, column=2 , padx=10, pady=10)
-            label_fly = ctk.CTkLabel(frame_ticket, text=f"Vuelo: {df['Vuelo'].values[indice]}")
-            label_fly.grid(row=1, column=1, padx=10, pady=10)
-            label_code = ctk.CTkLabel(frame_ticket, text=f"Código de abordaje: {combinacion[i]}")
-            label_code.grid(row=4, column=0, padx=10, pady=10)
+            frame_ticket = ctk.CTkFrame(frame_scroll, fg_color="White", border_color="green", border_width=2)
+            frame_ticket.grid(row=i, column=0, padx=10, pady=10)
+            image_ticket = ctk.CTkImage(dark_image=Image.open("imagenes/ticket_vuelo.png"), size=(600, 300))
+            label_ticket = ctk.CTkLabel(frame_ticket, image=image_ticket,text ="")
+            label_ticket.grid(row=0, column=0)
+            
+            label_name = ctk.CTkLabel(frame_ticket, text=f"Nombre: {datas[i][1]} {datas[i][2]}", text_color="black")
+            label_name.place(x = 98, y = 100)
+            label_origin = ctk.CTkLabel(frame_ticket, text=f"{df['CiudadOrigen'].values[indice]}", text_color="black")
+            label_origin.place(x = 98, y = 170)
+            label_destiny = ctk.CTkLabel(frame_ticket, text=f"{df['CiudadDestino'].values[indice]}", text_color="black")
+            label_destiny.place(x = 98, y = 235)
+            label_hour = ctk.CTkLabel(frame_ticket, text=f"{df['HoraSalida'].values[indice]}", text_color="black")
+            label_hour.place(x = 380, y = 235)
+            label_hour1 = ctk.CTkLabel(frame_ticket, text=f"{df['HoraLlegada'].values[indice]}", text_color="black")
+            label_hour1.place(x = 450, y = 235)
+            label_fly = ctk.CTkLabel(frame_ticket, text=f"{df['Vuelo'].values[indice]}", text_color="black")
+            label_fly.place(x = 230, y = 175)
+            label_code = ctk.CTkLabel(frame_ticket, text=f"Código de abordaje: {combinacion[i]}", text_color="black")
+            label_code.place(x = 98, y = 265)
+            label_date = ctk.CTkLabel(frame_ticket, text=f"{df['Fecha'].values[indice]}", text_color="black")
+            label_date.place(x = 330, y = 175)
     window_tickets.mainloop()
             
             

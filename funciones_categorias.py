@@ -91,14 +91,14 @@ def reiniciar():
     contador = 0
     sits = []
 
-def actualizar( matriz, indice):
+def actualizar(matriz, indice):
     df = pd.read_csv('dato_vuelo.csv')
     vuelo = df["Vuelo"][indice]
     if os.path.isfile(f'{vuelo}.csv'):
         df1 = pd.read_csv(f'{vuelo}.csv')
         for h in range(len(df1)):
-            for i in (5):
-                for j in range(12):
+            for i in range(len(matriz)):  # Ajustar al tamaño real de 'matriz'
+                for j in range(len(matriz[i])):  # Ajustar al tamaño real de cada fila de 'matriz'
                     if df1["asiento"][h] == matriz[i][j].cget("text"):
                         matriz[i][j].configure(fg_color="yellow")
                         matriz[i][j].configure(command=lambda: mensaje())

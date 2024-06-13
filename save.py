@@ -41,8 +41,8 @@ def search_low (filter,day,indices,window,peoples,buttons,frame):
         mensaje += f"Hora salida: {df_filtered['HoraSalida'][i]} \n"
         mensaje += f"Hora llegada: {df_filtered['HoraLlegada'][i]} \n"
         mensaje += f"Valor: {df_filtered['ValorMin'][i]} \n"
-        button = ctk.CTkButton(frame, text=mensaje, command=lambda i=i: mn.info_buy(i,window,indices,peoples))
-        button.grid(row=rows, column=0)
+        button = ctk.CTkButton(frame, text=mensaje, command=lambda i=i: mn.info_buy(i,window,indices,peoples),width=900,height=150,font = ("Arial", 20))
+        button.grid(row=rows, column=0, padx=20, pady=10)
         buttons.append(button)
         rows += 1
     return buttons
@@ -66,8 +66,8 @@ def search_medium (filter,days,indices,window,peoples,buttons,frame):
         mensaje += f"Hora salida: {df_filtered['HoraSalida'][i]} \n"
         mensaje += f"Hora llegada: {df_filtered['HoraLlegada'][i]} \n"
         mensaje += f"Valor: {df_filtered['ValorMedio'][i]} \n"
-        button = ctk.CTkButton(frame, text=mensaje, command=lambda i=i: mn.info_buy(i,window,indices,peoples))
-        button.grid(row=rows, column=0)
+        button = ctk.CTkButton(frame, text=mensaje, command=lambda i=i: mn.info_buy(i,window,indices,peoples),width=900,height=150,font=("Arial", 20))
+        button.grid(row=rows, column=0, padx=20, pady=10)
         buttons.append(button)
         rows += 1
     return buttons
@@ -93,8 +93,8 @@ def search_high (filter,days,indices,window,peoples,buttons,frame):
         mensaje += f"Hora salida: {df_filtered['HoraSalida'][i]} \n"
         mensaje += f"Hora llegada: {df_filtered['HoraLlegada'][i]} \n"
         mensaje += f"Valor: {df_filtered['ValorMax'][i]} \n"
-        button = ctk.CTkButton(frame, text=mensaje, command=lambda i=i: mn.info_buy(i,window,indices,peoples))
-        button.grid(row=rows, column=0)
+        button = ctk.CTkButton(frame, text=mensaje, command=lambda i=i: mn.info_buy(i,window,indices,peoples),width=900,height=150,font=("Arial", 20))
+        button.grid(row=rows, column=0, padx=20, pady=10)
         buttons.append(button)
         rows += 1
     return buttons
