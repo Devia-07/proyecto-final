@@ -125,31 +125,39 @@ def premium(row, col, matriz, indice, peoples, window, price):
 
 # funcion para randomizar el codigo alpha numerico
 def randomiser(peoples, indice):
+    # Leer el archivo principal
     df = pd.read_csv('dato_vuelo.csv')
     vuelo = df["Vuelo"][indice]
+
     lista_nombres = []
     if os.path.isfile(f'{vuelo}.csv'):
         df1 = pd.read_csv(f"{vuelo}.csv")
         lista_nombres = df1["nombre"].tail(peoples).tolist()
+
+    # Generar el conjunto de caracteres y números
     letters = [chr(x) for x in range(65, 91)]
     nums = [str(x) for x in range(0, 10)]
     all_codes = letters + nums
     rd.shuffle(all_codes)
+
     codigos = []
     for i in range(peoples):
         letter = lista_nombres[i]
         if letter not in codigos:
             first_letter = letter[0].upper()
-            codigo = first_letter + "-" + rd.choice(all_codes) + rd.choice(
-                all_codes) + rd.choice(all_codes) + rd.choice(all_codes) + rd.choice(all_codes)
+            codigo = first_letter + "-" + ''.join(rd.choices(all_codes, k=5))
             codigos.append(codigo)
-    filtered = df1.tail(peoples)
 
-    for i in range(min(len(filtered), len(codigos))):
-        data = {"codigo": [codigos[i]]}
-        df3 = pd.DataFrame(data)
-        df2 = pd.concat([filtered, df3], axis=1)
-        df2.to_csv(f"{vuelo}.csv", index=False, sep=",", mode="w")
-    codes = pd.read_csv(f"{vuelo}.csv")
-    codes = codes["codigo"].tail(peoples).tolist()
+    # Filtrar los últimos 'peoples' registros
+    filtered = df1.tail(peoples)
+    filtered = filtered.reset_index(drop=True)
+
+    # Crear y añadir la columna de códigos
+    filtered["codigo"] = codigos
+
+    # Guardar los datos actualizados
+    filtered.to_csv(f"{vuelo}.csv", index=False, sep=",")
+
+    # Leer el archivo actualizado y obtener los códigos generados
+    codes = pd.read_csv(f"{vuelo}.csv")["codigo"].tolist()
     return codes
