@@ -91,10 +91,18 @@ def lista_vuelos():#funcion que retorna la lista de vuelos
     fecha = set(df['Fecha']) #se obtiene la columna "Fecha"
     return origen, destino, fecha
 
+<<<<<<< Updated upstream
         
 def conditions_search(origin,destination,passenger,going):
     if origin=="" or destination=="" or passenger=="":
         mb.showerror("error","rellene todas las casillas") 
+=======
+
+def conditions_search(destination, origin, passenger, going, window, peoples):
+    if origin == "" or destination == "" or passenger == "":
+        mb.showerror("error", "rellene todas las casillas")
+        return
+>>>>>>> Stashed changes
     elif not int(passenger.isdigit()):
         mb.showerror("error","el numero de pasajeros debe ser un numero")
     elif origin==destination or destination==origin:
@@ -117,6 +125,24 @@ def search(origin,destination):
     else:
         return indices
 
+<<<<<<< Updated upstream
+=======
+
+def filter_search(filtrar,days,indices,window,peoples,buttons,frame):
+    if filtrar == "":
+        mb.showerror("error", "rellene la casilla de filtro")
+        return
+    elif filtrar == "barato":
+        buttons = sv.search_low(filtrar,days,indices,window,peoples,buttons,frame)
+    elif filtrar == "caro":
+        buttons = sv.search_high(filtrar,days,indices,window,peoples,buttons,frame)
+    elif filtrar == "medio":
+        buttons =sv.search_medium(filtrar,days,indices,window,peoples,buttons,frame)
+        
+    
+
+#busqueda de horas
+>>>>>>> Stashed changes
 def search_hours(indice):
     df=pd.read_csv("dato_vuelo.csv",sep=",")
     horas=[]

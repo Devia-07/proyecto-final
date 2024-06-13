@@ -180,8 +180,13 @@ def fly(window_search=None):
     label = ctk.CTkLabel(window_fly, text="Menu")
     label.grid(row=0, column=0)
 
-    # crear una lista de dias de junio
-    dates_june = [f"2024-06-{day:02d}" for day in range(1, 31)]
+    # Crear una lista de días de junio
+    dates_june = []
+    for day in range(1, 31):
+        date = datetime.datetime(2024, 6, day)
+        if date.weekday() in [2, 3]:  # 2 es miércoles, 3 es jueves
+            dates_june.append(date.strftime("%Y-%m-%d"))
+
     going = ctk.StringVar()
 
     # creacion de frame para los wigets de la busqueda
@@ -241,24 +246,64 @@ def search_fly(indices, window_fly):
     frame_label.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
     label = ctk.CTkLabel(frame_label, text=f"IDA: {df['CiudadDestino'].values[indices[0]]} desde {df['CiudadOrigen'].values[indices[0]]}")
     label.grid(row=0, column=0)
-    
-    # creacion de frame para los botones
-    frame_buttons = ctk.CTkFrame(window_search)
-    frame_buttons.configure(fg_color = "grey26")
-    frame_buttons.grid(row=1, column=0, padx=10, pady=10)
 
-    # creacion de  botones = []
+    # Crear frame con scrollbar para los botones
+    frame_buttons = ctk.CTkScrollableFrame(
+        window_search, width=500, height=200)
+    frame_buttons.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
+    frame_buttons.place(relx=0.5, rely=0.2, anchor="center")
+
+    # Crear botones dentro del frame con scrollbar
+    # Crear frame con scrollbar para los botones
+    frame_buttons = ctk.CTkScrollableFrame(
+        window_search, width=500, height=200)
+    frame_buttons.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
+    frame_buttons.place(relx=0.5, rely=0.2, anchor="center")
+    
+    #hacer un frame para filtrar la busqueda    
+    frame_filter = ctk.CTkFrame(window_search, fg_color="grey26")
+    frame_filter.grid(row=0, column=1, padx=10, pady=10, sticky="nw")
+    label_filter = ctk.CTkLabel(frame_filter, text="Filtrar precios :")
+    label_filter.grid(row=0, column=0)
+    filter = ctk.CTkComboBox(frame_filter, values=["barato","medio","caro"], state="readonly")
+    filter.grid(row=0, column=1)
+    dates_june = []
+    for day in range(1, 31):
+        date = datetime.datetime(2024, 6, day)
+        if date.weekday() in [2, 3]:  # 2 es miércoles, 3 es jueves
+            dates_june.append(date.strftime("%Y-%m-%d"))
+    filter_days = ctk.CTkComboBox(frame_filter, values=dates_june, state="readonly")
+    # filtrar los dias de junio 
+    filter_days.grid(row=0, column=2)
+    buttons = []
+    button_filter = ctk.CTkButton(frame_filter, text="Filtrar", command=lambda: c.filter_search(filter.get(),filter_days.get(), indices, window_search, peoples,buttons,frame_buttons))
+    button_filter.grid(row=0, column=3,padx=10, pady=10)
+
+    # Crear botones dentro del frame con scrollbar
     for i in indices:
-        mensaje= f"""vuelo:{df['Vuelo'].values[i]}
-        fecha:{df['Fecha'].values[i]}
-        valor:{df["ValorMin"].values[i]}"""
-        button = ctk.CTkButton(frame_buttons, text=f"{mensaje}", command=lambda i=i: info_buy(i, window_search, indices), width=20, height=2)
-        button.grid(row=1, column=i, padx=10, pady=10)
-    #cracion frame para el boton de regreso
-    frame_button_back = ctk.CTkFrame(window_search)
-    frame_button_back.configure(fg_color = "grey26")
-    frame_button_back.grid(row=2, column=0, padx=10, pady=10)
-    button_back = ctk.CTkButton(frame_button_back, text="VOLVER", command=lambda: fly(window_search), width=120, height= 60)
+        mensaje = f"""Vuelo: {df['Vuelo'].values[i]}
+        Fecha: {df['Fecha'].values[i]}
+        Desde COP: {df['ValorMin'].values[i]}"""
+        button = ctk.CTkButton(
+            frame_buttons, text=mensaje,
+            command=lambda i=i: functions(
+                info_buy(i, window_search, indices, peoples)),
+            width=200, height=50
+        )
+        button.grid(row=i, column=0, padx=10, pady=10)
+        buttons.append(button)
+
+        
+    # Crear frame para el botón de regreso
+    # Crear frame para el botón de regreso
+    frame_button_back = ctk.CTkFrame(window_search, fg_color="grey26")
+    frame_button_back.place(relx=0., rely=1, anchor="s")
+
+    button_back = ctk.CTkButton(
+        frame_button_back, text="VOLVER",
+        command=lambda: functions(fly(window_search)),
+        width=120, height=60
+    )
     button_back.grid(row=2, column=0, padx=10, pady=10)
     
     window_search.mainloop()
