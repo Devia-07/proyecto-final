@@ -117,15 +117,14 @@ def lista_vuelos():  # funcion que retorna la lista de vuelos
     df = pd.read_csv("dato_vuelo.csv", sep=",")  # se lee el archivo csv
     origen = set(df['CiudadOrigen'])  # se obtiene la columna "CiudadOrigen"
     destino = set(df["CiudadDestino"])  # se obtiene la columna "CiudadDestino"
-    fecha = set(df['Fecha'])  # se obtiene la columna "Fecha"
-    return origen, destino, fecha
+    return origen, destino
 
 
-def conditions_search(origin, destination, passenger, going, window, peoples):
-    if origin == "" or destination == "" or passenger == "":
+def conditions_search(destination, origin, going, window, peoples):
+    if origin == "" or destination == "" or peoples == "":
         mb.showerror("error", "rellene todas las casillas")
         return
-    elif not int(passenger.isdigit()):
+    elif not int(peoples.isdigit()):
         mb.showerror("error", "el numero de pasajeros debe ser un numero")
         return
     elif origin == destination or destination == origin:
@@ -137,7 +136,7 @@ def conditions_search(origin, destination, passenger, going, window, peoples):
         return
     else:
         indices = search(origin, destination)
-        if indices == None:
+        if indices == []:
             mb.showerror("error", "no hay vuelos disponibles")
             return
         else:
@@ -154,14 +153,11 @@ def search(origin, destination):
     print(dates_june)
     df = pd.read_csv("dato_vuelo.csv", sep=",")
     for i in range(len(df)):
-        if destination in df["CiudadDestino"].values[i] and origin in df["CiudadOrigen"].values[i] and df["Fecha"].values[i] in dates_june:
+        if destination == df["CiudadDestino"].values[i] and origin == df["CiudadOrigen"].values[i] and df["Fecha"].values[i] in dates_june:
             indices.append(i)
         else:
             continue
-    if len(indices) == 0:
-        mb.showerror("error", "no hay vuelos disponibles")
-    else:
-        return indices
+    return indices
 
 
 def filter_search(filtrar,days,indices,window,peoples,buttons,frame):

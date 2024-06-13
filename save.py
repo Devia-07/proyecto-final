@@ -30,7 +30,7 @@ def search_low (filter,day,indices,window,peoples,buttons,frame):
     df_filtered = df_filtered[df_filtered['Fecha'] == day]  # Filtra el DataFrame con los índices
     if df_filtered.empty:
         mb.showerror("error", "no hay vuelos disponibles ese dia")
-        returns
+        return
     df_filtered = df_filtered.sort_values(by='ValorMin',ascending=True)# Ordena el DataFrame filtrado
     rows = 0
     for i in df_filtered.index:  # Itera sobre los índices del DataFrame filtrado y ordenado
@@ -102,15 +102,3 @@ def search_high (filter,days,indices,window,peoples,buttons,frame):
         
         
         
-
-def record_base(gender,name,lastname,id,telephone,nationality,email,birthday,attendance):
-
-    # utiliza .strip() para eliminar espacios en blanco al inicio y al final de cada cadena y guardar los daots sin espacio
-    
-    data={"documento":[id.strip()],"nombre":[name.strip()],"apellido":[lastname.strip()],"telefono":[telephone.strip()],"nacionalidad":[nationality.strip()], "correo":[email.strip()],"fecha de nacimiento":[birthday.strip()],"genero":[gender.strip()],"asistencia":[attendance.strip()]}
-    df=pd.DataFrame(data)
-    if not os.path.isfile("registro_usuarios.csv"):
-        df.to_csv("registro_usuarios.csv",index=False,header=True,mode="a",sep=";")
-    else:
-        df.to_csv("registro_usuarios.csv",index=False,header=False,mode="a",sep=";")
-

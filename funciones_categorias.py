@@ -54,15 +54,15 @@ def diamond(indice, window, peoples, price):
     vuelo = df["Vuelo"][indice]
     if os.path.isfile(f'{vuelo}.csv'):
         df1 = pd.read_csv(f'{vuelo}.csv')
+    peoples = int(peoples)
     price = price * peoples
 
-    peoples = int(peoples)
     for i in range(peoples):
         lista = [chr(x) for x in range(65, 71)]
-        nums = [str(x) for x in range(1, 13)]
+        nums = [str(x) for x in range(5,9)]
         strings = []
         for h in range(len(lista)):
-            for j in range(0, 8, 1):
+            for j in range(4):
                 strings.append(lista[h]+nums[j])
         rd.shuffle(strings)
 
@@ -82,7 +82,14 @@ def diamond(indice, window, peoples, price):
         sits.append(a)
     mn.record_check_in(window, peoples, indice, sits, price)
 
-def randomiser():
+def premium(indice):
+    pass
+
+def randomiser(peoples, indice):
+    # df = pd.read_csv('dato_vuelo.csv')
+    # vuelo = df["Vuelo"][indice]
+    # df1 = pd.read_csv(f"{vuelo}.csv")
+    # filter = df1.loc(df1.tail(peoples))
     letras = [chr(x) for x in range(65, 91)]
     nums = [str(x) for x in range(0, 10)]
     a = rd.choice(letras)
@@ -91,3 +98,4 @@ def randomiser():
         a = rd.choice(letras + nums)
         combination += a
     return combination
+
