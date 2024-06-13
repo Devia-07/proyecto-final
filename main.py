@@ -1,9 +1,12 @@
+import tkinter as tk
 from tkinter import messagebox as mb
+from tkinter import PhotoImage
 from tkinter import ttk
 import pandas as pd
 import os
 import PIL as pil
 from PIL import ImageTk, Image, ImageOps
+
 
 import conditions as c
 import save as s
@@ -15,11 +18,15 @@ import funciones_categorias as fc
 import customtkinter as ctk
 
 
+ctk.set_appearance_mode("light")
+
 def functions(function):
     function
 
 
-def fly(window_search=None):
+def fly(window_search=None): 
+    
+    
     if window_search is not None:
         window_search.destroy()
 
@@ -28,11 +35,18 @@ def fly(window_search=None):
     # Creación de la ventana de menú fly
     window_fly = ctk.CTk()
     window_fly.title("Fly_Heaven")
-    window_fly.geometry("850x500")
+    window_fly.geometry("1850x1900+0+0")
+    
     window_fly.iconbitmap("fly_heaven.ico")
     label = ctk.CTkLabel(window_fly, text="")
     label = ctk.CTkLabel(window_fly, text="")
     label.grid(row=0, column=0)
+    
+    #imagen banner
+    image_logo = ctk.CTkImage(dark_image=Image.open(fr"imagenes\Heaven.png"), size=(200, 700))
+    image_logo = ctk.CTkLabel(window_fly, image=image_logo,text ="")
+    image_logo.place(x = 50, y = 40)
+    
 
     # Crear una lista de días de junio
     dates_june = []
@@ -49,30 +63,32 @@ def fly(window_search=None):
     going = ctk.StringVar()
 
     # Creación de frame para los widgets de la búsqueda
-    frame_busqueda = ctk.CTkFrame(window_fly, fg_color="grey26")
-    frame_busqueda.grid(row=0, column=2)
+    frame_busqueda = ctk.CTkFrame(window_fly, fg_color="DodgerBlue3")
+    
+    
+    frame_busqueda.place(x=400,y=50)
 
     # Creación de elementos de la pantalla de menú fly dentro del frame: frame_busqueda
-    label_passenger = ctk.CTkLabel(frame_busqueda, text="Número de pasajeros")
+    label_passenger = ctk.CTkLabel(frame_busqueda,text="Número de pasajeros",text_color="white")
     entry_passenger = ctk.CTkEntry(frame_busqueda)
     space = ctk.CTkLabel(frame_busqueda, text="")
     space = ctk.CTkLabel(frame_busqueda, text="")
     only_going = ctk.CTkRadioButton(
-        frame_busqueda, text="Solo ida", variable=going, value=2, height=5, width=10)
+    frame_busqueda, text="Solo ida",text_color="white", variable=going, value=2, height=5, width=10)
     cities_origin = ctk.CTkComboBox(
-        frame_busqueda, values=list(origen), state="readonly")
+    frame_busqueda, values=list(origen), state="readonly")
     cities_origin.set("Ciudad de origen")
     cities_destination = ctk.CTkComboBox(
-        frame_busqueda, values=list(destino), state="readonly")
+    frame_busqueda, values=list(destino), state="readonly")
     cities_destination.set("Ciudad de destino")
     list_going = ctk.CTkComboBox(
-        frame_busqueda, values=dates_june, state="readonly")
+    frame_busqueda, values=dates_june, state="readonly")
     list_going.set("ida")
 
     # Creación de frame para el botón de búsqueda
     frame_button_search = ctk.CTkFrame(
-        window_fly, width=100, height=50, fg_color="grey26")
-    frame_button_search.grid(row=1, column=2, columnspan=1, padx=10, pady=10)
+        window_fly, width=100, height=50, fg_color="#EBEBEB")
+    frame_button_search.place(x=700, y=160)
 
     button_search = ctk.CTkButton(
         frame_button_search, text="BUSCAR",
@@ -95,20 +111,21 @@ def fly(window_search=None):
     label_passenger.grid(row=8, column=5, padx=10, pady=10)
     entry_passenger.grid(row=8, column=6, padx=10, pady=10)
 
+    # frame principal del scroll
     frame_vuelos = ctk.CTkScrollableFrame(
-        window_fly, fg_color="grey26", width=1000, height=400)
-    frame_vuelos.grid(row=2, column=2)
+    window_fly, fg_color="white", width=1000, height=400)
+    frame_vuelos.place(x=300,y=350)
 
     # ______________________________________________________
 
     # Crear el frame para Cali
-    frame_cali = ctk.CTkFrame(frame_vuelos, fg_color="grey26",
-                              border_color="blue", border_width=2, width=400, height=300)
+    frame_cali = ctk.CTkFrame(frame_vuelos, fg_color="white",
+                              border_color="DodgerBlue3", border_width=3, width=400, height=300)
     frame_cali.grid(row=1, column=0, padx=1, pady=1)
 
     # Label para Cali
     label_cali = ctk.CTkLabel(frame_cali, text="Cali",
-                              fg_color="skyblue", font=("Times New Roman", 20))
+                              fg_color="DodgerBlue3", font=("Times New Roman", 25))
     label_cali.grid(row=0, column=0, padx=10, pady=10)
 
     # Cargar la imagen con CTkImage
@@ -117,29 +134,29 @@ def fly(window_search=None):
         dark_image=Image.open(imagen_path), size=(300, 100))
 
     # Crear un Label para mostrar la imagen
-    label_imagen_cali = ctk.CTkLabel(frame_cali, image=imagen_cali)
+    label_imagen_cali = ctk.CTkLabel(frame_cali, image=imagen_cali,text="")
     label_imagen_cali.grid(row=1, column=0, padx=10, pady=10)
 
     # Label para información de Cali
     label_info_cali = ctk.CTkLabel(frame_cali, text="""Es conocida como la capital mundial de la salsa y es uno de los principales centros deportivos de Colombia.
     En el año 2019 ha sido galardonado
-    por los World Travel Awards como ciudad destino cultural de Suramérica, gracias a su oferta cultural
-    deportiva y turística.""", font=("Times New Roman", 20))
+    por los World Travel Awards como ciudad destino cultural de Suramérica, 
+    gracias a su oferta cultural deportiva y turística.""", font=("Times New Roman", 20))
     label_info_cali.grid(row=2, column=0, padx=10, pady=10)
 
     # ______________________________________________________
 
     # Crear el frame para Medellín
-    frame_medellin = ctk.CTkFrame(frame_vuelos, fg_color="grey26",
-                                  border_color="blue", border_width=2, width=400, height=300)
-    frame_medellin.grid(row=1, column=1, padx=1, pady=1)
+    frame_medellin = ctk.CTkFrame(frame_vuelos, fg_color="white",
+                                  border_color="DodgerBlue3", border_width=3, width=400, height=300)
+    frame_medellin.grid(row=0, column=0, padx=10, pady=10)
     label_medellin = ctk.CTkLabel(
-        frame_medellin, text="Medellín", fg_color="skyblue", font=("Times New Roman", 20))
-    label_medellin.grid(row=0, column=0, padx=10, pady=10)
+    frame_medellin, text="Medellín", fg_color="DodgerBlue3", font=("Times New Roman", 20))
+    label_medellin.grid(row=0, column=0, padx=10, pady= 10)
     imagen_path = "imagenes/medellin.png"
     imagen_medellin = ctk.CTkImage(
         dark_image=Image.open(imagen_path), size=(300, 100))
-    label_imagen_medellin = ctk.CTkLabel(frame_medellin, image=imagen_medellin)
+    label_imagen_medellin = ctk.CTkLabel(frame_medellin, image=imagen_medellin,text="")
     label_imagen_medellin.grid(row=1, column=0, padx=10, pady=10)
     label_info_medellin = ctk.CTkLabel(frame_medellin, text="""Es conocida como la capital de la montaña y la ciudad de la eterna primavera.
     Es la segunda ciudad más grande de Colombia y es un importante centro económico y cultural.""", font=("Times New Roman", 20))
@@ -148,16 +165,16 @@ def fly(window_search=None):
     # ______________________________________________________
 
     # Crear el frame para Bogotá
-    frame_bogota = ctk.CTkFrame(frame_vuelos, fg_color="grey26",
-                                border_color="blue", border_width=2, width=400, height=300)
-    frame_bogota.grid(row=2, column=0, padx=1, pady=1)
+    frame_bogota = ctk.CTkFrame(frame_vuelos, fg_color="white",
+                                border_color="DodgerBlue3", border_width=3, width=400, height=300)
+    frame_bogota.grid(row=2, column=0, padx=10, pady=10)
     label_bogota = ctk.CTkLabel(
-        frame_bogota, text="Bogotá", fg_color="skyblue", font=("Times New Roman", 20))
+        frame_bogota, text="Bogotá", fg_color="DodgerBlue3", font=("Times New Roman", 25))
     label_bogota.grid(row=0, column=0, padx=10, pady=10)
     imagen_path = "imagenes/bogota.png"
     imagen_bogota = ctk.CTkImage(
         dark_image=Image.open(imagen_path), size=(300, 100))
-    label_imagen_bogota = ctk.CTkLabel(frame_bogota, image=imagen_bogota)
+    label_imagen_bogota = ctk.CTkLabel(frame_bogota, image=imagen_bogota,text ="")
     label_imagen_bogota.grid(row=1, column=0, padx=10, pady=10)
     label_info_bogota = ctk.CTkLabel(frame_bogota, text="""Es la capital de Colombia y es la ciudad más grande del país.
     Es el centro político, económico, administrativo, industrial, artístico, cultural, deportivo y turístico de Colombia.""", font=("Times New Roman", 20))
@@ -167,16 +184,16 @@ def fly(window_search=None):
 
     # Crear el frame para Cartagena
     frame_cartagena = ctk.CTkFrame(
-        frame_vuelos, fg_color="grey26", border_color="blue", border_width=2, width=500, height=200)
-    frame_cartagena.grid(row=2, column=1, padx=10, pady=10)
+        frame_vuelos, fg_color="white", border_color="blue", border_width=3, width=400, height=300)
+    frame_cartagena.grid(row=3, column=0, padx=10, pady=10)
     label_cartagena = ctk.CTkLabel(
-        frame_cartagena, text="Cartagena", fg_color="skyblue", font=("Times New Roman", 20))
+        frame_cartagena, text="Cartagena", fg_color="DodgerBlue3", font=("Times New Roman", 20))
     label_cartagena.grid(row=0, column=0, padx=10, pady=10)
     imagen_path = "imagenes/cartagena.png"
     imagen_cartagena = ctk.CTkImage(
         dark_image=Image.open(imagen_path), size=(300, 100))
     label_imagen_cartagena = ctk.CTkLabel(
-        frame_cartagena, image=imagen_cartagena)
+        frame_cartagena, image=imagen_cartagena,text ="")
     label_imagen_cartagena.grid(row=1, column=0, padx=10, pady=10)
     label_info_cartagena = ctk.CTkLabel(frame_cartagena, text="""Es conocida como la ciudad amurallada y es uno de los destinos turísticos más importantes de Colombia.
     Es un importante centro turístico, histórico y cultural.""", font=("Times New Roman", 20))
@@ -186,10 +203,10 @@ def fly(window_search=None):
 
     # Crear el frame para Santa Marta
     frame_santamarta = ctk.CTkFrame(
-        frame_vuelos, fg_color="grey26", border_color="blue", border_width=2, width=500, height=200)
-    frame_santamarta.grid(row=2, column=2, padx=1, pady=1)
+        frame_vuelos, fg_color="white", border_color="blue", border_width=3, width=400, height=300)
+    frame_santamarta.grid(row=5, column=0, padx=1, pady=1)
     label_santamarta = ctk.CTkLabel(
-        frame_santamarta, text="Santa Marta", fg_color="skyblue", font=("Times New Roman", 20))
+        frame_santamarta, text="Santa Marta", fg_color="DodgerBlue3", font=("Times New Roman", 20))
     label_santamarta.grid(row=0, column=0, padx=10, pady=10)
     imagen_path = "imagenes/santa_marta.png"
     imagen_santamarta = ctk.CTkImage(
@@ -203,6 +220,7 @@ def fly(window_search=None):
 
     window_fly.mainloop()
 
+
 # Función para buscar vuelos disponibles
 
 
@@ -210,61 +228,55 @@ def search_fly(indices, window_fly, peoples):
     window_fly.destroy()
     df = pd.read_csv("dato_vuelo.csv")
     window_search = ctk.CTk()
-    window_search.geometry("1250x750")
+    window_search.geometry("1850x1900+0+0")
     window_search.state("zoomed")
     window_search.resizable(0, 0)
     window_search.title("Búsqueda de vuelos")
 
     # Crear frame para el label
-    frame_label = ctk.CTkFrame(window_search, fg_color="grey26")
-    frame_label.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
+    frame_label = ctk.CTkFrame(window_search, fg_color="#EBEBEB",border_color= "blue", border_width=3)
+    frame_label.place(x = 600 , y = 50)
     label = ctk.CTkLabel(
-        frame_label, text=f"IDA: de {df['CiudadOrigen'].values[indices[0]]} a {
+        frame_label,font = ("Times New Roman", 40),text=f"IDA: de {df['CiudadOrigen'].values[indices[0]]} a {
             df['CiudadDestino'].values[indices[0]]}"
     )
     label.grid(row=0, column=0)
 
     # Crear frame con scrollbar para los botones
     frame_buttons = ctk.CTkScrollableFrame(
-        window_search, width=500, height=200)
-    frame_buttons.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
-    frame_buttons.place(relx=0.5, rely=0.2, anchor="center")
+    window_search, width=1000, height=350)
+    frame_buttons.place(relx=0.5, rely=0.4, anchor="center")
 
-    # Crear botones dentro del frame con scrollbar
-    # Crear frame con scrollbar para los botones
-    frame_buttons = ctk.CTkScrollableFrame(
-        window_search, width=500, height=200)
-    frame_buttons.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
-    frame_buttons.place(relx=0.5, rely=0.2, anchor="center")
+    
 
     # Crear botones dentro del frame con scrollbar
     for i in indices:
         mensaje = f"""Vuelo: {df['Vuelo'].values[i]}
         Fecha: {df['Fecha'].values[i]}
-        Desde COP: {df['ValorMin'].values[i]}"""
+        Desde ${int(df['ValorMin'].values[i])} COP"""
         button = ctk.CTkButton(
-            frame_buttons, text=mensaje,
+            frame_buttons, text=mensaje,font = ("Times New Roman", 40),
             command=lambda i=i: functions(
                 info_buy(i, window_search, indices, peoples)),
-            width=200, height=50
+            width=1000, height=150
         )
         button.pack(padx=10, pady=10)
         button.pack(padx=10, pady=10)
 
     # Crear frame para el botón de regreso
     # Crear frame para el botón de regreso
-    frame_button_back = ctk.CTkFrame(window_search, fg_color="grey26")
-    frame_button_back.place(relx=0., rely=1, anchor="s")
-
+    frame_button_back = ctk.CTkFrame(window_search, fg_color="#EBEBEB")
+    frame_button_back.place(relx=0.5, rely=0.9, anchor="center")
+    
+    # Crear el botón de regreso
     button_back = ctk.CTkButton(
-        frame_button_back, text="VOLVER",
+        frame_button_back, font=("Times New Roman", 40), text="VOLVER",
         command=lambda: functions(fly(window_search)),
-        width=120, height=60
+        width=200, height=100
     )
     button_back.grid(row=2, column=0, padx=10, pady=10)
 
     window_search.mainloop()
-
 
 # Información de vuelos disponibles en tales horas
 def info_buy(indice, window, indices, peoples):
@@ -274,23 +286,51 @@ def info_buy(indice, window, indices, peoples):
     hours = c.search_hours(indice)
     df = pd.read_csv("dato_vuelo.csv")
     window_info = ctk.CTk()
-    frame_hours_f = ctk.CTkFrame(window_info, fg_color="grey26")
-    frame_hours_f.grid(row=0, column=0)
-    label_hours = ctk.CTkLabel(frame_hours_f, text="Vuelos disponibles")
-    label_hours.grid(row=0, column=0)
-
+    window_info.geometry("1850x1900+0+0")
+    
+    frame_hours_f = ctk.CTkFrame(window_info, fg_color="white", border_color="blue", border_width=3, width=1000, height=300)
+    frame_hours_f.place(x=250, y=200)
+    
+    label_hours = ctk.CTkLabel(frame_hours_f, text="Vuelos disponibles", font=("Times New Roman", 20))
+    label_hours.grid(row=0, column=0, pady=(10, 0))
+    
+    scroll_hours = ctk.CTkScrollableFrame(frame_hours_f, width=1000, height=300, fg_color="white")
+    scroll_hours.grid(row=1, column=0, pady=10)
+    
+    row_counter = 0
     for i in hours:
         mensaje = f"""Vuelo: {df['Vuelo'].values[i]}
         Hora salida: {df['HoraSalida'].values[i]}
         Hora llegada: {df['HoraLlegada'].values[i]}"""
         button_hours = ctk.CTkButton(
-            frame_hours_f, text=mensaje,
+            scroll_hours, text=mensaje, font=("Times New Roman", 30),
             command=lambda i=i: functions(buy(i, window_info, hours, peoples)),
-            width=20, height=2
+            width=300, height=100
         )
-        button_hours.grid(row=1, column=i, padx=10, pady=10)
+        button_hours.grid(row=row_counter, column=0, padx=(350, 0), pady=10, sticky="EW")
+        row_counter += 1
+        
+    button_back = ctk.CTkButton(
+        window_info, text="VOLVER", font=("Times New Roman", 30),
+        command=lambda: functions(search_fly(indices, window_info, peoples)),
+        width=300, height=100
+    )
+    button_back.place(relx=0.5, rely=0.9, anchor='s', y=-10)  # y=-10 to give some padding from the bottom
 
     window_info.mainloop()
+
+
+def mostrar_vuelos(df, frame):
+    # Limpiar el frame de vuelos anteriores
+    for widget in frame.winfo_children():
+        widget.destroy()
+
+    # Asumiendo que existe una función para mostrar cada vuelo en el frame
+    for i, row in df.iterrows():
+        # Mostrar cada vuelo en el frame
+        # Esta es una simplificación, deberías ajustar según cómo quieras mostrar los vuelos
+        label = ctk.CTkLabel(frame, text=f"Vuelo: {row['Vuelo']} - Precio: {row['ValorMin']} a {row['ValorMax']}")
+        label.pack()
 
 
 def buy(indice, window, indices, peoples):
@@ -299,13 +339,14 @@ def buy(indice, window, indices, peoples):
 
     df = pd.read_csv("dato_vuelo.csv")
     window_buy = ctk.CTk()
+    window_buy.geometry("1850x1900+0+0")
     label = ctk.CTkLabel(window_buy, text="Compra de paquetes")
     label.grid(row=0, column=0)
     label1 = ctk.CTkLabel(window_buy, text="Selecciona alguno de los paquetes")
     label1.grid(row=1, column=0)
 
     frame_1 = ctk.CTkFrame(window_buy)
-    frame_1.grid(row=1, column=0)
+    frame_1.grid(row=2, column=0)
     label_1 = ctk.CTkLabel(
         frame_1, text=f"""Aluminio:
     1 artículo personal (bolso) (Debe caber debajo del asiento)
@@ -332,11 +373,11 @@ def buy(indice, window, indices, peoples):
     PRECIO: {df['ValorMedio'].values[indice]}"""
     )
     label_2.grid(row=0, column=0)
-    button_diamond = ctk.CTkButton(frame_2, text="Comprar", width=20, height=2)
+    button_diamond = ctk.CTkButton(frame_2, text="Comprar", width=20, height=2,)
     button_diamond.grid(row=1, column=0)
 
     frame_3 = ctk.CTkFrame(window_buy)
-    frame_3.grid(row=1, column=2)
+    frame_3.grid(row=2, column=3)
     label_3 = ctk.CTkLabel(
         frame_3, text=f"""Premium:
     1 artículo personal (bolso) (Debe caber debajo del asiento)
