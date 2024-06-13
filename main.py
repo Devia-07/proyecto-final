@@ -354,60 +354,126 @@ def buy(indice, window, indices, peoples):
     df = pd.read_csv("dato_vuelo.csv")
     window_buy = ctk.CTk()
     window_buy.geometry("1850x1900+0+0")
-    label = ctk.CTkLabel(window_buy, text="Compra de paquetes")
-    label.grid(row=0, column=0)
-    label1 = ctk.CTkLabel(window_buy, text="Selecciona alguno de los paquetes")
-    label1.grid(row=1, column=0)
+    
+    # Adjust font size and placement for the main labels
+    label = ctk.CTkLabel(window_buy, text="Compra de paquetes", font=("Times New Roman", 40))
+    label.place(x=600, y=10)
+    label_text = ctk.CTkLabel(window_buy, text="Selecciona alguno de los paquetes", font=("Times New Roman", 30))
+    label_text.place(x=550, y=100)
 
-    frame_1 = ctk.CTkFrame(window_buy,border_color="blue", border_width=3,height=600,width=500)
-    frame_1.place(x =50, y = 300)
-    label_1 = ctk.CTkLabel(
-        frame_1, text=f"""Aluminio:
+    # Initialize frames with specified width and increased height
+    frame_1 = ctk.CTkFrame(window_buy, border_color="blue", border_width=3, height=1700, width=500)
+    frame_2 = ctk.CTkFrame(window_buy, border_color="blue", border_width=3, height=1700, width=500)
+    frame_3 = ctk.CTkFrame(window_buy, border_color="blue", border_width=3, height=1700, width=500)
+
+    # Place frames
+    frame_1.place(x=50, y=200)
+    frame_2.place(x=550, y=200)
+    frame_3.place(x=1050, y=200)
+
+    # Add content to frame_1
+    label_1 = ctk.CTkLabel(frame_1, text=f"""ALUMINIO:
+                           
     1 artículo personal (bolso) (Debe caber debajo del asiento)
+    
     1 equipaje de mano (10 kg) (Debe caber en el compartimiento superior)
+    
     Asiento Estándar (Sujeto a disponibilidad)
+    
     Cambios de vuelo (No es permitido)
+    
     Reembolso (No es permitido)
-    PRECIO: {df['ValorMin'].values[indice]}"""
-    )
-    label_1.grid(row=0, column=0)
-    button_aluminio = ctk.CTkButton(frame_1, text="Comprar", width=20,
-                                    height=2, command=lambda: fc.aluminum(indice, window_buy, peoples, df["ValorMin"].values[indice]))
-    button_aluminio.grid(row=1, column=0)
+    
+    
+    
+    
+    
+    PRECIO: {df['ValorMin'].values[indice]}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    """)
+    label_1.grid(row=0, column=0, padx=10, pady=10)
+    button_aluminio = ctk.CTkButton(frame_1, text="Comprar", width=100, height=60, command=lambda: fc.aluminum(indice, window_buy, peoples, df["ValorMin"].values[indice]))
+    button_aluminio.grid(row=1, column=0, padx=10, pady=10)
 
-    frame_2 = ctk.CTkFrame(window_buy,border_color="blue", border_width=3)
-    frame_2.place(x =500, y=300)
-    label_2 = ctk.CTkLabel(
-        frame_2, text=f"""Diamante:
+    # Add content to frame_2
+    label_2 = ctk.CTkLabel(frame_2, text=f"""DIAMANTE:
+                           
     1 artículo personal (bolso) (Debe caber debajo del asiento)
+    
     1 equipaje de mano (10 kg) (Debe caber en el compartimiento superior)
+    
     Asiento Estándar (Sujeto a disponibilidad)
+    
     Cambios de vuelo (Permitido con costo adicional)
+    
     Reembolso (Permitido con costo adicional)
-    PRECIO: {df['ValorMedio'].values[indice]}"""
-    )
-    label_2.grid(row=0, column=0)
-    button_diamond = ctk.CTkButton(frame_2, text="Comprar", width=20, 
-                                   height=2, command=lambda: fc.diamond(indice, window_buy, peoples, df["ValorMedio"].values[indice]))
-    button_diamond.grid(row=1, column=0)
+    
+    
+    
+    
+    
+    PRECIO: {df['ValorMedio'].values[indice]}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    """)
+    label_2.grid(row=0, column=0, padx=10, pady=10)
+    button_diamond = ctk.CTkButton(frame_2, text="Comprar", width=100, height=60, command=lambda: fc.diamond(indice, window_buy, peoples, df["ValorMedio"].values[indice]))
+    button_diamond.grid(row=1, column=0, padx=10, pady=10)
 
-    frame_3 = ctk.CTkFrame(window_buy,border_color="blue", border_width=3)
-    frame_3.place(x =1000, y=300)
-    label_3 = ctk.CTkLabel(
-        frame_3, text=f"""Premium:
+    # Add content to frame_3
+    label_3 = ctk.CTkLabel(frame_3, text=f"""PREMIUM:
+                           
     1 artículo personal (bolso) (Debe caber debajo del asiento)
+    
     1 equipaje de mano (10 kg) (Debe caber en el compartimiento superior)
+    
     Asiento Preferencial (Incluido)
+    
     Cambios de vuelo (Permitido sin costo adicional)
+    
     Reembolso (Permitido)
-    PRECIO : {df['ValorMax'].values[indice]}"""
-    )
-    label_3.grid(row=0, column=0)
-    button_premium = ctk.CTkButton(frame_3, text="Comprar", width=20, height=2)
-    button_premium.grid(row=1, column=0)
+    
+    
+    
+    
+    
+    PRECIO : {df['ValorMax'].values[indice]}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    """)
+    label_3.grid(row=0, column=0, padx=10, pady=10)
+    button_premium = ctk.CTkButton(frame_3, text="Comprar", width=100, height=60)
+    button_premium.grid(row=1, column=0, padx=10, pady=10)
 
     window_buy.mainloop()
-
 # Usuario escoge asiento solo si es premium
 
 
@@ -474,113 +540,96 @@ def choose_sit(indice=None, window=None, indices=None):
     # darle posicion a los botones y elementos de la pantalla de busqueda de vuelos
 
 
+import pandas as pd
+import customtkinter as ctk
+
 def record_check_in(window, peoples, indice, sits, price):
     window.destroy()
     df = pd.read_csv("dato_vuelo.csv")
     window_record = ctk.CTk()
     window_record.title("Registro")
-    window_record.geometry("1920x1080")
-    window_record.attributes("-fullscreen", True)
-    ctk.set_appearance_mode("dark")
-    ctk.set_default_color_theme("blue")
+    window_record.geometry("1850x1900+0+0")
+    
+    # Frame de información de vuelo con tamaño aumentado
+    frame_info_fly = ctk.CTkFrame(window_record, fg_color="white",
+                                  border_color="DodgerBlue3", border_width=3, width=700, height=200)
+    frame_info_fly.place(x= 400 , y = 100)
+    
+    label_fly = ctk.CTkLabel(frame_info_fly, text="Información de vuelo", font=("Arial", 20))
+    label_fly.place(x =250,y = 50)
+    label_fly1 = ctk.CTkLabel(frame_info_fly, text=f"Vuelo: {df['Vuelo'].values[indice]}", font=("Arial", 16))
+    label_hour = ctk.CTkLabel(frame_info_fly, text=f"Hora de salida: {df['HoraSalida'].values[indice]}", font=("Arial", 16))
+    label_hour1 = ctk.CTkLabel(frame_info_fly, text=f"Hora de llegada: {df['HoraLlegada'].values[indice]}", font=("Arial", 16))
+    label_price = ctk.CTkLabel(frame_info_fly, text=f"Precio: {price}", font=("Arial", 16))
+    label_fly1.place(x =50,y = 100)
+    label_hour.place(x =50,y = 150)
+    label_hour1.place(x =450,y = 100)
+    label_price.place(x =500,y = 150)
 
-    # frame del responsable de pago
-
-    # frame de acompañantes
+    # Frame de acompañantes con tamaño aumentado
     frame_acompanantes = ctk.CTkScrollableFrame(
-        window_record, fg_color="grey26", border_color="green", border_width=3, width=1000, height=300)
-    frame_acompanantes.grid(row=1, column=0)
-
-    # frame de información de vuelo
-    frame_info_fly = ctk.CTkFrame(window_record, fg_color="grey26",
-                                  border_color="green", border_width=2, width=500, height=300)
-    frame_info_fly.grid(row=0, column=0, padx=10, pady=30)
-    label_fly = ctk.CTkLabel(frame_info_fly, text="Información de vuelo")
-    label_fly.grid(row=0, column=0)
-    label_fly1 = ctk.CTkLabel(frame_info_fly, text=f"Vuelo: {
-                              df['Vuelo'].values[indice]}")
-    label_hour = ctk.CTkLabel(frame_info_fly, text=f"Hora de salida: {
-                              df['HoraSalida'].values[indice]}")
-    label_hour1 = ctk.CTkLabel(frame_info_fly, text=f"Hora de llegada: {
-                               df['HoraLlegada'].values[indice]}")
-    label_price = ctk.CTkLabel(frame_info_fly, text=f"Precio: {price}")
-    label_fly1.grid(row=1, column=0)
-    label_hour.grid(row=2, column=0)
-    label_hour1.grid(row=3, column=0)
-    label_price.grid(row=4, column=0)
-
-    # hora de salida
-    frame_hours_f = ctk.CTkFrame(
-        window_record, fg_color="grey26", border_color="green", border_width=2)
-    frame_hours_f.grid(row=0, column=0)
-    label_hours = ctk.CTkLabel(frame_hours_f, text="Información de vuelo")
-    label_hours.grid(row=0, column=0)
+        window_record, fg_color="white", border_color="blue", border_width=3, width=1000, height=300)
+    frame_acompanantes.place(x =200 , y = 350)
 
     datas = []
     for i in range(peoples):
         help = []
-        # label y entry de acompañantes
+        # Label y entry de acompañantes
         frame_persona = ctk.CTkFrame(
-            frame_acompanantes, fg_color="grey26", border_color="green", border_width=2)
+            frame_acompanantes, fg_color="DodgerBlue3", border_color="blue", border_width=2)
         frame_persona.grid(row=i, column=0, padx=10, pady=30)
-        label_acompanantes = ctk.CTkLabel(frame_persona, text=f"Acompañante {
-                                          i+1} \t asiento: {sits[i]}")
-        # posicion de los elementos
+        label_acompanantes = ctk.CTkLabel(frame_persona, text=f"Acompañante {i+1} \t asiento: {sits[i]}")
+        # Posición de los elementos
         label_acompanantes.grid(row=0, column=0, padx=10, pady=10)
 
         genero = ctk.StringVar()
-        # radiobutton de genero
-        radio_m = ctk.CTkRadioButton(
-            frame_persona, text="Masculino", variable=genero, value="Masculino")
-        radio_f = ctk.CTkRadioButton(
-            frame_persona, text="Femenino", variable=genero, value="Femenino")
-        # posicion de los elementos
+        # Radiobutton de género
+        radio_m = ctk.CTkRadioButton(frame_persona, text="Masculino", variable=genero, value="Masculino")
+        radio_f = ctk.CTkRadioButton(frame_persona, text="Femenino", variable=genero, value="Femenino")
+        # Posición de los elementos
         radio_m.grid(row=1, column=0, padx=10, pady=10)
         radio_f.grid(row=1, column=1, padx=10, pady=10)
 
         label_name = ctk.CTkLabel(frame_persona, text="Primer nombre")
         entry_name = ctk.CTkEntry(frame_persona)
-        # posicion de los elementos
+        # Posición de los elementos
         label_name.grid(row=1, column=2, padx=10, pady=10)
         entry_name.grid(row=1, column=3, padx=10, pady=10)
 
         label_last_name = ctk.CTkLabel(frame_persona, text="Primer apellido")
         entry_last_name = ctk.CTkEntry(frame_persona)
-        # posicion de los elementos
+        # Posición de los elementos
         label_last_name.grid(row=1, column=4, padx=10, pady=10)
         entry_last_name.grid(row=1, column=5, padx=10, pady=10)
 
         label_id = ctk.CTkLabel(frame_persona, text="Identificación")
         entry_id = ctk.CTkEntry(frame_persona)
-        # posicion de los elementos
+        # Posición de los elementos
         label_id.grid(row=2, column=0, padx=10, pady=10)
         entry_id.grid(row=2, column=1, padx=10, pady=10)
 
         label_nationality = ctk.CTkLabel(frame_persona, text="Nacionalidad")
         entry_nationality = ctk.CTkEntry(frame_persona)
-        # posicion de los elementos
+        # Posición de los elementos
         label_nationality.grid(row=2, column=2, padx=10, pady=10)
         entry_nationality.grid(row=2, column=3, padx=10, pady=10)
 
         label_email = ctk.CTkLabel(frame_persona, text="Correo")
         entry_email = ctk.CTkEntry(frame_persona)
-        # posicion de los elementos
+        # Posición de los elementos
         label_email.grid(row=2, column=4, padx=10, pady=10)
         entry_email.grid(row=2, column=5, padx=10, pady=10)
 
         label_telephone = ctk.CTkLabel(frame_persona, text="Teléfono")
         entry_telephone = ctk.CTkEntry(frame_persona)
-        # posicion de los elementos
+        # Posición de los elementos
         label_telephone.grid(row=3, column=0, padx=10, pady=10)
         entry_telephone.grid(row=3, column=1, padx=10, pady=10)
 
         asistencia = ctk.StringVar()
-        label_asistencia = ctk.CTkLabel(
-            frame_persona, text="Requiere Asistencia")
-        radio_si = ctk.CTkRadioButton(
-            frame_persona, text="Si", variable=asistencia, value="Si")
-        radio_no = ctk.CTkRadioButton(
-            frame_persona, text="No", variable=asistencia, value="No")
+        label_asistencia = ctk.CTkLabel(frame_persona, text="Requiere Asistencia")
+        radio_si = ctk.CTkRadioButton(frame_persona, text="Sí", variable=asistencia, value="Sí")
+        radio_no = ctk.CTkRadioButton(frame_persona, text="No", variable=asistencia, value="No")
 
         label_asistencia.grid(row=3, column=2, padx=10, pady=10)
         radio_si.grid(row=3, column=3, padx=10, pady=10)
@@ -588,63 +637,73 @@ def record_check_in(window, peoples, indice, sits, price):
 
         label_birth = ctk.CTkLabel(frame_persona, text="Fecha de nacimiento")
         entry_birth = ctk.CTkEntry(frame_persona)
-        # posicion de los elementos
+        # Posición de los elementos
         label_birth.grid(row=4, column=0, padx=10, pady=10)
         entry_birth.grid(row=4, column=1, padx=10, pady=10)
 
-        help = [genero, entry_name, entry_last_name, entry_id, entry_nationality,
-                entry_email, entry_telephone, entry_birth, asistencia]
+        help = [genero, entry_name, entry_last_name, entry_id, entry_nationality, entry_email, entry_telephone, entry_birth, asistencia]
         datas.append(help)
-    # boton de enviar
-    button_send = ctk.CTkButton(frame_acompanantes, hover_color="green", text="Enviar",
-                                command=lambda: c.conditions_record(peoples, 9, datas, sits, indice, window_record), width=9, height=2)
+
+    # Botón de enviar
+    button_send = ctk.CTkButton(frame_acompanantes, hover_color="blue", text="Enviar",
+                                command=lambda: c.conditions_record(peoples, 9, datas, sits, indice, window_record), width=100, height=50)
     button_send.grid(row=peoples, column=0, padx=10, pady=10)
 
     window_record.mainloop()
 
+
 # ARREGLAR ESTA FUNCION PARA HACER LA CONFIRMACION DE VUELO (CHECK IN)
 
+
+import pandas as pd
+import customtkinter as ctk
 
 def pay_sits(window, peoples, datas, sits, indice):
     window.destroy()
     window_pay = ctk.CTk()
-    window_pay.title("Iniciar sesión")
-    window_pay.geometry("400x400")
-    ctk.set_appearance_mode("dark")
-    ctk.set_default_color_theme("blue")
+    window_pay.title("Realizar Pago")
+    window_pay.geometry("1850x1900+0+0")
+    
 
-    # Crear frame para los widgets de
+    # Crear frame para los widgets de pago
     pay_frame = ctk.CTkFrame(
-        window_pay, fg_color="grey26", width=100, height=300)
-    pay_frame.grid(row=0, column=0)
+        window_pay, fg_color="white", width=1000, height=300)
+    pay_frame.place(x=200, y=50)
     label = ctk.CTkLabel(pay_frame, text="Pago")
-    label.grid(row=0, column=0)
+    label.place(x=10, y=10)
 
     label_name = ctk.CTkLabel(
         pay_frame, text="Nombre completo del titular de la tarjeta")
-    entry_name = ctk.CTkEntry(pay_frame)
-    label_name.grid(row=1, column=0)
-    entry_name.grid(row=1, column=1)
+    entry_name = ctk.CTkEntry(pay_frame,font =("Arial", 15))
+    entry_name.configure(width=500)
+    label_name.place(x=10, y=50)
+    entry_name.place(x=250, y=50)
 
     label_number = ctk.CTkLabel(pay_frame, text="Número de la tarjeta")
-    entry_number = ctk.CTkEntry(pay_frame)
-    label_number.grid(row=2, column=0)
-    entry_number.grid(row=2, column=1)
+    entry_number = ctk.CTkEntry(pay_frame,font =("Arial", 15))
+    entry_number.configure(width=500)
+    label_number.place(x=10, y=100)
+    entry_number.place(x=250, y=100)
 
     label_date = ctk.CTkLabel(pay_frame, text="Fecha de vencimiento")
-    entry_date = ctk.CTkEntry(pay_frame)
-    label_date.grid(row=3, column=0)
-    entry_date.grid(row=3, column=1)
+    entry_date = ctk.CTkEntry(pay_frame,font =("Arial", 15))
+    entry_date.configure(width=500)
+    label_date.place(x=10, y=150)
+    entry_date.place(x=250, y=150)
 
     label_cvv = ctk.CTkLabel(pay_frame, text="CVV")
-    entry_cvv = ctk.CTkEntry(pay_frame)
-    label_cvv.grid(row=4, column=0)
-    entry_cvv.grid(row=4, column=1)
+    entry_cvv = ctk.CTkEntry(pay_frame,font =("Arial", 15))
+    entry_cvv.configure(width=500)
+    label_cvv.place(x=10, y=200)
+    entry_cvv.place(x=250, y=200)
+
     pay_client = [entry_name, entry_number, entry_date, entry_cvv]
     button_pay = ctk.CTkButton(pay_frame, text="Pagar", command=lambda: c.conditions_pay(
-        window_pay, pay_client, peoples, datas, sits, indice), width=100, height=10)
-    button_pay.grid(row=5, column=0, padx=10, pady=10)
+        window_pay, pay_client, peoples, datas, sits, indice), width=100, height=40)
+    button_pay.place(x=500, y=250)
+
     window_pay.mainloop()
+
 
 def tickets(window, peoples, datas, sits, indice):
     window.destroy()
