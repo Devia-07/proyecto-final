@@ -15,7 +15,14 @@ def record_base(peoples, datas, sits, indice, window, pay_client):
                      "apellido": [datas[i][2]], "dni": [datas[i][3]],
                      "telefono": [datas[i][6]], "email": [datas[i][5]],
                      "nacimiento": [datas[i][7]], "nacionalidad": [datas[i][4]], "asistencia": [datas[i][8]]}
+        base_datos = {"nombre": [datas[i][1]], "apellido": [datas[i][2]], "dni": [datas[i][3]],"telefono": [datas[i][6]], "email": [datas[i][5]]}
         df1 = pd.DataFrame(dataframe)
+        df2 = pd.DataFrame(base_datos)
+        if os.path.isfile("clientes.csv"):
+            df2.to_csv("clientes.csv", mode='a', header=False, index=False, sep=";")
+        else:
+            df2.to_csv("clientes.csv", index=False, sep=";", header=True, mode='a')
+            
         if not os.path.isfile(f'{vuelo}.csv'):
             df1.to_csv(f'{vuelo}.csv', index=False,sep=",",header=True,mode='a')
         else:
@@ -127,10 +134,10 @@ def fly(vuelo):
 
 def record_profits(name, number, date, code, price):
     if os.path.isfile("profits.csv"):
-        data = {"nombre": [name], "numero": [number], "fecha": [date], "codigo": [code], "precio": [price]}
+        data = {"nombre": [name], "numero": [number], "fecha": [date], "codigo": [code], "precio": [price],"ganancia": [0]}
         df = pd.DataFrame(data)
         df.to_csv("profits.csv", mode='a', header=False, index=False, sep=",")
     else:
-        data = {"nombre": [name], "numero": [number], "fecha": [date], "codigo": [code], "precio": [price]}
+        data = {"nombre": [name], "numero": [number], "fecha": [date], "codigo": [code], "precio": [price],"ganancia": [0]}
         df = pd.DataFrame(data)
         df.to_csv("profits.csv", mode='a', header=True, index=False, sep=",")

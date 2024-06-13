@@ -61,6 +61,18 @@ def conditions_record(peoples, quantity, datas, sits, index, window,price):
             mb.showerror(
                 "registro", "registro fallido la nacionalidad no es valida")
             return
+        
+        if os.path.isfile("clientes.csv"):
+            df2 = pd.read_csv("clientes.csv", sep=";")
+            if datas[i][3] in df2["dni"].values:
+                mb.showerror("registro", "registro fallido el dni ya esta registrado")
+                return
+            elif datas[i][5] in df2["email"].values:
+                mb.showerror("registro", "registro fallido el email ya esta registrado")
+                return
+            elif datas[i][6] in df2["telefono"].values:
+                mb.showerror("registro", "registro fallido el telefono ya esta registrado")
+                return
     mb.showinfo("registro", "registro exitoso")
     mn.pay_sits(window, peoples, datas, sits, index, price)
 
@@ -90,13 +102,13 @@ def conditions_pay(window_pay, pay_client, peoples, datas, sits, indice, price):
             return
 
 # Convertir la fecha de vencimiento a un objeto datetime
-        expiry_date = datetime.strptime(pay_client[2], "%d/%m/%Y")
+        expiry_date = datetime.datetime.strptime(pay_client[2], "%d/%m/%Y")
 
         # Obtener la fecha actual
-        now = datetime.now()
+        now = datetime.datetime.now()
 
         # Comparar las fechas
-        if expiry_date < now:
+        if expiry_date < datetime.datetime.strptime(now.strftime("%d/%m/%Y"), "%d/%m/%Y"):
             mb.showerror("pago", "la tarjeta esta vencida")
             return
     #pay_client[0] = nombre
@@ -214,9 +226,7 @@ def getnums(text):  # funcion que retorna los numeros de un string
 
 def see_profits():
     df = pd.read_csv("profits.csv", sep=",")
-    data = {"gananacias": df["precio"].sum()}
-    df1 = pd.DataFrame(data)
-    df2 = pd.concat([df, df1], axis=0)
-    df2.to_csv("profits.csv", index=False, sep=",", mode="w")
+    df["ganancias"] = df["precio"].values.sum()
+    df.to_csv("profits.csv", index=False, sep=";", mode="w")
     os.system("start excel.exe profits.csv")
-    
+
