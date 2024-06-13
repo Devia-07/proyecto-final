@@ -18,6 +18,11 @@ import funciones_categorias as fc
 import customtkinter as ctk
 
 
+def return_menu(window):
+    window.destroy()
+    fly()
+
+
 ctk.set_appearance_mode("light")
 
 def functions(function):
@@ -46,7 +51,9 @@ def fly(window_search=None):
     image_logo = ctk.CTkImage(dark_image=Image.open(fr"imagenes\Heaven.png"), size=(200, 700))
     image_logo = ctk.CTkLabel(window_fly, image=image_logo,text ="")
     image_logo.place(x = 50, y = 40)
-    
+    see_checkin = ctk.CTkButton(window_fly, text="check in", command=lambda: functions(check_in(window_fly)), width=100, height=40)
+    button_width = 100  # Ancho del botón, ajusta según sea necesario
+    see_checkin.place(x=850, y=170)
 
     # Crear una lista de días de junio
     dates_june = []
@@ -473,7 +480,7 @@ def buy(indice, window, indices, peoples):
     
     """)
     label_3.grid(row=0, column=0, padx=10, pady=10)
-    button_premium = ctk.CTkButton(frame_3, text="Comprar", width=100, height=60)
+    button_premium = ctk.CTkButton(frame_3, text="Comprar", width=100, height=60,command=lambda:functions(choose_sit(indice, window_buy, indices, peoples)))
     button_premium.grid(row=1, column=0, padx=10, pady=10)
 
     window_buy.mainloop()
@@ -686,7 +693,7 @@ def record_check_in(window, peoples, indice, sits, price):
 
     # Botón de enviar
     button_send = ctk.CTkButton(frame_acompanantes, hover_color="blue", text="Enviar",
-                                command=lambda: c.conditions_record(peoples, 9, datas, sits, indice, window_record), width=100, height=50)
+                                command=lambda: c.conditions_record(peoples, 9, datas, sits, indice, window_record,price), width=100, height=50)
     button_send.grid(row=peoples, column=0, padx=10, pady=10)
 
     window_record.mainloop()
@@ -695,7 +702,7 @@ def record_check_in(window, peoples, indice, sits, price):
 
 
 
-def pay_sits(window, peoples, datas, sits, indice):
+def pay_sits(window, peoples, datas, sits, indice, price):
     window.destroy()
     window_pay = ctk.CTk()
     window_pay.title("Realizar Pago")
@@ -736,7 +743,7 @@ def pay_sits(window, peoples, datas, sits, indice):
 
     pay_client = [entry_name, entry_number, entry_date, entry_cvv]
     button_pay = ctk.CTkButton(pay_frame, text="Pagar", command=lambda: c.conditions_pay(
-        window_pay, pay_client, peoples, datas, sits, indice), width=100, height=40)
+        window_pay, pay_client, peoples, datas, sits, indice, price), width=100, height=40)
     button_pay.place(x=500, y=250)
 
     window_pay.mainloop()
@@ -753,7 +760,7 @@ def tickets(window, peoples, datas, sits, indice):
     
     frame_scroll = ctk.CTkScrollableFrame(window_tickets, width=600, height=300)
     frame_scroll.grid(row=0, column=0)
-    combinacion = fc.randomiser(peoples, indice)
+    combination = fc.randomiser(peoples, indice)
     for i in range(peoples):
             frame_ticket = ctk.CTkFrame(frame_scroll, fg_color="White", border_color="green", border_width=2)
             frame_ticket.grid(row=i, column=0, padx=10, pady=10)
@@ -773,14 +780,16 @@ def tickets(window, peoples, datas, sits, indice):
             label_hour1.place(x = 450, y = 235)
             label_fly = ctk.CTkLabel(frame_ticket, text=f"{df['Vuelo'].values[indice]}", text_color="black")
             label_fly.place(x = 230, y = 175)
-            label_code = ctk.CTkLabel(frame_ticket, text=f"Código de abordaje: {combinacion[i]}", text_color="black")
+            label_code = ctk.CTkLabel(frame_ticket, text=f"Código de abordaje: {combination[i]}", text_color="black")
             label_code.place(x = 98, y = 265)
             label_date = ctk.CTkLabel(frame_ticket, text=f"{df['Fecha'].values[indice]}", text_color="black")
             label_date.place(x = 330, y = 175)
-    
+    button = ctk.CTkButton(window_tickets, text="siguiente", command=lambda: return_menu(window_tickets))
+    button.grid(row=1, column=0, padx=10, pady=10)
     window_tickets.mainloop()
             
-def check_in(index):
+def check_in(window):
+    window.destroy()
     window_check_in = ctk.CTk()
     window_check_in.geometry("400x500")
     window_check_in.title("Check in")
@@ -789,12 +798,6 @@ def check_in(index):
     ctk.set_default_color_theme("blue")
     frame_check_in = ctk.CTkFrame(window_check_in, fg_color="#EBEBEB")
     frame_check_in.place(relx=0.5, rely=0.5, anchor="center")
-    image_path = "imagenes\\a airplane with the.jpg"
-    plane_image = Image.open(image_path).resize((150, 150))
-    photo = ImageTk.PhotoImage(plane_image)
-    label = ctk.CTkLabel(frame_check_in, text="", image=photo)
-    label.plane_image = photo
-    label.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
     label_code = ctk.CTkLabel(frame_check_in, text="Codigo")
     label_code.grid(row=1, column=0, padx=10, pady=10)
     entry_code = ctk.CTkEntry(frame_check_in)
@@ -803,11 +806,23 @@ def check_in(index):
     label_dni.grid(row=2, column=0, padx=10, pady=10)
     entry_dni = ctk.CTkEntry(frame_check_in)
     entry_dni.grid(row=2, column=1, padx=10, pady=10)
-    button = ctk.CTkButton(frame_check_in, text="Realizar Check-in", command=lambda: c.condition_check_in(entry_code.get(), entry_dni.get(), window_check_in, index))
+    button = ctk.CTkButton(frame_check_in, text="Realizar Check-in", command=lambda: c.condition_check_in(entry_code.get(), entry_dni.get(), window_check_in))
     button.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
     window_check_in.mainloop()            
                     
-        
+
+def admin(window_check):
+    window_check.destroy()
+    window_admin = ctk.CTk()
+    window_admin.geometry("400x500")
+    window_admin.title("Administrador")
+    window_admin.configure(bg="#EBEBEB")  # color del fondo
+    ctk.set_appearance_mode("light")
+    button_see_profits = ctk.CTkButton(window_admin, text="Ver ganancias", command=lambda: c.see_profits())
+    button_see_profits.place(relx=0.5, rely=0.5, anchor="center")
+    button_back = ctk.CTkButton(window_admin, text="Volver", command=lambda: return_menu(window_admin))
+    button_back.place(relx=0.5, rely=0.6, anchor="center")
+    window_admin.mainloop()
 
 
 if __name__ == '__main__':

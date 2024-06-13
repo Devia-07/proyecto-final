@@ -100,9 +100,12 @@ def search_high (filter,days,indices,window,peoples,buttons,frame):
     return buttons
 
 def get_last():
-    df = pd.read_csv("base.csv")
-    num = df.tail(1)
-    return num["numero_vuelo"]+1
+    if os.path.isfile("base.csv"):
+        df = pd.read_csv("base.csv")
+        num = df.tail(1)
+        return num["numero_vuelo"].values[0]+1
+    else:
+        return 1
 
 
 def fly(vuelo):
@@ -111,13 +114,23 @@ def fly(vuelo):
             df = pd.read_csv("base.csv")
             if vuelo in df["vuelo"].values:
                 return 
-        df = pd.read_csv(f'{vuelo}.csv')
+        df1 = pd.read_csv(f'{vuelo}.csv')
         num = get_last()
         data = {"numero_vuelo":[num],"archivo":[f'{vuelo}.csv'], "vuelo":[vuelo]}
-        df1 = pd.DataFrame(data)
+        df2 = pd.DataFrame(data)
         if not os.path.isfile("base.csv"):
-            df1.to_csv("base.csv", index=False, sep=",", header=True, mode='a')
+            df2.to_csv("base.csv", index=False, sep=",", header=True, mode='a')
         else:
-            df1.to_csv("base.csv", mode='a', header=False, index=False, sep=",")
+            df2.to_csv("base.csv", mode='a', header=False, index=False, sep=",")
     else:
         pass
+
+def record_profits(name, number, date, code, price):
+    if os.path.isfile("profits.csv"):
+        data = {"nombre": [name], "numero": [number], "fecha": [date], "codigo": [code], "precio": [price]}
+        df = pd.DataFrame(data)
+        df.to_csv("profits.csv", mode='a', header=False, index=False, sep=",")
+    else:
+        data = {"nombre": [name], "numero": [number], "fecha": [date], "codigo": [code], "precio": [price]}
+        df = pd.DataFrame(data)
+        df.to_csv("profits.csv", mode='a', header=True, index=False, sep=",")

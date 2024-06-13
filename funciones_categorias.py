@@ -141,7 +141,14 @@ def randomiser(peoples, indice):
             first_letter = letter[0].upper()
             codigo = first_letter + "-" + rd.choice(all_codes ) + rd.choice(all_codes) + rd.choice(all_codes) + rd.choice(all_codes) + rd.choice(all_codes)
             codigos.append(codigo)
-    for i in range(peoples):
+    filtered = df1.tail(peoples)
+    
+    
+    for i in range(min(len(filtered), len(codigos))):
         data = {"codigo": [codigos[i]]}
-        df2 = pd.DataFrame(data)
-        df1 = pd.concat([df1, df2], axis=1)
+        df3 = pd.DataFrame(data)
+        df2 = pd.concat([filtered, df3], axis=1)
+        df2.to_csv(f"{vuelo}.csv", index=False, sep=",", mode="w")
+    codes = pd.read_csv(f"{vuelo}.csv")
+    codes = codes["codigo"].tail(peoples).tolist()
+    return codes

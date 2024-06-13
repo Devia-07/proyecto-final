@@ -9,7 +9,7 @@ import save as sv
 import main as mn
 import funciones_categorias as fc
 
-def conditions_record(peoples, quantity, datas, sits, index, window):
+def conditions_record(peoples, quantity, datas, sits, index, window,price):
     df = pd.read_csv('dato_vuelo.csv')
     if os.path.isfile(f'{df["Vuelo"][index]}.csv'):
         df1 = pd.read_csv(f'{df["Vuelo"][index]}.csv')
@@ -57,10 +57,10 @@ def conditions_record(peoples, quantity, datas, sits, index, window):
                 "registro", "registro fallido la nacionalidad no es valida")
             return
     mb.showinfo("registro", "registro exitoso")
-    mn.pay_sits(window, peoples, datas, sits, index)
+    mn.pay_sits(window, peoples, datas, sits, index, price)
 
 
-def conditions_pay(window_pay, pay_client, peoples, datas, sits, indice):
+def conditions_pay(window_pay, pay_client, peoples, datas, sits, indice, price):
     pay_client = [i.get() for i in pay_client]
     for i in range(4):
         try:
@@ -83,23 +83,44 @@ def conditions_pay(window_pay, pay_client, peoples, datas, sits, indice):
         elif not pay_client[1].isdigit():
             mb.showerror("pago", "el numero de tarjeta debe ser un numero")
             return
+
+# Convertir la fecha de vencimiento a un objeto datetime
+        expiry_date = datetime.strptime(pay_client[2], "%d/%m/%Y")
+
+        # Obtener la fecha actual
+        now = datetime.now()
+
+        # Comparar las fechas
+        if expiry_date < now:
+            mb.showerror("pago", "la tarjeta esta vencida")
+            return
+    #pay_client[0] = nombre
+    #pay_client[1] = numero de tarjeta
+    #pay_client[2] = fecha de vencimiento
+    #pay_client[3] = codigo de seguridad
+    mb.showinfo("pago", "pago exitoso, has pagado: $"+str(price))
     sv.record_base(peoples, datas, sits, indice, window_pay, pay_client)
     df = pd.read_csv("dato_vuelo.csv")
+    sv.record_profits(pay_client[0],pay_client[1],pay_client[2],pay_client[3],price)
     sv.fly(df["Vuelo"][indice])
     mn.tickets(window_pay, peoples, datas, sits, indice)
 
 
-def condition_check_in(code, dni, window_check_in, index):  # funcion que valida el login
-    if os.path.isfile("dato_vuelo.csv"):  # si el archivo csv existe
-        df = pd.read_csv("dato_vuelo.csv")  # se lee el archivo csv
-        vuelo = df["Vuelo"][index]
-        df1 = pd.read_csv(f"{vuelo}.csv")
-    if code == "" or dni == "":
-        mb.showerror("login", "rellene todas las casillas")
-    elif code not in df1["codigo"].astype(str).values or dni not in df1["dni"].astype(str).values:
-        mb.showerror("login", "login fallido los datos no coinciden")
-    else:
-        mb.showinfo("login", "login exitoso")
+def condition_check_in(code, dni, window_check_in):# funcion que valida el login
+    if code == "admin" and dni == "1234":
+        mb.showinfo("bienvenido administrador", "Bienvenido administrador")
+        mn.admin(window_check_in)
+        return
+    if os.path.isfile("base.csv"):
+        df = pd.read_csv("base.csv", sep=",")  # se lee el archivo csv
+        for i in df.index:
+            archivo = df["archivo"].values[i]
+            df1 = pd.read_csv(f"{archivo}", sep=",")
+            if code in df1["codigo"].values and int(dni) in df1["dni"].values:
+                mb.showinfo("check-in", "check-in exitoso")
+                mb.showinfo("check-in", "asientos asignados")
+                return
+    mb.showerror("check-in", "codigo o dni incorrecto")
 
 
 def lista_vuelos():  # funcion que retorna la lista de vuelos
@@ -178,4 +199,14 @@ def getnums(text):  # funcion que retorna los numeros de un string
         if text[i].isdigit():  # si el caracter es un digito
             nums.append(text[i])  # se agrega a la lista
     return int("".join(nums))  # se retorna la lista de numeros
- 
+
+
+
+def see_profits():
+    df = pd.read_csv("profits.csv", sep=",")
+    data = {"gananacias": df["precio"].sum()}
+    df1 = pd.DataFrame(data)
+    df2 = pd.concat([df, df1], axis=0)
+    df2.to_csv("profits.csv", index=False, sep=",", mode="w")
+    os.system("start excel.exe profits.csv")
+    
