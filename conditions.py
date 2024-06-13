@@ -101,10 +101,7 @@ def conditions_pay(window_pay, pay_client, peoples, datas, sits, indice, price):
             mb.showerror("pago", "el numero de tarjeta debe ser un numero")
             return
 
-<<<<<<< HEAD
 # Convertir la fecha de vencimiento a un objeto datetime
-=======
->>>>>>> 78a16d1fdde61be5a5f48b4264ad34e65ea5af31
         expiry_date = datetime.datetime.strptime(pay_client[2], "%d/%m/%Y")
 
         # Obtener la fecha actual
@@ -232,4 +229,4 @@ def see_profits():
     df["ganancias"] = df["precio"].values.sum()
     df.to_csv("profits.csv", index=False, sep=";", mode="w")
     os.system("start excel.exe profits.csv")
-
+    return
