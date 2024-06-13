@@ -9,7 +9,8 @@ import save as sv
 import main as mn
 import funciones_categorias as fc
 
-def conditions_record(peoples, quantity, datas, sits, index, window,price):
+
+def conditions_record(peoples, quantity, datas, sits, index, window, price):
     df = pd.read_csv('dato_vuelo.csv')
     if os.path.isfile(f'{df["Vuelo"][index]}.csv'):
         df1 = pd.read_csv(f'{df["Vuelo"][index]}.csv')
@@ -19,7 +20,8 @@ def conditions_record(peoples, quantity, datas, sits, index, window,price):
     for i in range(peoples):
         for j in range(quantity):
             if datas[i][j] == "":
-                mb.showerror("registro", "registro fallido rellene todas las casillas")
+                mb.showerror(
+                    "registro", "registro fallido rellene todas las casillas")
                 return
     countries = [country.name for country in pycountry.countries]
     for i in range(peoples):
@@ -49,7 +51,7 @@ def conditions_record(peoples, quantity, datas, sits, index, window,price):
                 "registro", "registro fallido el telefono debe tener 10 digitos")
             return
         # si el numero no comienza por 3
-        elif datas[i][6][0]  != "3":
+        elif datas[i][6][0] != "3":
             mb.showerror(
                 "registro", "el numero debe de comenzar por 3")
             return
@@ -61,17 +63,20 @@ def conditions_record(peoples, quantity, datas, sits, index, window,price):
             mb.showerror(
                 "registro", "registro fallido la nacionalidad no es valida")
             return
-        
+
         if os.path.isfile("clientes.csv"):
             df2 = pd.read_csv("clientes.csv", sep=";")
             if datas[i][3] in df2["dni"].values:
-                mb.showerror("registro", "registro fallido el dni ya esta registrado")
+                mb.showerror(
+                    "registro", "registro fallido el dni ya esta registrado")
                 return
             elif datas[i][5] in df2["email"].values:
-                mb.showerror("registro", "registro fallido el email ya esta registrado")
+                mb.showerror(
+                    "registro", "registro fallido el email ya esta registrado")
                 return
             elif datas[i][6] in df2["telefono"].values:
-                mb.showerror("registro", "registro fallido el telefono ya esta registrado")
+                mb.showerror(
+                    "registro", "registro fallido el telefono ya esta registrado")
                 return
     mb.showinfo("registro", "registro exitoso")
     mn.pay_sits(window, peoples, datas, sits, index, price)
@@ -111,19 +116,20 @@ def conditions_pay(window_pay, pay_client, peoples, datas, sits, indice, price):
         if expiry_date < datetime.datetime.strptime(now.strftime("%d/%m/%Y"), "%d/%m/%Y"):
             mb.showerror("pago", "la tarjeta esta vencida")
             return
-    #pay_client[0] = nombre
-    #pay_client[1] = numero de tarjeta
-    #pay_client[2] = fecha de vencimiento
-    #pay_client[3] = codigo de seguridad
+    # pay_client[0] = nombre
+    # pay_client[1] = numero de tarjeta
+    # pay_client[2] = fecha de vencimiento
+    # pay_client[3] = codigo de seguridad
     mb.showinfo("pago", "pago exitoso, has pagado: $"+str(price))
     sv.record_base(peoples, datas, sits, indice, window_pay, pay_client)
     df = pd.read_csv("dato_vuelo.csv")
-    sv.record_profits(pay_client[0],pay_client[1],pay_client[2],pay_client[3],price)
+    sv.record_profits(pay_client[0], pay_client[1],
+                      pay_client[2], pay_client[3], price)
     sv.fly(df["Vuelo"][indice])
     mn.tickets(window_pay, peoples, datas, sits, indice)
 
 
-def condition_check_in(code, dni, window_check_in):# funcion que valida el login
+def condition_check_in(code, dni, window_check_in):  # funcion que valida el login
     if code == "admin" and dni == "1234":
         mb.showinfo("bienvenido administrador", "Bienvenido administrador")
         mn.admin(window_check_in)
@@ -160,7 +166,7 @@ def conditions_search(destination, origin, going, window, peoples):
         return
     elif going == "":
         mb.showerror("error", "rellene la casilla de ida")
-    
+
         return
     peoples = int(peoples)
     if peoples > 72:
@@ -184,32 +190,35 @@ def search(origin, destination):
             dates_june.append(date.strftime("%Y-%m-%d"))
     print(dates_june)
     df = pd.read_csv("dato_vuelo.csv", sep=",")
-    df_filtered = df.loc[(df["CiudadOrigen"] == origin) & (df["CiudadDestino"] == destination) & (df["Fecha"].isin(dates_june))]
+    df_filtered = df.loc[(df["CiudadOrigen"] == origin) & (
+        df["CiudadDestino"] == destination) & (df["Fecha"].isin(dates_june))]
     for i in df_filtered.index:
         indices.append(i)
     return indices
 
 
-def filter_search(filtrar,days,indices,window,peoples,buttons,frame):
+def filter_search(filtrar, days, indices, window, peoples, buttons, frame):
     if filtrar == "":
         mb.showerror("error", "rellene la casilla de filtro")
         return
     elif filtrar == "barato":
-        buttons = sv.search_low(filtrar,days,indices,window,peoples,buttons,frame)
+        buttons = sv.search_low(filtrar, days, indices,
+                                window, peoples, buttons, frame)
     elif filtrar == "caro":
-        buttons = sv.search_high(filtrar,days,indices,window,peoples,buttons,frame)
+        buttons = sv.search_high(
+            filtrar, days, indices, window, peoples, buttons, frame)
     elif filtrar == "medio":
-        buttons =sv.search_medium(filtrar,days,indices,window,peoples,buttons,frame)
-        
-    
+        buttons = sv.search_medium(
+            filtrar, days, indices, window, peoples, buttons, frame)
 
-#busqueda de horas
+
+# busqueda de horas
 def search_hours(indice):
     df = pd.read_csv("dato_vuelo.csv", sep=",")
     horas = []
-    filtered = df.loc[(df["Fecha"] == df["Fecha"].values[indice]) & 
-                    (df["CiudadOrigen"] == df["CiudadOrigen"].values[indice]) & 
-                    (df["CiudadDestino"] == df["CiudadDestino"].values[indice])]
+    filtered = df.loc[(df["Fecha"] == df["Fecha"].values[indice]) &
+                      (df["CiudadOrigen"] == df["CiudadOrigen"].values[indice]) &
+                      (df["CiudadDestino"] == df["CiudadDestino"].values[indice])]
     for i in filtered.index:
         horas.append(i)
     return horas
@@ -221,7 +230,6 @@ def getnums(text):  # funcion que retorna los numeros de un string
         if text[i].isdigit():  # si el caracter es un digito
             nums.append(text[i])  # se agrega a la lista
     return int("".join(nums))  # se retorna la lista de numeros
-
 
 
 def see_profits():
