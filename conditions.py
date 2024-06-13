@@ -175,9 +175,11 @@ def filter_search(filtrar,days,indices,window,peoples,buttons,frame):
 def search_hours(indice):
     df = pd.read_csv("dato_vuelo.csv", sep=",")
     horas = []
-    for i in range(len(df)):
-        if df['Fecha'].values[i] == df['Fecha'].values[indice] and df['CiudadOrigen'].values[i] == df['CiudadOrigen'].values[indice] and df['CiudadDestino'].values[i] == df['CiudadDestino'].values[indice]:
-            horas.append(i)
+    filtered = df.loc[(df["Fecha"] == df["Fecha"].values[indice]) & 
+                    (df["CiudadOrigen"] == df["CiudadOrigen"].values[indice]) & 
+                    (df["CiudadDestino"] == df["CiudadDestino"].values[indice])]
+    for i in filtered.index:
+        horas.append(i)
     return horas
 
 

@@ -98,7 +98,3 @@ def search_high (filter,days,indices,window,peoples,buttons,frame):
         buttons.append(button)
         rows += 1
     return buttons
-        
-        
-        
-        

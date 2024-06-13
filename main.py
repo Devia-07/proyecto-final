@@ -365,7 +365,9 @@ def buy(indice, window, indices, peoples):
     PRECIO : {df['ValorMax'].values[indice]}"""
     )
     label_3.grid(row=0, column=0)
-    button_premium = ctk.CTkButton(frame_3, text="Comprar", width=20, height=2)
+    button_premium = ctk.CTkButton(frame_3, text="Comprar", width=20, height=2,
+        command=lambda: functions(choose_sit(indice, window_buy, indices, peoples)))
+    
     button_premium.grid(row=1, column=0)
 
     window_buy.mainloop()
@@ -373,7 +375,7 @@ def buy(indice, window, indices, peoples):
 # Usuario escoge asiento solo si es premium
 
 
-def choose_sit(indice=None, window=None, indices=None):
+def choose_sit(indice, window, indices, peoples):
     if window is not None:
         window.destroy()
 
@@ -397,22 +399,27 @@ def choose_sit(indice=None, window=None, indices=None):
     frame_sits = ctk.CTkFrame(window_buy)
     frame_sits.place(relx=0.5, rely=0.1, anchor="n")
     matriz = []
+    sits = []
+    contador = 0
+    fc.reiniciar()
+    peoples = int(peoples)
     for i in range(12):
         buttons = []
         for j in range(6):
             button_sit = ctk.CTkButton(
-                frame_sits, text=f"{chr(65+j)}{i+1}", width=5, height=2)
+                frame_sits, text=f"{chr(65+j)}{i+1}", width=5, height=2,
+                command=lambda i=i,j=j: fc.premium(i,j,matriz, indice, peoples, window_buy,df["ValorMax"].values[indice]))
             button_sit.grid(row=i, column=j, padx=10, pady=10)
             text = c.getnums(button_sit.cget("text"))
             if text >= 9:
                 button_sit.configure(fg_color="green", state="disabled")
-            elif text >= 5:
+            elif text >=  5:
                 button_sit.configure(fg_color="red", state="disabled")
             else:
                 button_sit.configure(fg_color="blue")
             buttons.append(button_sit)
         matriz.append(buttons)
-
+    fc.actualizar(matriz, indice)
     # Frame label categorías
     frame_premium = ctk.CTkFrame(window_buy)
     label_premium = ctk.CTkLabel(frame_premium, text="Asientos premium")
@@ -474,9 +481,16 @@ def record_check_in(window, peoples, indice, sits, price):
     # hora de salida
     frame_hours_f = ctk.CTkFrame(
         window_record, fg_color="grey26", border_color="green", border_width=2)
-    frame_hours_f.grid(row=0, column=0)
+    frame_hours_f.grid(row=0, column=0, padx=10, pady=10)
     label_hours = ctk.CTkLabel(frame_hours_f, text="Información de vuelo")
-    label_hours.grid(row=0, column=0)
+    label_hours.grid(row=0, column=0, padx=10, pady=10)
+    label_people = ctk.CTkLabel(frame_hours_f, text=f"Numero de personas: {peoples}")
+    label_people.grid(row=1, column=0, padx=10, pady=10)
+    label_price_total = ctk.CTkLabel(frame_hours_f, text=f"Precio total: {price}")
+    label_price_total.grid(row=2, column=0, padx=10, pady=10)
+    label_unit_price = ctk.CTkLabel(frame_hours_f, text=f"Precio unitario: {price/peoples}")
+    label_unit_price.grid(row=3, column=0, padx=10, pady=10)
+    
 
     datas = []
     for i in range(peoples):
