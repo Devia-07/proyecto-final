@@ -141,4 +141,7 @@ def randomiser(peoples, indice):
             first_letter = letter[0].upper()
             codigo = first_letter + "-" + rd.choice(all_codes ) + rd.choice(all_codes) + rd.choice(all_codes) + rd.choice(all_codes) + rd.choice(all_codes)
             codigos.append(codigo)
-    return codigos
+    for i in range(peoples):
+        data = {"codigo": [codigos[i]]}
+        df2 = pd.DataFrame(data)
+        df1 = pd.concat([df1, df2], axis=1)
