@@ -332,7 +332,8 @@ def buy(indice, window, indices, peoples):
     PRECIO: {df['ValorMedio'].values[indice]}"""
     )
     label_2.grid(row=0, column=0)
-    button_diamond = ctk.CTkButton(frame_2, text="Comprar", width=20, height=2)
+    button_diamond = ctk.CTkButton(frame_2, text="Comprar", width=20, 
+                                   height=2, command=lambda: fc.diamond(indice, window_buy, peoples, df["ValorMedio"].values[indice]))
     button_diamond.grid(row=1, column=0)
 
     frame_3 = ctk.CTkFrame(window_buy)
@@ -604,8 +605,8 @@ def tickets(window, peoples, datas, sits, indice):
     for i in range(peoples):
             frame_ticket = ctk.CTkFrame(frame_scroll, fg_color="grey26", border_color="green", border_width=2)
             frame_ticket.grid(row=i, column=0, padx=10, pady=30)
-            combinacion = fc.randomiser()
-            label = ctk.CTkLabel(frame_ticket, text=f"Pase de abordaje")
+            combinacion = fc.randomiser(peoples, indice)
+            label = ctk.CTkLabel(frame_ticket, text="Pase de abordaje")
             label.grid(row=0, column=0, padx=10, pady=10)
             label_name = ctk.CTkLabel(frame_ticket, text=f"Nombre: {datas[i][1]} {datas[i][2]}")
             label_name.grid(row=1, column=0, padx=10, pady=10)
@@ -630,3 +631,4 @@ def tickets(window, peoples, datas, sits, indice):
 
 if __name__ == '__main__':
     functions(fly())
+    # choose_sit()
