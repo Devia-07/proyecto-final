@@ -48,6 +48,11 @@ def conditions_record(peoples, quantity, datas, sits, index, window):
             mb.showerror(
                 "registro", "registro fallido el telefono debe tener 10 digitos")
             return
+        # si el numero no comienza por 3
+        elif datas[i][6][0]  != "3":
+            mb.showerror(
+                "registro", "el numero debe de comenzar por 3")
+            return
         elif not re.search(regex, datas[i][5]):
             mb.showerror(
                 "registro", "registro fallido el dominio del correo no es valido")
@@ -120,6 +125,11 @@ def conditions_search(destination, origin, going, window, peoples):
         return
     elif going == "":
         mb.showerror("error", "rellene la casilla de ida")
+    
+        return
+    peoples = int(peoples)
+    if peoples > 72:
+        mb.showerror("error", "no hay cupos disponibles")
         return
     else:
         indices = search(origin, destination)

@@ -34,6 +34,7 @@ def fly(window_search=None):
 
     # Creación de la ventana de menú fly
     window_fly = ctk.CTk()
+    window_fly.resizable(0, 0)
     window_fly.title("Fly_Heaven")
     window_fly.geometry("1850x1900+0+0")
     
@@ -222,6 +223,7 @@ def search_fly(indices, window_fly, peoples):
     window_fly.destroy()
     df = pd.read_csv("dato_vuelo.csv")
     window_search = ctk.CTk()
+    window_search.resizable(0, 0)
     window_search.geometry("1850x1900+0+0")
     window_search.state("zoomed")
     window_search.resizable(0, 0)
@@ -303,6 +305,7 @@ def info_buy(indice, window, indices, peoples):
     hours = c.search_hours(indice)
     df = pd.read_csv("dato_vuelo.csv")
     window_info = ctk.CTk()
+    window_info.resizable(0, 0)
     window_info.geometry("1850x1900+0+0")
     
     frame_hours_f = ctk.CTkFrame(window_info, fg_color="white", border_color="blue", border_width=3, width=1000, height=300)
@@ -337,17 +340,6 @@ def info_buy(indice, window, indices, peoples):
     window_info.mainloop()
 
 
-def mostrar_vuelos(df, frame):
-    # Limpiar el frame de vuelos anteriores
-    for widget in frame.winfo_children():
-        widget.destroy()
-
-    # Asumiendo que existe una función para mostrar cada vuelo en el frame
-    for i, row in df.iterrows():
-        # Mostrar cada vuelo en el frame
-        # Esta es una simplificación, deberías ajustar según cómo quieras mostrar los vuelos
-        label = ctk.CTkLabel(frame, text=f"Vuelo: {row['Vuelo']} - Precio: {row['ValorMin']} a {row['ValorMax']}")
-        label.pack()
 
 
 def buy(indice, window, indices, peoples):
@@ -356,6 +348,7 @@ def buy(indice, window, indices, peoples):
 
     df = pd.read_csv("dato_vuelo.csv")
     window_buy = ctk.CTk()
+    window_buy.resizable(0, 0)
     window_buy.geometry("1850x1900+0+0")
     
     # Adjust font size and placement for the main labels
@@ -489,6 +482,7 @@ def choose_sit(indice, window, indices, peoples):
 
     # Creación de ventana para la elección de asiento
     window_buy = ctk.CTk()
+    window_buy.resizable(0, 0)
     window_buy.geometry("1250x750")
     window_buy.resizable(0, 0)
     window_buy.iconbitmap("fly_heaven.ico")
@@ -558,6 +552,7 @@ def record_check_in(window, peoples, indice, sits, price):
     window_record = ctk.CTk()
     window_record.title("Registro")
     window_record.geometry("1850x1900+0+0")
+    window_record.resizable(0, 0)
     
     # Frame de información de vuelo con tamaño aumentado
     frame_info_fly = ctk.CTkFrame(window_record, fg_color="white",
@@ -677,6 +672,7 @@ def pay_sits(window, peoples, datas, sits, indice):
     window_pay = ctk.CTk()
     window_pay.title("Realizar Pago")
     window_pay.geometry("1850x1900+0+0")
+    window_pay.resizable(0,0)
     
 
     # Crear frame para los widgets de pago
@@ -724,6 +720,7 @@ def tickets(window, peoples, datas, sits, indice):
     df = pd.read_csv("dato_vuelo.csv")
     window_tickets = ctk.CTk()
     window_tickets.geometry("1000x1000")
+    window_tickets.resizable(0, 0)
     window_tickets.title("Tickets")
     frame_scroll = ctk.CTkScrollableFrame(window_tickets, width=600, height=300)
     frame_scroll.place(relx=0.5, rely=0.5, anchor="center")
@@ -757,6 +754,7 @@ def tickets(window, peoples, datas, sits, indice):
 def check_in(index):
     window_check_in = ctk.CTk()
     window_check_in.geometry("400x500")
+    window_check_in.resizable(0, 0)
     window_check_in.title("Check in")
     window_check_in.configure(bg="#EBEBEB")  # Set background color
     ctk.set_appearance_mode("light")
@@ -786,4 +784,4 @@ def check_in(index):
 
 if __name__ == '__main__':
     functions(fly())
-    # choose_sit()
+  
