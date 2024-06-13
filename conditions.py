@@ -89,14 +89,13 @@ def conditions_pay(window_pay, pay_client, peoples, datas, sits, indice, price):
             mb.showerror("pago", "el numero de tarjeta debe ser un numero")
             return
 
-# Convertir la fecha de vencimiento a un objeto datetime
-        expiry_date = datetime.strptime(pay_client[2], "%d/%m/%Y")
+        expiry_date = datetime.datetime.strptime(pay_client[2], "%d/%m/%Y")
 
         # Obtener la fecha actual
-        now = datetime.now()
+        now = datetime.datetime.now()
 
         # Comparar las fechas
-        if expiry_date < now:
+        if expiry_date < datetime.datetime.strptime(now.strftime("%d/%m/%Y"), "%d/%m/%Y"):
             mb.showerror("pago", "la tarjeta esta vencida")
             return
     #pay_client[0] = nombre

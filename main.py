@@ -39,14 +39,11 @@ def fly(window_search=None):
 
     # Creación de la ventana de menú fly
     window_fly = ctk.CTk()
-    window_fly.resizable(0, 0)
+    
     window_fly.title("Fly_Heaven")
     window_fly.geometry("1850x1900+0+0")
     
     window_fly.iconbitmap("fly_heaven.ico")
-    label = ctk.CTkLabel(window_fly, text="")
-    label = ctk.CTkLabel(window_fly, text="")
-    label.grid(row=0, column=0)
     
     #imagen banner
     image_logo = ctk.CTkImage(dark_image=Image.open(fr"imagenes\Heaven.png"), size=(200, 700))
@@ -230,10 +227,7 @@ def search_fly(indices, window_fly, peoples):
     window_fly.destroy()
     df = pd.read_csv("dato_vuelo.csv")
     window_search = ctk.CTk()
-    window_search.resizable(0, 0)
     window_search.geometry("1850x1900+0+0")
-    window_search.state("zoomed")
-    window_search.resizable(0, 0)
     window_search.title("Búsqueda de vuelos")
 
     # Crear frame para el label
@@ -342,7 +336,7 @@ def info_buy(indice, window, indices, peoples):
         command=lambda: functions(search_fly(indices, window_info, peoples)),
         width=300, height=100
     )
-    button_back.place(relx=0.5, rely=0.9, anchor='s', y=-10)  # y=-10 to give some padding from the bottom
+    button_back.place(relx=0.4, rely=0.9, anchor='s', y=-10)  # y=-10 to give some padding from the bottom
 
     window_info.mainloop()
 
@@ -355,7 +349,6 @@ def buy(indice, window, indices, peoples):
 
     df = pd.read_csv("dato_vuelo.csv")
     window_buy = ctk.CTk()
-    window_buy.resizable(0, 0)
     window_buy.geometry("1850x1900+0+0")
     
     # Adjust font size and placement for the main labels
@@ -488,9 +481,7 @@ def choose_sit(indice, window, indices, peoples):
 
     # Creación de ventana para la elección de asiento
     window_buy = ctk.CTk()
-    window_buy.resizable(0, 0)
     window_buy.geometry("1250x750")
-    window_buy.resizable(0, 0)
     window_buy.iconbitmap("fly_heaven.ico")
     window_buy.title("Elección de asiento")
 
@@ -549,8 +540,7 @@ def choose_sit(indice, window, indices, peoples):
     # darle posicion a los botones y elementos de la pantalla de busqueda de vuelos
 
 
-import pandas as pd
-import customtkinter as ctk
+
 
 def record_check_in(window, peoples, indice, sits, price):
     window.destroy()
@@ -558,59 +548,32 @@ def record_check_in(window, peoples, indice, sits, price):
     window_record = ctk.CTk()
     window_record.title("Registro")
     window_record.geometry("1850x1900+0+0")
-    window_record.resizable(0, 0)
+    
     
     # Frame de información de vuelo con tamaño aumentado
     frame_info_fly = ctk.CTkFrame(window_record, fg_color="white",
-                                  border_color="DodgerBlue3", border_width=3, width=700, height=200)
-    frame_info_fly.place(x= 400 , y = 100)
+                                  border_color="blue", border_width=3, width=700, height=200)
+    frame_info_fly.place(x= 300 , y = 100)
     
     label_fly = ctk.CTkLabel(frame_info_fly, text="Información de vuelo", font=("Arial", 20))
     label_fly.place(x =250,y = 50)
     label_fly1 = ctk.CTkLabel(frame_info_fly, text=f"Vuelo: {df['Vuelo'].values[indice]}", font=("Arial", 16))
     label_hour = ctk.CTkLabel(frame_info_fly, text=f"Hora de salida: {df['HoraSalida'].values[indice]}", font=("Arial", 16))
     label_hour1 = ctk.CTkLabel(frame_info_fly, text=f"Hora de llegada: {df['HoraLlegada'].values[indice]}", font=("Arial", 16))
-    label_price = ctk.CTkLabel(frame_info_fly, text=f"Precio: {price}", font=("Arial", 16))
+    label_price = ctk.CTkLabel(frame_info_fly, text=f"Precio total: {price}", font=("Arial", 16))
+    label_price_unitario = ctk.CTkLabel(frame_info_fly, text=f"Precio unitario: {price/peoples}",font=("Arial", 16))
+    label_price_unitario.place(x =500,y = 100)
     label_fly1.place(x =50,y = 100)
     label_hour.place(x =50,y = 150)
-    label_hour1.place(x =450,y = 100)
+    label_hour1.place(x =300,y = 150)
     label_price.place(x =500,y = 150)
 
     # Frame de acompañantes con tamaño aumentado
     frame_acompanantes = ctk.CTkScrollableFrame(
-        window_record, fg_color="grey26", border_color="green", border_width=3, width=1000, height=300)
-    frame_acompanantes.grid(row=1, column=0)
+        window_record, fg_color="white", border_color="blue", border_width=3, width=1000, height=300)
+    frame_acompanantes.place(x=200, y=400)
 
-    # frame de información de vuelo
-    frame_info_fly = ctk.CTkFrame(window_record, fg_color="grey26",
-                                  border_color="green", border_width=2, width=500, height=300)
-    frame_info_fly.grid(row=0, column=0, padx=10, pady=30)
-    label_fly = ctk.CTkLabel(frame_info_fly, text="Información de vuelo")
-    label_fly.grid(row=0, column=0)
-    label_fly1 = ctk.CTkLabel(frame_info_fly, text=f"Vuelo: {
-                              df['Vuelo'].values[indice]}")
-    label_hour = ctk.CTkLabel(frame_info_fly, text=f"Hora de salida: {
-                              df['HoraSalida'].values[indice]}")
-    label_hour1 = ctk.CTkLabel(frame_info_fly, text=f"Hora de llegada: {
-                               df['HoraLlegada'].values[indice]}")
-    label_price = ctk.CTkLabel(frame_info_fly, text=f"Precio: {price}")
-    label_fly1.grid(row=1, column=0)
-    label_hour.grid(row=2, column=0)
-    label_hour1.grid(row=3, column=0)
-    label_price.grid(row=4, column=0)
 
-    # hora de salida
-    frame_hours_f = ctk.CTkFrame(
-    window_record, fg_color="grey26", border_color="green", border_width=2)
-    frame_hours_f.grid(row=0, column=0, padx=10, pady=10)
-    label_hours = ctk.CTkLabel(frame_hours_f, text="Información de vuelo")
-    label_hours.grid(row=0, column=0, padx=10, pady=10)
-    label_people = ctk.CTkLabel(frame_hours_f, text=f"Numero de personas: {peoples}")
-    label_people.grid(row=1, column=0, padx=10, pady=10)
-    label_price_total = ctk.CTkLabel(frame_hours_f, text=f"Precio total: {price}")
-    label_price_total.grid(row=2, column=0, padx=10, pady=10)
-    label_unit_price = ctk.CTkLabel(frame_hours_f, text=f"Precio unitario: {price/peoples}")
-    label_unit_price.grid(row=3, column=0, padx=10, pady=10)
     
 
     datas = []
@@ -752,8 +715,7 @@ def tickets(window, peoples, datas, sits, indice):
     window_tickets.geometry("1000x1000")
     window_tickets.resizable(0, 0)
     window_tickets.title("Tickets")
-    ctk.set_appearance_mode("dark")
-    ctk.set_default_color_theme("blue")
+    
     
     frame_scroll = ctk.CTkScrollableFrame(window_tickets, width=600, height=300)
     frame_scroll.grid(row=0, column=0)
