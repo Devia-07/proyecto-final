@@ -18,7 +18,7 @@ import funciones_categorias as fc
 import customtkinter as ctk
 
 # Sebastian Devia Acosta 
-# Juan Esteban Correa 
+# Juan Esteban Correa
 # Nicolas Castañeda
 
 def return_menu(window):
