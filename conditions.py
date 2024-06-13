@@ -118,14 +118,14 @@ def lista_vuelos():  # funcion que retorna la lista de vuelos
     origen = set(df['CiudadOrigen'])  # se obtiene la columna "CiudadOrigen"
     destino = set(df["CiudadDestino"])  # se obtiene la columna "CiudadDestino"
     fecha = set(df['Fecha'])  # se obtiene la columna "Fecha"
-    return origen, destino, fecha
+    return origen, destino
 
 
-def conditions_search(origin, destination, passenger, going, window, peoples):
-    if origin == "" or destination == "" or passenger == "":
+def conditions_search(origin, destination, going, window, peoples):
+    if origin == "" or destination == "" or peoples == "":
         mb.showerror("error", "rellene todas las casillas")
         return
-    elif not int(passenger.isdigit()):
+    elif not int(peoples.isdigit()):
         mb.showerror("error", "el numero de pasajeros debe ser un numero")
         return
     elif origin == destination or destination == origin:
