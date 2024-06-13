@@ -7,6 +7,7 @@ import pycountry
 import os
 import save as sv
 import main as mn
+import funciones_categorias as fc
 
 
 def conditions_record(peoples, quantity, datas, sits, index, window):
@@ -60,7 +61,7 @@ def conditions_record(peoples, quantity, datas, sits, index, window):
     mn.pay_sits(window, peoples, datas, sits, index)
 
 
-def conditions_pay(window_pay, pay_client, peoples, datas, sits, indice):
+def conditions_pay(window_pay, pay_client, peoples, datas, sits, index):
     pay_client = [i.get() for i in pay_client]
     for i in range(4):
         try:
@@ -83,37 +84,25 @@ def conditions_pay(window_pay, pay_client, peoples, datas, sits, indice):
         elif not pay_client[1].isdigit():
             mb.showerror("pago", "el numero de tarjeta debe ser un numero")
             return
-    sv.record_base(peoples, datas, sits, indice, window_pay, pay_client)
-    mn.tickets(window_pay, peoples, datas, sits, indice)
+    sv.record_base(peoples, datas, sits, index, window_pay, pay_client)
+    mn.tickets(window_pay, peoples, datas, sits, index)
 
 
-# def condition_login(id, email):  # funcion que valida el login
-#     if os.path.isfile("registro_usuarios.csv"):  # si el archivo csv existe
-#         df = pd.read_csv("registro_usuarios.csv")  # se lee el archivo csv
-#         # si los datos coinciden
-#         if int(id) in df["documento"].values and email in df["correo"].values:
-#             mb.showinfo("login", "login exitoso")
-#         else:
-#             mb.showerror("login", "login fallido los datos no coinciden")
-
-#     if id == "" or email == "":
-#         # si alguna casilla esta vacia
-#         mb.showerror("login", "rellene todas las casillas")
-#     else:
-#         if os.path.isfile("registro_usuarios.csv"):  # si el archivo csv existe
-#             df = pd.read_csv("registro_usuarios.csv")  # se lee el archivo csv
-#             # si los datos coinciden
-#             if int(id) in df["documento"].values and email in df["correo"].values:
-#                 mb.showinfo("login", "login exitoso")
-#             else:
-#                 # si los datos no coinciden
-#                 mb.showerror("login", "login fallido los datos no coinciden")
-#         else:
-#             # si no hay usuarios registrados
-#             mb.showerror("login", "login fallido no hay usuarios registrados")
+def condition_check_in(code, dni, window_check_in, index):  # funcion que valida el login
+    if os.path.isfile("dato_vuelo.csv"):  # si el archivo csv existe
+        df = pd.read_csv("dato_vuelo.csv")  # se lee el archivo csv
+        vuelo = df["Vuelo"][index]
+        df1 = pd.read_csv(f"{vuelo}.csv")
+    if code == "" or dni == "":
+        mb.showerror("login", "rellene todas las casillas")
+    elif code not in df1["codigo"].astype(str).values or dni not in df1["dni"].astype(str).values:
+        mb.showerror("login", "login fallido los datos no coinciden")
+    else:
+        mb.showinfo("login", "login exitoso")
+    
 
 
-def lista_vuelos():  # funcion que retorna la lista de vuelos
+def flight_list():  # funcion que retorna la lista de vuelos
     df = pd.read_csv("dato_vuelo.csv", sep=",")  # se lee el archivo csv
     origen = set(df['CiudadOrigen'])  # se obtiene la columna "CiudadOrigen"
     destino = set(df["CiudadDestino"])  # se obtiene la columna "CiudadDestino"
@@ -136,16 +125,16 @@ def conditions_search(destination, origin, passenger, going, window, peoples):
         mb.showerror("error", "rellene la casilla de ida")
         return
     else:
-        indices = search(origin, destination)
-        if indices == None:
+        index = search(origin, destination)
+        if index == None:
             mb.showerror("error", "no hay vuelos disponibles")
             return
         else:
-            mn.search_fly(indices, window, peoples)
+            mn.search_fly(index, window, peoples)
 
 
 def search(origin, destination):
-    indices = []
+    index = []
     dates_june = []
     for day in range(1, 31):
         date = datetime.datetime(2024, 6, day)
@@ -155,22 +144,22 @@ def search(origin, destination):
     df = pd.read_csv("dato_vuelo.csv", sep=",")
     for i in range(len(df)):
         if destination in df["CiudadDestino"].values[i] and origin in df["CiudadOrigen"].values[i] and df["Fecha"].values[i] in dates_june:
-            indices.append(i)
+            index.append(i)
         else:
             continue
-    if len(indices) == 0:
+    if len(index) == 0:
         mb.showerror("error", "no hay vuelos disponibles")
     else:
-        return indices
+        return index
 
 
-def search_hours(indice):
+def search_hours(index):
     df = pd.read_csv("dato_vuelo.csv", sep=",")
-    horas = []
+    hours = []
     for i in range(len(df)):
-        if df['Fecha'].values[i] == df['Fecha'].values[indice] and df['CiudadOrigen'].values[i] == df['CiudadOrigen'].values[indice] and df['CiudadDestino'].values[i] == df['CiudadDestino'].values[indice]:
-            horas.append(i)
-    return horas
+        if df['Fecha'].values[i] == df['Fecha'].values[index] and df['CiudadOrigen'].values[i] == df['CiudadOrigen'].values[index] and df['CiudadDestino'].values[i] == df['CiudadDestino'].values[index]:
+            hours.append(i)
+    return hours
 
 
 def getnums(text):  # funcion que retorna los numeros de un string
