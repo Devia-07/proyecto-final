@@ -751,6 +751,7 @@ def tickets(window, peoples, datas, sits, indice):
             label_code.place(x = 98, y = 265)
             label_date = ctk.CTkLabel(frame_ticket, text=f"{df['Fecha'].values[indice]}", text_color="black")
             label_date.place(x = 330, y = 175)
+    
     window_tickets.mainloop()
             
 def check_in(index):
